@@ -12,6 +12,7 @@
 
 <script>
 import Header from '@/components/Header.vue'
+import 'reset-css'
 
 export default {
   components: {
