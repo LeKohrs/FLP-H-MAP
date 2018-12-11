@@ -13,6 +13,8 @@
 import Hmap from '@/components/Hmap.vue'
 import Login from '@/components/Login.vue'
 import DataForm from '@/components/DataForm.vue'
+import db from '@/firebase/init'
+
 
 export default {
   name: 'home',
@@ -20,6 +22,16 @@ export default {
     Hmap,
     Login,
     DataForm
+  },
+  created() {
+    db.collection('questions').get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        let question = doc.data()
+        question.id = doc.id
+        this.$store.state.questions.push(question)
+      })
+    })
   }
 }
 </script>

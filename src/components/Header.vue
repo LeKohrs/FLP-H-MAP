@@ -9,9 +9,9 @@
 export default {
   name: 'Header',
   data() {
-    return [
+    return {
 
-    ]
+    }
   }
 }
 </script>
