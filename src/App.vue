@@ -13,10 +13,30 @@
 <script>
 import Header from '@/components/Header.vue'
 import 'reset-css'
+import db from '@/firebase/init'
+
 
 export default {
   components: {
     Header
+  },
+  created() {
+    db.collection('questions').get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        let question = doc.data()
+        question.id = doc.id
+        this.$store.state.questions.push(question)
+      })
+    })
+    db.collection('clients').get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        let client = doc.data()
+        client.id = doc.id
+        this.$store.state.clients.push(client)
+      })
+    })
   }
 }
 </script>

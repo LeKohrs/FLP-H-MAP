@@ -6,7 +6,12 @@
 
 <script>
 export default {
-  name: 'Questionnaire'
+  name: 'Questionnaire',
+  data() {
+    return {
+      
+    }
+  }
 }
 </script>
 
