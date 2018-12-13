@@ -3,7 +3,8 @@
     <h3>Possible Questions to send to client</h3>
     <ul class="questions-list">
       <li v-for="(question, key) in questions" :key="key" class="question">
-        <input type="checkbox" name="question" v-bind:value="question.slug">{{ question.title }}</input>
+        <input type="checkbox" name="question" v-bind:value="question.slug">
+        <label for="question">{{ question.title }}</label>
       </li>
     </ul>
   </div>
@@ -20,8 +21,7 @@ export default {
   methods: {},
   created() {
     if(!this.questions.length > 0)
-    this.questions = this.$store.state.questions;
-    console.log(this.questions);
+    this.questions = this.$store.state.questions
   }
 };
 </script>

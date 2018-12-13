@@ -18,11 +18,11 @@ export default {
     }
   },
   mounted() {
-    if(this.$route.path === '/client') {
+    if(this.$route.path === '/#/client') {
       this.clientPage = true
       this.adminPage = false
     }
-    else if(this.$route.path === '/admin') {
+    else if(this.$route.path === '/#/admin') {
       this.adminPage = true
       this.clientPage = false
     }
