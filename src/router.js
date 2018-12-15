@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import Questions from './components/Questions.vue'
 
 Vue.use(Router)
 
@@ -24,6 +25,11 @@ export default new Router({
       name: 'client',
       component: () => import(/* webpackChunkName: "admin" */ './views/Client.vue'), 
       props: true     
+    },
+    {
+      path: '/add-questions/:username',
+      name: 'AddQuestions',
+      component: Questions
     }
   ]
 })

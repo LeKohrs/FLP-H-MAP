@@ -29,12 +29,13 @@ export default {
         this.$store.state.questions.push(question)
       })
     })
-    db.collection('clients').get()
+    db.collection('users').get()
     .then(snapshot => {
       snapshot.forEach(doc => {
-        let client = doc.data()
-        client.id = doc.id
-        this.$store.state.clients.push(client)
+        let user = doc.data()
+        user.id = doc.id
+        user.role = 'user'
+        this.$store.state.users.push(user)
       })
     })
   }

@@ -4,6 +4,14 @@
     <form @submit.prevent="createUser" class="create-client__form">
       <h2>Signup</h2>
       <div class="field">
+        <label for="firstName">First Name:</label>
+        <input type="text" name="firstName" v-model="firstName">
+      </div>
+      <div class="field">
+        <label for="lastName">Last Name:</label>
+        <input type="text" name="lastName" v-model="lastName">
+      </div>
+      <div class="field">
         <label for="email">Email:</label>
         <input type="email" name="email" v-model="email">
       </div>
@@ -32,27 +40,32 @@ import slugify from 'slugify'
 import db from '@/firebase/init'
 import firebase from 'firebase'
 import ThankYou from '@/components/ThankYou.vue'
+import Questions from '@/components/Questions.vue'
 
 export default {
   name: 'CreateClient',
   components: {
-    ThankYou
+    ThankYou,
+    Questions,
   },
   data() {
     return {
+      firstName: null,
+      lastName: null,
       email: null,
       password: null,
       username: null,
       feedback: null,
       slug: null,
-      thankYou: this.$store.state.thankYou
+      thankYou: this.$store.state.thankYou,
+      showChooseQuestions: false      
     }
   },
   methods: {
     createUser() {
       if(this.username && this.email && this.password) {
         this.slug = slugify(this.username, {
-          replacemtn: '-',
+          replacement: '-',
           remove: /[$*_+~.()'"!\-:@]/g,
           lower: true
         })
@@ -64,11 +77,13 @@ export default {
             firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
             .then(cred => {
               ref.set({
+                firstName: this.firstName,
+                lastName: this.lastName,
                 username: this.username,
                 user_id: cred.user.uid
               })
             }).then(() => {
-              this.thankYou = true
+              this.$router.push({ name: 'AddQuestions', params: {slug: this.slug } })
             })
             .catch(err => {
               console.log(err)

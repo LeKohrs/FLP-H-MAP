@@ -6,8 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     questions: [],
-    clients: [],
-    activeClient: null,
+    users: [],
+    activeUser: null,
     thankYou: false
   },
   mutations: {

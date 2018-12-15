@@ -2,8 +2,8 @@
   <div class="clients">
     <h3>List of clients</h3>
     <ul class="clients-list">
-      <li v-for="(client, key) in clients" :key="key" class="client">
-        <a @click="selectClient(client.name)" href="#">{{ client.name }}</a>
+      <li v-for="(user, key) in users" :key="key" class="user">
+        <a @click="selectClient(user.username)" href="#">{{ user.username }}</a>
       </li>
     </ul>
   </div>
@@ -14,17 +14,16 @@ export default {
   name: 'ClientList',
   data() {
     return {
-      clients: this.$store.state.clients
+      users: this.$store.state.users
     }
   },
   methods: {
     selectClient(name) {
-      for(let client of this.clients) {
-        if(client.name === name) {
-          this.$store.state.activeClient = client
+      for(let user of this.users) {
+        if(user.username === name) {
+          this.$store.state.activeUser = user
         }
       }
-      // this.$store.state.activeClient =
     }
   }
 }
