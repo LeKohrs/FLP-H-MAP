@@ -22,6 +22,7 @@ export default {
       for(let user of this.users) {
         if(user.username === name) {
           this.$store.state.activeUser = user
+          console.log(this.$store.state.activeUser)
         }
       }
     }

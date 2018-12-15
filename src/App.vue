@@ -26,6 +26,8 @@ export default {
       snapshot.forEach(doc => {
         let question = doc.data()
         question.id = doc.id
+        question.checked = false
+        question.show = false
         this.$store.state.questions.push(question)
       })
     })

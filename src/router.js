@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Questions from './components/Questions.vue'
+import ThankYou from '@/components/ThankYou.vue'
 
 Vue.use(Router)
 
@@ -27,9 +28,19 @@ export default new Router({
       props: true     
     },
     {
-      path: '/add-questions/:username',
+      path: '/add-questions/:slug',
       name: 'AddQuestions',
       component: Questions
+    },
+    {
+      path: '/admin/:thanks',
+      name: 'ThankYou',
+      component: ThankYou
+    },
+    {
+      path: '/client/:thanks',
+      name: 'ThankYou',
+      component: ThankYou
     }
   ]
 })

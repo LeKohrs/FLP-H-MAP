@@ -1,8 +1,7 @@
 <template>
   <div class="thanks">
-    <h3>Thanks for Answering the questions</h3>
-    <p v-if='clientPage'>Thanks for answering these questions, Client Person!</p>
-    <p v-else-if="adminPage">Thanks! Questions have been submited.</p>
+    <p v-if="clientPage">Thanks for answering these questions, Client Person!</p>
+    <p v-if="adminPage">Thanks! Questions have been submited.</p>
   </div>
 </template>
 
@@ -18,11 +17,12 @@ export default {
     }
   },
   mounted() {
-    if(this.$route.path === '/#/client') {
+    console.log(this.$route)
+    if(this.$route.path === '/client/thank-you') {
       this.clientPage = true
       this.adminPage = false
     }
-    else if(this.$route.path === '/#/admin') {
+    else if(this.$route.path === '/admin/thank-you') {
       this.adminPage = true
       this.clientPage = false
     }

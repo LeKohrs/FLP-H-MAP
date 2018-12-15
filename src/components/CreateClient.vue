@@ -39,14 +39,10 @@
 import slugify from 'slugify'
 import db from '@/firebase/init'
 import firebase from 'firebase'
-import ThankYou from '@/components/ThankYou.vue'
-import Questions from '@/components/Questions.vue'
 
 export default {
   name: 'CreateClient',
   components: {
-    ThankYou,
-    Questions,
   },
   data() {
     return {
@@ -80,10 +76,12 @@ export default {
                 firstName: this.firstName,
                 lastName: this.lastName,
                 username: this.username,
-                user_id: cred.user.uid
+                user_id: cred.user.uid,
+                slug: this.slug
               })
             }).then(() => {
-              this.$router.push({ name: 'AddQuestions', params: {slug: this.slug } })
+              console.log(this.slug)
+              this.$router.push({ name: 'AddQuestions', params: { slug: this.slug } })
             })
             .catch(err => {
               console.log(err)
