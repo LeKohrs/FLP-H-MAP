@@ -24,19 +24,30 @@ export default {
     return {
       questions: [],
       user: null,
-      userQuestions: []
+      userQuestions: [],
     };
   },
   methods: {
     submitQuestions() {
       this.questions.forEach(question => {
         if(question.checked) {
-          this.userQuestions.push(question.slug)
-          console.log(this.userQuestions)
+          let questionStructure = {
+            title: question.title,
+            subQuestions: []
+          }
+          if(question.questions) {
+            let subQuestions = {}
+            for(let subQuestion of question.questions) { 
+              subQuestions[subQuestion] = ''
+            }
+            questionStructure.subQuestions = subQuestions
+          }
+          this.userQuestions.push(questionStructure)  
+          
           db.collection('users').doc(this.user.id).update({
             questions: this.userQuestions
           }).then(() => {
-            this.$router.push({ name: 'ThankYou', params: { thanks: 'thank-you' } })
+            this.$router.push({ name: 'ThankYouAdmin', params: { thanks: 'thank-you' } })
           })
         }
       })

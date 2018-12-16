@@ -1,10 +1,8 @@
 <template>
   <div class="home">
     <Hmap />
+    <DataForm />
     <Login />
-    <div class="hmap__form-tray">
-      <DataForm />  
-    </div>
   </div>
 </template>
 

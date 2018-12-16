@@ -22,6 +22,11 @@ export default new Router({
       component: () => import(/* webpackChunkName: "admin" */ './views/Admin.vue')
     },
     {
+      path: '/admin/:slug',
+      name: 'clientHmap',
+      component: Home
+    },
+    {
       path: '/client',
       name: 'client',
       component: () => import(/* webpackChunkName: "admin" */ './views/Client.vue'), 
@@ -34,12 +39,12 @@ export default new Router({
     },
     {
       path: '/admin/:thanks',
-      name: 'ThankYou',
+      name: 'ThankYouAdmin',
       component: ThankYou
     },
     {
       path: '/client/:thanks',
-      name: 'ThankYou',
+      name: 'ThankYouClient',
       component: ThankYou
     }
   ]

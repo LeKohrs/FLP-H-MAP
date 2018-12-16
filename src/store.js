@@ -8,6 +8,7 @@ export default new Vuex.Store({
     questions: [],
     users: [],
     activeUser: null,
+    currentClient: '',
     thankYou: false
   },
   mutations: {

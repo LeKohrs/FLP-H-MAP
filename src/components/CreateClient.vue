@@ -80,16 +80,13 @@ export default {
                 slug: this.slug
               })
             }).then(() => {
-              console.log(this.slug)
               this.$router.push({ name: 'AddQuestions', params: { slug: this.slug } })
             })
             .catch(err => {
-              console.log(err)
               this.feedback = err.message
             })
           }
         })
-        console.log(this.slug)
       } else {
         this.feedback = 'You must enter all fields.'
       }

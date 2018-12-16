@@ -42,7 +42,6 @@ export default {
   created() {
     if(this.$router.params && this.$router.params.thanks === 'thank-you') {
      this.showThankYou = false
-     console.log(this.$router.params.thanks)
     }
   }
 }
