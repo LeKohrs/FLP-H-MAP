@@ -22,30 +22,10 @@ export default new Router({
       component: () => import(/* webpackChunkName: "admin" */ './views/Admin.vue')
     },
     {
-      path: '/admin/:slug',
-      name: 'clientHmap',
-      component: Home
-    },
-    {
       path: '/client',
       name: 'client',
       component: () => import(/* webpackChunkName: "admin" */ './views/Client.vue'), 
       props: true     
-    },
-    {
-      path: '/add-questions/:slug',
-      name: 'AddQuestions',
-      component: Questions
-    },
-    {
-      path: '/admin/:thanks',
-      name: 'ThankYouAdmin',
-      component: ThankYou
-    },
-    {
-      path: '/client/:thanks',
-      name: 'ThankYouClient',
-      component: ThankYou
     }
   ]
 })
