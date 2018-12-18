@@ -4,7 +4,7 @@
       <div class="clients">
         <h3>List of clients</h3>
         <ul class="clients-list">
-          <li v-for="(user, key) in users" :key="key" class="user">
+          <li v-if="user.role === 'user'" v-for="(user, key) in users" :key="key" class="user">
             <a @click="selectClient(user.slug)" href="#">{{ user.firstName }} {{ user.lastName }}</a>
           </li>
         </ul>
@@ -670,7 +670,6 @@ export default {
       this.questions.forEach(question => {
         if(question.checked) {
           question.show = true
-
         }
       })
       let ref = db.collection('users').where('slug', '==', this.slug)
@@ -685,19 +684,13 @@ export default {
         }).then(() => {
           this.showThankYou = true
           this.showQuestions = false
+          this.resetCreateUser()
           this.questions.forEach(question => {
             question.show = false
+            question.checked = false
           })
         })
       }) 
-    },
-    checkListOfObjects(obj, list) {
-      for (let x of list) {
-        if(list[x] === obj) {
-          return true;
-        }
-      }
-      return false;
     },
     editQuestions() {
 
