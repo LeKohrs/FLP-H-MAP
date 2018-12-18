@@ -9,7 +9,8 @@ export default new Vuex.Store({
     users: [],
     activeUser: null,
     currentClient: '',
-    thankYou: false
+    thankYou: false,
+    selectedUser: null
   },
   mutations: {
 
