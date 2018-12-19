@@ -617,6 +617,7 @@ export default {
       ref.get().then(snapshot => {
         snapshot.forEach(doc => {
           this.selectedUser = doc.data()
+          this.$store.state.selectedUser = doc.data()
           this.selectedUser.id = doc.id
         })
       }).then(() => {

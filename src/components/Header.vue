@@ -25,6 +25,7 @@ export default {
       firebase.auth().signOut().then(() => {
         this.$router.push({ name: 'home' })
         console.log('logged out')
+        this.$store.state.loggedinUser = null
       })
     }
   }
