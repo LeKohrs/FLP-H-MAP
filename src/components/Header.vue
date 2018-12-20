@@ -4,7 +4,7 @@
     <h2 class="header__title">H-MAP</h2>
     <div class="login">
       <ul>
-        <li><a href="" @click.prevent="logout">Logout</a></li>
+        <li v-if="!$store.state.showLogin" ><a href="" @click.prevent="logout">Logout</a></li>
       </ul>
     </div>
   </div>
@@ -23,9 +23,11 @@ export default {
   methods: {
     logout() {
       firebase.auth().signOut().then(() => {
-        this.$router.push({ name: 'home' })
-        console.log('logged out')
         this.$store.state.loggedinUser = null
+        this.$store.state.selectedUser = null
+        localStorage.setItem('user', '')
+        this.$store.state.showLogin = true        
+        this.$router.push({ name: 'home' })
       })
     }
   }

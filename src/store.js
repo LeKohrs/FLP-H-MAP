@@ -11,7 +11,8 @@ export default new Vuex.Store({
     currentClient: '',
     thankYou: false,
     selectedUser: null,
-    userId: null
+    userId: null,
+    showLogin: true
   },
   mutations: {
 

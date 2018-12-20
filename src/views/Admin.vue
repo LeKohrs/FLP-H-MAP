@@ -354,7 +354,7 @@ export default {
       slug: null,
       showChooseQuestions: false,
       questions: [],
-      selectedUser: null,
+      selectedUser: this.$store.state.selectedUser,
       showSelectedClient: false, 
       anotherClient: {
         name: null,
@@ -470,7 +470,6 @@ export default {
           startBalance: null,
           endBalance: null
         }
-        console.log(this.selectedUser.questions[0].questions[1].startBalance)
       } else {
         this.bankAccountFeedBack = this.msg
       }
@@ -621,7 +620,21 @@ export default {
           this.selectedUser.id = doc.id
         })
       }).then(() => {
-        this.showSelectedClient = true        
+        this.showSelectedClient = true
+        this.clients = this.selectedUser.questions[10].questions
+        this.children = this.selectedUser.questions[8].questions        
+        this.bankAccounts = this.selectedUser.questions[0].questions        
+        this.mortgages = this.selectedUser.questions[2].questions        
+        this.financialGifts = this.selectedUser.questions[3].answer        
+        this.childSupport = this.selectedUser.questions[4].answer        
+        this.creditCards = this.selectedUser.questions[5].questions        
+        this.alimony = this.selectedUser.questions[6].answer        
+        this.plan529Accounts = this.selectedUser.questions[7].questions        
+        this.investmentAccounts = this.selectedUser.questions[9].questions
+        this.autoLoans = this.selectedUser.questions[11].questions        
+        this.studentLoans = this.selectedUser.questions[12].questions        
+        this.retirementAccounts = this.selectedUser.questions[13].questions        
+        this.hsaAccounts = this.selectedUser.questions[14].questions        
       })
     },
     createUser() {

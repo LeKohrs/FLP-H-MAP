@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div v-if="showLogin" class="login">
+    <div v-if="$store.state.showLogin" class="login">
       <form @submit.prevent="login" action="">
         <h2>Login</h2>
         <div class="field">
@@ -21,7 +21,7 @@
       <h1>There be maps here!</h1>
     </div>
     <section class="sidebar">
-      <div v-if="selectedUser" class="question-review">
+      <div v-if="this.$store.state.selectedUser" class="question-review">
         <form @submit.prevent="editQuestions" class="edit-questions__form">
           <div class="field--client">
             <h3>{{ selectedUser.questions[10].title }}</h3>
@@ -301,13 +301,13 @@ export default {
   },
   data() {
     return {
-      selectedUser: null,
-      loggedinUser: null,
+      selectedUser: this.$store.state.selectedUser,
+      loggedinUser: this.$store.state.loggedinUser,
       email: null,
       password: null,
       feedback: null,
       showMap: false,
-      showLogin: false,
+      showLogin: this.$store.state.showLogin,
       userId: null,
       allQuestions: [],
       msg: 'You must enter a value in all fields',
@@ -429,7 +429,6 @@ export default {
           startBalance: null,
           endBalance: null
         }
-        console.log(this.selectedUser.questions[0].questions[1].startBalance)
       } else {
         this.bankAccountFeedBack = this.msg
       }
@@ -578,6 +577,7 @@ export default {
             snapshot.forEach(doc => {
               this.$store.state.loggedinUser = doc.data()
               this.$store.state.loggedinUser.id = doc.id
+              localStorage.setItem('user', this.$store.state.userId)
             })
           }).then(() => {
             if(this.$store.state.loggedinUser) {
@@ -586,7 +586,7 @@ export default {
               } else if(this.$store.state.loggedinUser.role === 'user') {
                 this.$router.push({ name: 'client' })
               }
-              this.showLogin = false
+              this.$store.state.showLogin = false
             }
           })
         }).catch(err => {
@@ -599,8 +599,39 @@ export default {
     }
   },
   created() {
+    if(localStorage.getItem('user')) {
+      this.$store.state.userId = localStorage.getItem('user')
+      let ref = db.collection('users').where('user_id', '==', this.$store.state.userId)
+      ref.get().then(snapshot => {
+        snapshot.forEach(doc => {
+          this.$store.state.loggedinUser = doc.data()
+          this.$store.state.loggedinUser.id = doc.id
+          localStorage.setItem('user', this.$store.state.userId)
+        })
+      }).then(() => {
+        this.$store.state.showLogin = false
+      })
+    }
+    else {
+      this.$store.state.showLogin = true
+    }
+    
     if(this.$store.state.selectedUser) {
-      this.selectedUser = this.$store.state.selectedUser
+      // this.selectedUser = this.$store.state.selectedUser
+      this.clients = this.selectedUser.questions[10].questions
+      this.children = this.selectedUser.questions[8].questions        
+      this.bankAccounts = this.selectedUser.questions[0].questions        
+      this.mortgages = this.selectedUser.questions[2].questions        
+      this.financialGifts = this.selectedUser.questions[3].answer        
+      this.childSupport = this.selectedUser.questions[4].answer        
+      this.creditCards = this.selectedUser.questions[5].questions        
+      this.alimony = this.selectedUser.questions[6].answer        
+      this.plan529Accounts = this.selectedUser.questions[7].questions        
+      this.investmentAccounts = this.selectedUser.questions[9].questions
+      this.autoLoans = this.selectedUser.questions[11].questions        
+      this.studentLoans = this.selectedUser.questions[12].questions        
+      this.retirementAccounts = this.selectedUser.questions[13].questions        
+      this.hsaAccounts = this.selectedUser.questions[14].questions  
     }
     if(this.$store.state.loggedinUser) {
       this.loggedinUser = this.$store.state.loggedinUser
@@ -624,6 +655,9 @@ export default {
         this.allQuestions.push(question)
       })
     })
+  },
+  computed: {
+
   }
 }
 </script>

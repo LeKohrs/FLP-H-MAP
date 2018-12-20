@@ -520,15 +520,37 @@ export default {
     },
   },
   created() {
-    console.log(this.showClientQuestions)
-    console.log(this.selectedUser)
-    let ref = db.collection('users').where('slug', '==', this.slug)
-    ref.get().then(snapshot => {
-      snapshot.forEach(doc => {
-        this.selectedUser = doc.data()
-        this.selectedUser.id = doc.id
+    
+  },
+  mounted() {
+    console.log(localStorage.getItem('user'))
+    this.$store.state.userId = localStorage.getItem('user')
+    
+    let ref = db.collection('users').where('user_id', '==', this.$store.state.userId)
+      ref.get().then(snapshot => {
+        snapshot.forEach(doc => {
+          this.$store.state.loggedinUser = doc.data()
+          this.$store.state.loggedinUser.id = doc.id
+          localStorage.setItem('user', this.$store.state.userId)
+        })
       })
-    })
+    this.selectedUser = this.$store.state.loggedinUser
+    
+    this.clients = this.selectedUser.questions[10].questions
+    this.children = this.selectedUser.questions[8].questions        
+    this.bankAccounts = this.selectedUser.questions[0].questions        
+    this.mortgages = this.selectedUser.questions[2].questions        
+    this.financialGifts = this.selectedUser.questions[3].answer        
+    this.childSupport = this.selectedUser.questions[4].answer        
+    this.creditCards = this.selectedUser.questions[5].questions        
+    this.alimony = this.selectedUser.questions[6].answer        
+    this.plan529Accounts = this.selectedUser.questions[7].questions        
+    this.investmentAccounts = this.selectedUser.questions[9].questions
+    this.autoLoans = this.selectedUser.questions[11].questions        
+    this.studentLoans = this.selectedUser.questions[12].questions        
+    this.retirementAccounts = this.selectedUser.questions[13].questions        
+    this.hsaAccounts = this.selectedUser.questions[14].questions 
+    console.log(this.$store.state.loggedinUser)
   }
 }
 </script>
