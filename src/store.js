@@ -12,7 +12,10 @@ export default new Vuex.Store({
     thankYou: false,
     selectedUser: null,
     userId: null,
-    showLogin: true
+    showLogin: true,
+    loggedinUser: {
+      role: 'guest'
+    }
   },
   mutations: {
 

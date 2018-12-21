@@ -285,7 +285,7 @@ export default {
       feedback: null,
       slug: 'bobdole',
       questions: [],
-      selectedUser: null,
+      selectedUser: {},
       showClientQuestions: true, 
       anotherClient: {
         name: null,

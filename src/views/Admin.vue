@@ -706,31 +706,33 @@ export default {
         })
       }) 
     },
-    editQuestions() {
-
-    }
   },
   created() {
-    let ref = db.collection('users')
-    ref.onSnapshot(snapshot => {
-      snapshot.docChanges().forEach(change => {
-        if(change.type == 'added') {
-          let user = change.doc.data()
-          this.users.push(user)
-        }
+    if(this.$store.state.loggedinUser.role === 'admin') {
+      let ref = db.collection('users')
+      ref.onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(change => {
+          if(change.type == 'added') {
+            let user = change.doc.data()
+            this.users.push(user)
+          }
+        })
       })
-    })
 
-    db.collection('questions').get()
-    .then(snapshot => {
-      snapshot.forEach(doc => {
-        let question = doc.data()
-        question.id = doc.id
-        question.checked = false
-        question.show = false
-        this.questions.push(question)
+      db.collection('questions').get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          let question = doc.data()
+          question.id = doc.id
+          question.checked = false
+          question.show = false
+          this.questions.push(question)
+        })
       })
-    })
+    } else {
+      this.$router.push({ name: 'client' })
+    }
+    
   }
 }
 </script>
