@@ -2,9 +2,7 @@
   <div id="app">
     <Header />
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link v-if="$store.state.loggedinUser.role === 'admin'" to="/admin">Admin</router-link> |
-      <router-link v-if="$store.state.loggedinUser.role === 'user'" to="/client">Client</router-link>
+      <router-link v-if="$store.state.loggedinUser && $store.state.loggedinUser.role === 'user'" to="/client">Client</router-link>
     </div>
     <router-view/>
   </div>

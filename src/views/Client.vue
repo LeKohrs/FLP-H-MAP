@@ -520,7 +520,10 @@ export default {
     },
   },
   created() {
-    
+    console.log(this.$store.state.loggedinUser)
+    if(!this.$store.state.loggedinUser) {
+      this.$router.push({ name: 'home' })
+    }
   },
   mounted() {
     console.log(localStorage.getItem('user'))
