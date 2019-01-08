@@ -5,15 +5,19 @@
         <h2>Information for {{ selectedUser.firstName }} {{ selectedUser.lastName }}</h2>
         <div class="admin__selected-user__answers">
           <form @submit.prevent="editQuestions" class="edit-questions__form">
-            <div v-if="selectedUser.questions[10].show" class="field--client">
+            <div v-if="selectedUser.questions[10].show" class="field field--client">
               <h3>{{ selectedUser.questions[10].title }}</h3>
-              <div class="client-questions">
+              <div class="questions client-questions">
                 <ul>
                   <li v-for="(client, key) in clients" :key="key">
-                    <label for="client-name">Name:</label>
-                    <input type="text" name="client-name" v-model="clients[key].name">
-                    <label for="client-birthday">Date of Birth:</label>
-                    <input v-if="clients[key].dateOfBirth" type="text" name="client-birthday" v-model="clients[key].dateOfBirth">
+                    <div v-if="clients[key].name" class="sub-field">
+                      <label for="client-name">Name:</label>
+                      <input type="text" name="client-name" v-model="clients[key].name">
+                    </div>
+                    <div v-if="clients[key].dateOfBirth" class="sub-field">
+                      <label for="client-birthday">Date of Birth:</label>
+                      <input  type="text" name="client-birthday" v-model="clients[key].dateOfBirth">
+                    </div>
                   </li>
                 </ul>
                 <label for="client-name">Name:</label>
@@ -21,18 +25,22 @@
                 <label for="client-birthday">Date of Birth:</label>
                 <input type="text" name="client-birthday" v-model="anotherClient.dateOfBirth">
                 <p v-if="clientMsg">{{ clientMsg }}</p>
-                <button @click.prevent="addClient">Add Client</button>  
+                <a @click.prevent="addClient">Add Client</a>  
               </div>
             </div>
-            <div v-if="selectedUser.questions[8].show" class="field--client">
+            <div v-if="selectedUser.questions[8].show" class="field field--client">
               <h3>{{ selectedUser.questions[8].title }}</h3>
-              <div class="client-questions">
+              <div class="questions client-questions">
                 <ul>
                   <li v-for="(child, key) in children" :key="key">
-                    <label for="child-name">Name:</label>
-                    <input v-if="children[key].name" type="text" name="child-name" v-model="children[key].name">
-                    <label for="child-birthday">Date of Birth:</label>
-                    <input v-if="children[key].dateOfBirth" type="text" name="child-birthday" v-model="children[key].dateOfBirth">
+                    <div v-if="children[key].name" class="sub-field"> 
+                      <label for="child-name">Name:</label>
+                      <input type="text" name="child-name" v-model="children[key].name">
+                    </div>
+                    <div v-if="children[key].dateOfBirth" class="sub-field">
+                      <label for="child-birthday">Date of Birth:</label>
+                      <input type="text" name="child-birthday" v-model="children[key].dateOfBirth">
+                    </div>
                   </li>
                 </ul>
                 <label for="child-name">Name:</label>
@@ -43,15 +51,19 @@
                 <button @click.prevent="addChild">Add Child</button>  
               </div>
             </div>
-            <div v-if="selectedUser.questions[0].show" class="field--bank-account">
+            <div v-if="selectedUser.questions[0].show" class="field field--bank-account">
               <h3>{{ selectedUser.questions[0].title }}</h3>
-              <div class="bank-account-questions">
+              <div class="questions bank-account-questions">
                 <ul>
                   <li v-for="(account, key) in bankAccounts" :key="key">
-                    <label for="start-balance">Balance on January 1, 2018:</label>
-                    <input v-if="bankAccounts[key].startBalance" type="text" name="start-balance" v-model="bankAccounts[key].startBalance">
-                    <label for="end-balance">Balance on December 31, 2018:</label>
-                    <input v-if="bankAccounts[key].endBalance" type="text" name="end-balance" v-model="bankAccounts[key].endBalance">
+                    <div v-if="bankAccounts[key].startBalance" class="sub-field">
+                      <label for="start-balance">Balance on January 1, 2018:</label>
+                      <input  type="text" name="start-balance" v-model="bankAccounts[key].startBalance">
+                    </div>
+                    <div v-if="bankAccounts[key].endBalance" class="sub-field">
+                      <label for="end-balance">Balance on December 31, 2018:</label>
+                      <input type="text" name="end-balance" v-model="bankAccounts[key].endBalance">
+                    </div>
                   </li>
                 </ul>
                 <label for="start-balance">Balance on January 1, 2018:</label>
@@ -62,15 +74,19 @@
                 <button @click.prevent="addBankAccount">Add Bank Account</button>  
               </div>
             </div>
-            <div v-if="selectedUser.questions[2].show" class="field--mortgage">
+            <div v-if="selectedUser.questions[2].show" class="field field--mortgage">
               <h3>{{ selectedUser.questions[2].title }}</h3>
-              <div class="mortgage-questions">
+              <div class="questions mortgage-questions">
                 <ul>
                   <li v-for="(mortgage, key) in mortgages" :key="key">
-                    <label for="start-balance">Balance on January 1, 2018:</label>
-                    <input v-if="mortgages[key].startBalance" type="text" name="start-balance" v-model="mortgages[key].startBalance">
-                    <label for="end-balance">Balance on December 31, 2018:</label>
-                    <input v-if="mortgages[key].endBalance" type="text" name="end-balance" v-model="mortgages[key].endBalance">
+                    <div v-if="mortgages[key].startBalance" class="sub-field">
+                      <label for="start-balance">Balance on January 1, 2018:</label>
+                      <input  type="text" name="start-balance" v-model="mortgages[key].startBalance">
+                    </div>
+                    <div v-if="mortgages[key].endBalance" class="sub-field">
+                      <label for="end-balance">Balance on December 31, 2018:</label>
+                      <input  type="text" name="end-balance" v-model="mortgages[key].endBalance">
+                    </div>
                   </li>
                 </ul>
                 <label for="start-balance">Balance on January 1, 2018:</label>
@@ -81,15 +97,19 @@
                 <button @click.prevent="addMortgage">Add Mortgage</button>  
               </div>
             </div>
-            <div v-if="selectedUser.questions[5].show" class="field--credit-card">
+            <div v-if="selectedUser.questions[5].show" class="field field--credit-card">
               <h3>{{ selectedUser.questions[5].title }}</h3>
-              <div class="credit-card-questions">
+              <div class="questions credit-card-questions">
                 <ul>
                   <li v-for="(creditCard, key) in creditCards" :key="key">
-                    <label for="start-balance">Balance on January 1, 2018:</label>
-                    <input v-if="creditCards[key].startBalance" type="text" name="start-balance" v-model="creditCards[key].startBalance">
-                    <label for="end-balance">Balance on December 31, 2018:</label>
-                    <input v-if="creditCards[key].endBalance" type="text" name="end-balance" v-model="creditCards[key].endBalance">
+                    <div v-if="creditCards[key].startBalance" class="sub-field">
+                      <label for="start-balance">Balance on January 1, 2018:</label>
+                      <input type="text" name="start-balance" v-model="creditCards[key].startBalance">
+                    </div>
+                    <div v-if="creditCards[key].endBalance" class="sub-field">
+                      <label for="end-balance">Balance on December 31, 2018:</label>
+                      <input type="text" name="end-balance" v-model="creditCards[key].endBalance">
+                    </div>
                   </li>
                 </ul>
                 <label for="start-balance">Balance on January 1, 2018:</label>
@@ -100,19 +120,27 @@
                 <button @click.prevent="addCreditCard">Add Credit Card</button>  
               </div>
             </div>
-            <div v-if="selectedUser.questions[7].show" class="field--529-plan-account">
+            <div v-if="selectedUser.questions[7].show" class="field field--529-plan-account">
               <h3>{{ selectedUser.questions[7].title }}</h3>
-              <div class="plan-529-account-questions">
+              <div class="questions plan-529-account-questions">
                 <ul>
                   <li v-for="(account, key) in plan529Accounts" :key="key">
-                    <label for="start-balance">Balance on January 1, 2018:</label>
-                    <input v-if="plan529Accounts[key].startBalance" type="text" name="start-balance" v-model="plan529Accounts[key].startBalance">
-                    <label for="contributions">Contributions during current year:</label>
-                    <input v-if="plan529Accounts[key].contributions" type="text" name="contributions" v-model="plan529Accounts[key].contributions">
-                    <label for="withdrawals">Withdrawals during current year:</label>
-                    <input v-if="plan529Accounts[key].withdrawals" type="text" name="withdrawals" v-model="plan529Accounts[key].withdrawals">
-                    <label for="end-balance">Balance on December 31, 2018:</label>
-                    <input v-if="plan529Accounts[key].endBalance" type="text" name="end-balance" v-model="plan529Accounts[key].endBalance">
+                    <div v-if="plan529Accounts[key].startBalance" class="sub-field">
+                      <label for="start-balance">Balance on January 1, 2018:</label>
+                      <input type="text" name="start-balance" v-model="plan529Accounts[key].startBalance">
+                    </div>
+                    <div v-if="plan529Accounts[key].contributions" class="sub-field">
+                      <label for="contributions">Contributions during current year:</label>
+                      <input type="text" name="contributions" v-model="plan529Accounts[key].contributions">
+                    </div>
+                    <div  v-if="plan529Accounts[key].withdrawals" class="sub-field">
+                      <label for="withdrawals">Withdrawals during current year:</label>
+                      <input type="text" name="withdrawals" v-model="plan529Accounts[key].withdrawals">
+                    </div>
+                    <div v-if="plan529Accounts[key].endBalance" class="sub-field">
+                      <label for="end-balance">Balance on December 31, 2018:</label>
+                      <input type="text" name="end-balance" v-model="plan529Accounts[key].endBalance">
+                    </div>
                   </li>
                 </ul>
                 <label for="start-balance">Balance on January 1, 2018:</label>
@@ -127,19 +155,27 @@
                 <button @click.prevent="add529Account">Add 529 Plan Account</button>  
               </div>
             </div>
-            <div v-if="selectedUser.questions[9].show" class="field--investment-account">
+            <div v-if="selectedUser.questions[9].show" class="field field--investment-account">
               <h3>{{ selectedUser.questions[9].title }}</h3>
-              <div class="investment-account-questions">
+              <div class="questions investment-account-questions">
                 <ul>
                   <li v-for="(account, key) in investmentAccounts" :key="key">
-                    <label for="start-balance">Balance on January 1, 2018:</label>
-                    <input v-if="investmentAccounts[key].startBalance" type="text" name="start-balance" v-model="investmentAccounts[key].startBalance">
-                    <label for="contributions">Contributions during current year:</label>
-                    <input v-if="investmentAccounts[key].contributions" type="text" name="contributions" v-model="investmentAccounts[key].contributions">
-                    <label for="withdrawals">Withdrawals during current year:</label>
-                    <input v-if="investmentAccounts[key].withdrawals" type="text" name="withdrawals" v-model="investmentAccounts[key].withdrawals">
-                    <label for="end-balance">Balance on December 31, 2018:</label>
-                    <input v-if="investmentAccounts[key].endBalance" type="text" name="end-balance" v-model="investmentAccounts[key].endBalance">
+                    <div v-if="investmentAccounts[key].startBalance" class="sub-field">
+                      <label for="start-balance">Balance on January 1, 2018:</label>
+                      <input type="text" name="start-balance" v-model="investmentAccounts[key].startBalance">
+                    </div> 
+                    <div v-if="investmentAccounts[key].contributions" class="sub-field">
+                      <label for="contributions">Contributions during current year:</label>
+                      <input type="text" name="contributions" v-model="investmentAccounts[key].contributions">
+                    </div> 
+                    <div v-if="investmentAccounts[key].withdrawals" class="sub-field">
+                      <label for="withdrawals">Withdrawals during current year:</label>
+                      <input type="text" name="withdrawals" v-model="investmentAccounts[key].withdrawals">
+                    </div> 
+                    <div v-if="investmentAccounts[key].endBalance" class="sub-field">
+                      <label for="end-balance">Balance on December 31, 2018:</label>
+                      <input type="text" name="end-balance" v-model="investmentAccounts[key].endBalance">
+                    </div> 
                   </li>
                 </ul>
                 <label for="start-balance">Balance on January 1, 2018:</label>
@@ -154,15 +190,19 @@
                 <button @click.prevent="addInvestmentAccount">Add Investment Account</button>  
               </div>
             </div>
-            <div v-if="selectedUser.questions[11].show" class="field--auto-loan">
+            <div v-if="selectedUser.questions[11].show" class="field field--auto-loan">
               <h3>{{ selectedUser.questions[11].title }}</h3>
-              <div class="auto-loan-questions">
+              <div class="questions auto-loan-questions">
                 <ul>
                   <li v-for="(autoLoan, key) in autoLoans" :key="key">
-                    <label for="start-balance">Balance on January 1, 2018:</label>
-                    <input v-if="autoLoans[key].startBalance" type="text" name="start-balance" v-model="autoLoans[key].startBalance">
-                    <label for="end-balance">Balance on December 31, 2018:</label>
-                    <input v-if="autoLoans[key].endBalance" type="text" name="end-balance" v-model="autoLoans[key].endBalance">
+                    <div v-if="autoLoans[key].startBalance" class="sub-field">
+                      <label for="start-balance">Balance on January 1, 2018:</label>
+                      <input type="text" name="start-balance" v-model="autoLoans[key].startBalance">
+                    </div>
+                    <div v-if="autoLoans[key].endBalance" class="sub-field">
+                      <label for="end-balance">Balance on December 31, 2018:</label>
+                      <input type="text" name="end-balance" v-model="autoLoans[key].endBalance">
+                    </div>
                   </li>
                 </ul>
                 <label for="start-balance">Balance on January 1, 2018:</label>
@@ -173,15 +213,19 @@
                 <button @click.prevent="addAutoLoan">Add Auto Loan</button>  
               </div>
             </div>
-            <div v-if="selectedUser.questions[12].show" class="field--student-loan">
+            <div v-if="selectedUser.questions[12].show" class="field field--student-loan">
               <h3>{{ selectedUser.questions[12].title }}</h3>
-              <div class="student-loan-questions">
+              <div class="questions student-loan-questions">
                 <ul>
                   <li v-for="(studentLoan, key) in studentLoans" :key="key">
-                    <label for="start-balance">Balance on January 1, 2018:</label>
-                    <input v-if="studentLoans[key].startBalance" type="text" name="start-balance" v-model="studentLoans[key].startBalance">
-                    <label for="end-balance">Balance on December 31, 2018:</label>
-                    <input v-if="studentLoans[key].endBalance" type="text" name="end-balance" v-model="studentLoans[key].endBalance">
+                    <div v-if="studentLoans[key].startBalance" class="sub-field">
+                      <label for="start-balance">Balance on January 1, 2018:</label>
+                      <input type="text" name="start-balance" v-model="studentLoans[key].startBalance">
+                    </div>
+                    <div v-if="studentLoans[key].endBalance" class="sub-field">
+                      <label for="end-balance">Balance on December 31, 2018:</label>
+                      <input type="text" name="end-balance" v-model="studentLoans[key].endBalance">
+                    </div>
                   </li>
                 </ul>
                 <label for="start-balance">Balance on January 1, 2018:</label>
@@ -192,19 +236,27 @@
                 <button @click.prevent="addStudentLoan">Add Student Loan</button>  
               </div>
             </div>
-            <div v-if="selectedUser.questions[13].show" class="field--retirement-account">
+            <div v-if="selectedUser.questions[13].show" class="field field--retirement-account">
               <h3>{{ selectedUser.questions[13].title }}</h3>
-              <div class="retirement-account-questions">
+              <div class="questions retirement-account-questions">
                 <ul>
                   <li v-for="(account, key) in retirementAccounts" :key="key">
-                    <label for="start-balance">Balance on January 1, 2018:</label>
-                    <input v-if="retirementAccounts[key].startBalance" type="text" name="start-balance" v-model="retirementAccounts[key].startBalance">
-                    <label for="contributions">Contributions during current year:</label>
-                    <input v-if="retirementAccounts[key].contributions" type="text" name="contributions" v-model="retirementAccounts[key].contributions">
-                    <label for="withdrawals">Withdrawals during current year:</label>
-                    <input v-if="retirementAccounts[key].withdrawals" type="text" name="withdrawals" v-model="retirementAccounts[key].withdrawals">
-                    <label for="end-balance">Balance on December 31, 2018:</label>
-                    <input v-if="retirementAccounts[key].endBalance" type="text" name="end-balance" v-model="retirementAccounts[key].endBalance">
+                    <div v-if="retirementAccounts[key].startBalance" class="sub-field">
+                      <label for="start-balance">Balance on January 1, 2018:</label>
+                      <input type="text" name="start-balance" v-model="retirementAccounts[key].startBalance">
+                    </div>
+                    <div v-if="retirementAccounts[key].contributions" class="sub-field">
+                      <label for="contributions">Contributions during current year:</label>
+                      <input type="text" name="contributions" v-model="retirementAccounts[key].contributions">
+                    </div>
+                    <div v-if="retirementAccounts[key].withdrawals" class="sub-field">
+                      <label for="withdrawals">Withdrawals during current year:</label>
+                      <input type="text" name="withdrawals" v-model="retirementAccounts[key].withdrawals">
+                    </div>
+                    <div v-if="retirementAccounts[key].endBalance" class="sub-field">
+                      <label for="end-balance">Balance on December 31, 2018:</label>
+                      <input type="text" name="end-balance" v-model="retirementAccounts[key].endBalance">
+                    </div>
                   </li>
                 </ul>
                 <label for="start-balance">Balance on January 1, 2018:</label>
@@ -219,19 +271,27 @@
                 <button @click.prevent="addRetirementAccount">Add Retirement Account</button>  
               </div>
             </div>
-            <div v-if="selectedUser.questions[14].show" class="field--hsa-account">
+            <div v-if="selectedUser.questions[14].show" class="field field--hsa-account">
               <h3>{{ selectedUser.questions[14].title }}</h3>
-              <div class="hsa-account-questions">
+              <div class="questions hsa-account-questions">
                 <ul>
                   <li v-for="(account, key) in hsaAccounts" :key="key">
-                    <label for="start-balance">Balance on January 1, 2018:</label>
-                    <input v-if="hsaAccounts[key].startBalance" type="text" name="start-balance" v-model="hsaAccounts[key].startBalance">
-                    <label for="contributions">Contributions during current year:</label>
-                    <input v-if="hsaAccounts[key].contributions" type="text" name="contributions" v-model="hsaAccounts[key].contributions">
-                    <label for="withdrawals">Withdrawals during current year:</label>
-                    <input v-if="hsaAccounts[key].withdrawals" type="text" name="withdrawals" v-model="hsaAccounts[key].withdrawals">
-                    <label for="end-balance">Balance on December 31, 2018:</label>
-                    <input v-if="hsaAccounts[key].endBalance" type="text" name="end-balance" v-model="hsaAccounts[key].endBalance">
+                    <div v-if="hsaAccounts[key].startBalance" class="sub-field">
+                      <label for="start-balance">Balance on January 1, 2018:</label>
+                      <input type="text" name="start-balance" v-model="hsaAccounts[key].startBalance">
+                    </div>
+                    <div v-if="hsaAccounts[key].contributions" class="sub-field">
+                      <label for="contributions">Contributions during current year:</label>
+                      <input type="text" name="contributions" v-model="hsaAccounts[key].contributions">
+                    </div>
+                    <div v-if="hsaAccounts[key].withdrawals" class="sub-field">
+                      <label for="withdrawals">Withdrawals during current year:</label>
+                      <input type="text" name="withdrawals" v-model="hsaAccounts[key].withdrawals">
+                    </div>
+                    <div v-if="hsaAccounts[key].endBalance" class="sub-field">
+                      <label for="end-balance">Balance on December 31, 2018:</label>
+                      <input type="text" name="end-balance" v-model="hsaAccounts[key].endBalance">
+                    </div>
                   </li>
                 </ul>
                 <label for="start-balance">Balance on January 1, 2018:</label>
@@ -246,23 +306,22 @@
                 <button @click.prevent="addHSAAccount">Add HSA Account</button>  
               </div>
             </div>
-            <div v-if="selectedUser.questions[3].show" class="field--financial-gifts">
+            <div v-if="selectedUser.questions[3].show" class="field field--financial-gifts">
               <h3>{{ selectedUser.questions[3].title }}:</h3>
               <input type="text" name="financial-gifts" v-model="financialGifts">
             </div>
-            <div v-if="selectedUser.questions[4].show" class="field--child-support">
+            <div v-if="selectedUser.questions[4].show" class="field field--child-support">
               <h3>{{ selectedUser.questions[4].title }}:</h3>
               <input type="text" name="child-support" v-model="childSupport">
             </div>
-            <div v-if="selectedUser.questions[6].show" class="field--alimony">
+            <div v-if="selectedUser.questions[6].show" class="field field--alimony">
               <h3>{{ selectedUser.questions[6].title }}:</h3>
               <input type="text" name="alimony" v-model="alimony">
             </div>
-            <button class="update-info" @click.prevent="editClientInfo">Edit Client Info</button>
-          </form>
-        </div>
-
+          <button class="update-info" @click.prevent="editClientInfo">Edit Client Info</button>
+        </form> 
       </div>
+    </div>
   </div>
 </template>
 

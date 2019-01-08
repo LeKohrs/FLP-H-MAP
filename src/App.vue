@@ -1,9 +1,6 @@
 <template>
   <div id="app">
     <Header />
-    <div id="nav">
-      <router-link v-if="$store.state.loggedinUser && $store.state.loggedinUser.role === 'user'" to="/client">Client</router-link>
-    </div>
     <router-view/>
   </div>
 </template>
