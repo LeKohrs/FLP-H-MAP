@@ -330,6 +330,10 @@ export default {
   props: ['selectedUser'],
   data() {
     return {
+      msg: 'You must enter a value in all fields',
+      firstName: null,
+      lastName: null,
+      feedback: null,
       anotherClient: {
         name: null,
         dateOfBirth: null
@@ -550,7 +554,7 @@ export default {
       }
     },
     editClientInfo() {
-      let ref = db.collection('users').where('slug', '==', this.slug)
+      let ref = db.collection('users').where('slug', '==', this.selectedUser.slug)
       if(this.financialGifts) {
         this.selectedUser.questions[3].answer = this.financialGifts
       }    
@@ -567,6 +571,27 @@ export default {
       }).then(() => {
         db.collection('users').doc(this.selectedUser.id).update({
           questions: this.selectedUser.questions
+        })
+      }).then(() => {
+        ref.get().then(snapshot => {
+          snapshot.forEach(doc => {
+            this.selectedUser.id = doc.id
+            let user = change.doc.data()
+            this.clients = user.questions[10].questions
+            this.children = user.questions[8].questions        
+            this.bankAccounts = user.questions[0].questions        
+            this.mortgages = user.questions[2].questions        
+            this.financialGifts = user.questions[3].answer        
+            this.childSupport = user.questions[4].answer        
+            this.creditCards = user.questions[5].questions        
+            this.alimony = user.questions[6].answer        
+            this.plan529Accounts = user.questions[7].questions        
+            this.investmentAccounts = user.questions[9].questions
+            this.autoLoans = user.questions[11].questions        
+            this.studentLoans = user.questions[12].questions        
+            this.retirementAccounts = user.questions[13].questions        
+            this.hsaAccounts = user.questions[14].questions   
+          })
         })
       })    
     },
@@ -590,7 +615,27 @@ export default {
     }
   },
   created() {
-
+    let ref = db.collection('users').where('slug', '==', this.selectedUser.slug)
+    ref.get().then(snapshot => {
+      snapshot.forEach(doc => {
+        this.selectedUser.id = doc.id
+        let user = change.doc.data()
+        this.clients = user.questions[10].questions
+        this.children = user.questions[8].questions        
+        this.bankAccounts = user.questions[0].questions        
+        this.mortgages = user.questions[2].questions        
+        this.financialGifts = user.questions[3].answer        
+        this.childSupport = user.questions[4].answer        
+        this.creditCards = user.questions[5].questions        
+        this.alimony = user.questions[6].answer        
+        this.plan529Accounts = user.questions[7].questions        
+        this.investmentAccounts = user.questions[9].questions
+        this.autoLoans = user.questions[11].questions        
+        this.studentLoans = user.questions[12].questions        
+        this.retirementAccounts = user.questions[13].questions        
+        this.hsaAccounts = user.questions[14].questions   
+      })
+    })
   }
 }
 </script>
