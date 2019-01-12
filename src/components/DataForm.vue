@@ -4,11 +4,11 @@
     <div class="admin__selected-user__answers">
       <form @submit.prevent="editQuestions" class="edit-questions__form">
         <div class="field field--client">
-          <h3>{{ selectedUser.questions[10].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[10].title }}</h3>
           <div class="questions client-questions">
             <ul>
-              <li v-for="(client, key) in clients" :key="key">
-                <div v-if="clients[key].name" class="sub-field">
+              <li v-if="clients[key].name" v-for="(client, key) in clients" :key="key">
+                <div  class="sub-field">
                   <label for="client-name">Name:</label>
                   <input type="text" name="client-name" v-model="clients[key].name">
                 </div>
@@ -18,20 +18,26 @@
                 </div>
               </li>
             </ul>
-            <label for="client-name">Name:</label>
-            <input type="text" name="client-name" v-model="anotherClient.name">
-            <label for="client-birthday">Date of Birth:</label>
-            <input type="text" name="client-birthday" v-model="anotherClient.dateOfBirth">
-            <p v-if="clientMsg">{{ clientMsg }}</p>
-            <a @click.prevent="addClient">Add Client</a>  
+            <div class="new-question">
+              <div for="client-name">
+                <label>Name:</label>
+                <input type="text" name="client-name" v-model="anotherClient.name">              
+              </div>
+              <div for="client-birthday">
+                <label>Date of Birth:</label>
+                <input type="text" name="client-birthday" v-model="anotherClient.dateOfBirth">              
+              </div>
+              <p v-if="clientMsg">{{ clientMsg }}</p>
+              <a @click.prevent="addClient">Add Client</a>  
+            </div>
           </div>
         </div>
         <div class="field field--client">
-          <h3>{{ selectedUser.questions[8].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[8].title }}</h3>
           <div class="questions client-questions">
             <ul>
-              <li v-for="(child, key) in children" :key="key">
-                <div v-if="children[key].name" class="sub-field"> 
+              <li v-if="children[key].name" v-for="(child, key) in children" :key="key">
+                <div class="sub-field"> 
                   <label for="child-name">Name:</label>
                   <input type="text" name="child-name" v-model="children[key].name">
                 </div>
@@ -41,20 +47,26 @@
                 </div>
               </li>
             </ul>
-            <label for="child-name">Name:</label>
-            <input type="text" name="child-name" v-model="anotherChild.name">
-            <label for="child-birthday">Date of Birth:</label>
-            <input type="text" name="child-birthday" v-model="anotherChild.dateOfBirth">
-            <p v-if="childMsg">{{ childMsg }}</p>
-            <button @click.prevent="addChild">Add Child</button>  
+            <div class="new-question">
+              <div for="child-name">
+                <label>Name:</label>
+                <input type="text" name="child-name" v-model="anotherChild.name">              
+              </div>
+              <div for="child-birthday">
+                <label>Date of Birth:</label>
+                <input type="text" name="child-birthday" v-model="anotherChild.dateOfBirth">              
+              </div>
+              <p v-if="childMsg">{{ childMsg }}</p>
+              <a @click.prevent="addChild">Add Child</a>  
+            </div>
           </div>
         </div>
         <div class="field field--bank-account">
-          <h3>{{ selectedUser.questions[0].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[0].title }}</h3>
           <div class="questions bank-account-questions">
             <ul>
-              <li v-for="(account, key) in bankAccounts" :key="key">
-                <div v-if="bankAccounts[key].startBalance" class="sub-field">
+              <li v-if="bankAccounts[key].startBalance" v-for="(account, key) in bankAccounts" :key="key">
+                <div class="sub-field">
                   <label for="start-balance">Balance on January 1, 2018:</label>
                   <input  type="text" name="start-balance" v-model="bankAccounts[key].startBalance">
                 </div>
@@ -64,20 +76,26 @@
                 </div>
               </li>
             </ul>
-            <label for="start-balance">Balance on January 1, 2018:</label>
-            <input type="text" name="start-balance" v-model="anotherBankAccount.startBalance">
-            <label for="end-balance">Balance on December 31, 2018:</label>
-            <input type="text" name="end-balance" v-model="anotherBankAccount.endBalance">
-            <p v-if="bankAccountMsg">{{ bankAccountMsg }}</p>
-            <button @click.prevent="addBankAccount">Add Bank Account</button>  
+            <div class="new-question">
+              <div for="start-balance">
+                <label>Balance on January 1, 2018:</label>
+                <input type="text" name="start-balance" v-model="anotherBankAccount.startBalance">              
+              </div>
+              <div for="end-balance">
+                <label>Balance on December 31, 2018:</label>
+                <input type="text" name="end-balance" v-model="anotherBankAccount.endBalance">                
+              </div>
+              <p v-if="bankAccountMsg">{{ bankAccountMsg }}</p>
+              <a @click.prevent="addBankAccount">Add Bank Account</a>  
+            </div>
           </div>
         </div>
         <div class="field field--mortgage">
-          <h3>{{ selectedUser.questions[2].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[2].title }}</h3>
           <div class="questions mortgage-questions">
             <ul>
-              <li v-for="(mortgage, key) in mortgages" :key="key">
-                <div v-if="mortgages[key].startBalance" class="sub-field">
+              <li v-if="mortgages[key].startBalance" v-for="(mortgage, key) in mortgages" :key="key">
+                <div class="sub-field">
                   <label for="start-balance">Balance on January 1, 2018:</label>
                   <input  type="text" name="start-balance" v-model="mortgages[key].startBalance">
                 </div>
@@ -87,20 +105,26 @@
                 </div>
               </li>
             </ul>
-            <label for="start-balance">Balance on January 1, 2018:</label>
-            <input type="text" name="start-balance" v-model="anotherMortgage.startBalance">
-            <label for="end-balance">Balance on December 31, 2018:</label>
-            <input type="text" name="end-balance" v-model="anotherMortgage.endBalance">
-            <p v-if="mortgageMsg">{{ mortageMsg }}</p>
-            <button @click.prevent="addMortgage">Add Mortgage</button>  
+            <div class="new-question">
+              <div for="start-balance">
+                <label>Balance on January 1, 2018:</label>
+                <input type="text" name="start-balance" v-model="anotherMortgage.startBalance">              
+              </div>
+              <div for="end-balance">
+                <label>Balance on December 31, 2018:</label>
+                <input type="text" name="end-balance" v-model="anotherMortgage.endBalance">        
+              </div>
+              <p v-if="mortgageMsg">{{ mortageMsg }}</p>
+              <a @click.prevent="addMortgage">Add Mortgage</a>  
+            </div>
           </div>
         </div>
         <div class="field field--credit-card">
-          <h3>{{ selectedUser.questions[5].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[5].title }}</h3>
           <div class="questions credit-card-questions">
             <ul>
-              <li v-for="(creditCard, key) in creditCards" :key="key">
-                <div v-if="creditCards[key].startBalance" class="sub-field">
+              <li v-if="creditCards[key].startBalance" v-for="(creditCard, key) in creditCards" :key="key">
+                <div class="sub-field">
                   <label for="start-balance">Balance on January 1, 2018:</label>
                   <input type="text" name="start-balance" v-model="creditCards[key].startBalance">
                 </div>
@@ -110,20 +134,26 @@
                 </div>
               </li>
             </ul>
-            <label for="start-balance">Balance on January 1, 2018:</label>
-            <input type="text" name="start-balance" v-model="anotherCreditCard.startBalance">
-            <label for="end-balance">Balance on December 31, 2018:</label>
-            <input type="text" name="end-balance" v-model="anotherCreditCard.endBalance">
-            <p v-if="creditCardMsg">{{ creditCardMsg }}</p>
-            <button @click.prevent="addCreditCard">Add Credit Card</button>  
+            <div class="new-question">
+              <div for="start-balance">
+                <label>Balance on January 1, 2018:</label>
+                <input type="text" name="start-balance" v-model="anotherCreditCard.startBalance">              
+              </div>
+              <div for="end-balance">
+                <label>Balance on December 31, 2018:</label>
+                <input type="text" name="end-balance" v-model="anotherCreditCard.endBalance">              
+              </div>
+              <p v-if="creditCardMsg">{{ creditCardMsg }}</p>
+              <a @click.prevent="addCreditCard">Add Credit Card</a>  
+            </div>
           </div>
         </div>
         <div class="field field--529-plan-account">
-          <h3>{{ selectedUser.questions[7].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[7].title }}</h3>
           <div class="questions plan-529-account-questions">
             <ul>
-              <li v-for="(account, key) in plan529Accounts" :key="key">
-                <div v-if="plan529Accounts[key].startBalance" class="sub-field">
+              <li v-if="plan529Accounts[key].startBalance" v-for="(account, key) in plan529Accounts" :key="key">
+                <div class="sub-field">
                   <label for="start-balance">Balance on January 1, 2018:</label>
                   <input type="text" name="start-balance" v-model="plan529Accounts[key].startBalance">
                 </div>
@@ -141,24 +171,34 @@
                 </div>
               </li>
             </ul>
-            <label for="start-balance">Balance on January 1, 2018:</label>
-            <input type="text" name="start-balance" v-model="another529Plan.startBalance">
-            <label for="contributions">Contributions during current year:</label>
-            <input type="text" name="contributions" v-model="another529Plan.contributions">
-            <label for="withdrawals">Withdrawals during current year:</label>
-            <input type="text" name="withdrawals" v-model="another529Plan.withdrawals">
-            <label for="end-balance">Balance on December 31, 2018:</label>
-            <input type="text" name="end-balance" v-model="another529Plan.endBalance">
-            <p v-if="plan529AccountMsg">{{ plan529AccountMsg }}</p>
-            <button @click.prevent="add529Account">Add 529 Plan Account</button>  
+            <div class="new-question">
+              <div for="start-balance">
+                <label>Balance on January 1, 2018:</label>
+                <input type="text" name="start-balance" v-model="another529Plan.startBalance">              
+              </div>
+              <div for="contributions">
+                <label>Contributions during current year:</label>
+                <input type="text" name="contributions" v-model="another529Plan.contributions">              
+              </div>
+              <div for="withdrawals">
+                <label>Withdrawals during current year:</label>
+                <input type="text" name="withdrawals" v-model="another529Plan.withdrawals">              
+              </div>
+              <div for="end-balance">
+                <label>Balance on December 31, 2018:</label>
+                <input type="text" name="end-balance" v-model="another529Plan.endBalance">
+              </div>
+              <p v-if="plan529AccountMsg">{{ plan529AccountMsg }}</p>
+              <a @click.prevent="add529Account">Add 529 Plan Account</a>  
+            </div>
           </div>
         </div>
         <div class="field field--investment-account">
-          <h3>{{ selectedUser.questions[9].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[9].title }}</h3>
           <div class="questions investment-account-questions">
             <ul>
-              <li v-for="(account, key) in investmentAccounts" :key="key">
-                <div v-if="investmentAccounts[key].startBalance" class="sub-field">
+              <li v-if="investmentAccounts[key].startBalance" v-for="(account, key) in investmentAccounts" :key="key">
+                <div class="sub-field">
                   <label for="start-balance">Balance on January 1, 2018:</label>
                   <input type="text" name="start-balance" v-model="investmentAccounts[key].startBalance">
                 </div> 
@@ -176,24 +216,34 @@
                 </div> 
               </li>
             </ul>
-            <label for="start-balance">Balance on January 1, 2018:</label>
-            <input type="text" name="start-balance" v-model="anotherInvestmentAccount.startBalance">
-            <label for="contributions">Contributions during current year:</label>
-            <input type="text" name="contributions" v-model="anotherInvestmentAccount.contributions">
-            <label for="withdrawals">Withdrawals during current year:</label>
-            <input type="text" name="withdrawals" v-model="anotherInvestmentAccount.withdrawals">
-            <label for="end-balance">Balance on December 31, 2018:</label>
-            <input type="text" name="end-balance" v-model="anotherInvestmentAccount.endBalance">
-            <p v-if="investmentAccountMsg">{{ investmentAccountMsg }}</p>
-            <button @click.prevent="addInvestmentAccount">Add Investment Account</button>  
+            <div class="new-question">
+              <div for="start-balance">
+                <label>Balance on January 1, 2018:</label>
+                <input type="text" name="start-balance" v-model="anotherInvestmentAccount.startBalance">               
+              </div>
+              <div for="contributions">
+                <label>Contributions during current year:</label>
+                <input type="text" name="contributions" v-model="anotherInvestmentAccount.contributions">                
+              </div>
+              <div for="withdrawals">
+                <label>Withdrawals during current year:</label>
+                <input type="text" name="withdrawals" v-model="anotherInvestmentAccount.withdrawals">              
+              </div>
+              <div for="end-balance">
+                <label>Balance on December 31, 2018:</label>
+                <input type="text" name="end-balance" v-model="anotherInvestmentAccount.endBalance">               
+              </div>
+              <p v-if="investmentAccountMsg">{{ investmentAccountMsg }}</p>
+              <a @click.prevent="addInvestmentAccount">Add Investment Account</a> 
+            </div> 
           </div>
         </div>
         <div class="field field--auto-loan">
-          <h3>{{ selectedUser.questions[11].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[11].title }}</h3>
           <div class="questions auto-loan-questions">
             <ul>
-              <li v-for="(autoLoan, key) in autoLoans" :key="key">
-                <div v-if="autoLoans[key].startBalance" class="sub-field">
+              <li v-if="autoLoans[key].startBalance" v-for="(autoLoan, key) in autoLoans" :key="key">
+                <div class="sub-field">
                   <label for="start-balance">Balance on January 1, 2018:</label>
                   <input type="text" name="start-balance" v-model="autoLoans[key].startBalance">
                 </div>
@@ -203,20 +253,26 @@
                 </div>
               </li>
             </ul>
-            <label for="start-balance">Balance on January 1, 2018:</label>
-            <input type="text" name="start-balance" v-model="anotherAutoLoan.startBalance">
-            <label for="end-balance">Balance on December 31, 2018:</label>
-            <input type="text" name="end-balance" v-model="anotherAutoLoan.endBalance">
-            <p v-if="autoLoanMsg">{{ autoLoanMsg }}</p>
-            <button @click.prevent="addAutoLoan">Add Auto Loan</button>  
+            <div class="new-question">
+              <div for="start-balance">
+                <label>Balance on January 1, 2018:</label>
+                <input type="text" name="start-balance" v-model="anotherAutoLoan.startBalance">              
+              </div>
+              <div for="end-balance">
+                <label>Balance on December 31, 2018:</label>
+                <input type="text" name="end-balance" v-model="anotherAutoLoan.endBalance">              
+              </div>
+              <p v-if="autoLoanMsg">{{ autoLoanMsg }}</p>
+              <a @click.prevent="addAutoLoan">Add Auto Loan</a>  
+            </div>
           </div>
         </div>
           <div class="field field--student-loan">
-          <h3>{{ selectedUser.questions[12].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[12].title }}</h3>
           <div class="questions student-loan-questions">
             <ul>
-              <li v-for="(studentLoan, key) in studentLoans" :key="key">
-                <div v-if="studentLoans[key].startBalance" class="sub-field">
+              <li v-if="studentLoans[key].startBalance" v-for="(studentLoan, key) in studentLoans" :key="key">
+                <div class="sub-field">
                   <label for="start-balance">Balance on January 1, 2018:</label>
                   <input type="text" name="start-balance" v-model="studentLoans[key].startBalance">
                 </div>
@@ -226,20 +282,26 @@
                 </div>
               </li>
             </ul>
-            <label for="start-balance">Balance on January 1, 2018:</label>
-            <input type="text" name="start-balance" v-model="anotherStudentLoan.startBalance">
-            <label for="end-balance">Balance on December 31, 2018:</label>
-            <input type="text" name="end-balance" v-model="anotherStudentLoan.endBalance">
-            <p v-if="studentLoanMsg">{{ studentLoanMsg }}</p>
-            <button @click.prevent="addStudentLoan">Add Student Loan</button>  
+            <div class="new-question">
+              <div for="start-balance">
+                <label>Balance on January 1, 2018:</label>
+                <input type="text" name="start-balance" v-model="anotherStudentLoan.startBalance">              
+              </div>
+              <div for="end-balance">
+                <label>Balance on December 31, 2018:</label>
+                <input type="text" name="end-balance" v-model="anotherStudentLoan.endBalance">                
+              </div>
+              <p v-if="studentLoanMsg">{{ studentLoanMsg }}</p>
+              <a @click.prevent="addStudentLoan">Add Student Loan</a>  
+            </div>
           </div>
         </div>
         <div class="field field--retirement-account">
-          <h3>{{ selectedUser.questions[13].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[13].title }}</h3>
           <div class="questions retirement-account-questions">
             <ul>
-              <li v-for="(account, key) in retirementAccounts" :key="key">
-                <div v-if="retirementAccounts[key].startBalance" class="sub-field">
+              <li v-if="retirementAccounts[key].startBalance" v-for="(account, key) in retirementAccounts" :key="key">
+                <div class="sub-field">
                   <label for="start-balance">Balance on January 1, 2018:</label>
                   <input type="text" name="start-balance" v-model="retirementAccounts[key].startBalance">
                 </div>
@@ -257,24 +319,34 @@
                 </div>
               </li>
             </ul>
-            <label for="start-balance">Balance on January 1, 2018:</label>
-            <input type="text" name="start-balance" v-model="anotherRetirementAccount.startBalance">
-            <label for="contributions">Contributions during current year:</label>
-            <input type="text" name="contributions" v-model="anotherRetirementAccount.contributions">
-            <label for="withdrawals">Withdrawals during current year:</label>
-            <input type="text" name="withdrawals" v-model="anotherRetirementAccount.withdrawals">
-            <label for="end-balance">Balance on December 31, 2018:</label>
-            <input type="text" name="end-balance" v-model="anotherRetirementAccount.endBalance">
-            <p v-if="retirementAccountMsg">{{ retirementAccountMsg }}</p>
-            <button @click.prevent="addRetirementAccount">Add Retirement Account</button>  
+            <div class="new-question">
+              <div for="start-balance">
+                <label> Balance on January 1, 2018:</label>
+                <input type="text" name="start-balance" v-model="anotherRetirementAccount.startBalance">                
+              </div>
+              <div for="contributions">
+                <label> Contributions during current year:</label>
+                <input type="text" name="contributions" v-model="anotherRetirementAccount.contributions">              
+              </div>
+              <div for="withdrawals">
+                <label> Withdrawals during current year:</label>
+                <input type="text" name="withdrawals" v-model="anotherRetirementAccount.withdrawals">              
+              </div>
+              <div for="end-balance">
+                <label> Balance on December 31, 2018:</label>
+                <input type="text" name="end-balance" v-model="anotherRetirementAccount.endBalance">
+              </div>
+              <p v-if="retirementAccountMsg">{{ retirementAccountMsg }}</p>
+              <a @click.prevent="addRetirementAccount">Add Retirement Account</a>  
+            </div>
           </div>
         </div>
         <div class="field field--hsa-account">
-          <h3>{{ selectedUser.questions[14].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[14].title }}</h3>
           <div class="questions hsa-account-questions">
             <ul>
-              <li v-for="(account, key) in hsaAccounts" :key="key">
-                <div v-if="hsaAccounts[key].startBalance" class="sub-field">
+              <li v-if="hsaAccounts[key].startBalance" v-for="(account, key) in hsaAccounts" :key="key">
+                <div class="sub-field">
                   <label for="start-balance">Balance on January 1, 2018:</label>
                   <input type="text" name="start-balance" v-model="hsaAccounts[key].startBalance">
                 </div>
@@ -292,37 +364,48 @@
                 </div>
               </li>
             </ul>
-            <label for="start-balance">Balance on January 1, 2018:</label>
-            <input type="text" name="start-balance" v-model="anotherHSAAccount.startBalance">
-            <label for="contributions">Contributions during current year:</label>
-            <input type="text" name="contributions" v-model="anotherHSAAccount.contributions">
-            <label for="withdrawals">Withdrawals during current year:</label>
-            <input type="text" name="withdrawals" v-model="anotherHSAAccount.withdrawals">
-            <label for="end-balance">Balance on December 31, 2018:</label>
-            <input type="text" name="end-balance" v-model="anotherHSAAccount.endBalance">
-            <p v-if="hsaAccountMsg">{{ hsaAccountMsg }}</p>
-            <button @click.prevent="addHSAAccount">Add HSA Account</button>  
+            <div class="new-question">
+              <div>
+                <label for="start-balance">Balance on January 1, 2018:</label>
+                <input type="text" name="start-balance" v-model="anotherHSAAccount.startBalance">
+              </div>
+              <div>
+                <label for="contributions">Contributions during current year:</label>
+                <input type="text" name="contributions" v-model="anotherHSAAccount.contributions">
+              </div>
+              <div>
+                <label for="withdrawals">Withdrawals during current year:</label>
+                <input type="text" name="withdrawals" v-model="anotherHSAAccount.withdrawals">
+              </div>
+              <div>
+                <label for="end-balance">Balance on December 31, 2018:</label>
+                <input type="text" name="end-balance" v-model="anotherHSAAccount.endBalance">              
+              </div>
+              <p v-if="hsaAccountMsg">{{ hsaAccountMsg }}</p>
+              <a @click.prevent="addHSAAccount">Add HSA Account</a>   
+            </div>
           </div>
         </div>
         <div class="field field--financial-gifts">
-          <h3>{{ selectedUser.questions[3].title }}:</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[3].title }}:</h3>
           <input type="text" name="financial-gifts" v-model="financialGifts">
         </div>
         <div class="field field--child-support">
-          <h3>{{ selectedUser.questions[4].title }}:</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[4].title }}:</h3>
           <input type="text" name="child-support" v-model="childSupport">
         </div>
         <div class="field field--alimony">
-          <h3>{{ selectedUser.questions[6].title }}:</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[6].title }}:</h3>
           <input type="text" name="alimony" v-model="alimony">
         </div>
-        <button class="update-info" @click.prevent="editClientInfo">Edit Client Info</button>
+        <button class="update-info" @click.prevent="editClientInfo">Save</button>
       </form>
     </div>
   </div>
 </template>
 
 <script>
+import firebase from 'firebase'
 import db from '@/firebase/init'
 
 export default {
@@ -414,6 +497,14 @@ export default {
     }
   },
   methods: {
+    openSection(e) {
+      const fields = document.getElementsByClassName('field');
+      for(let field of fields) {
+        field.classList.remove('active')
+      }
+      console.log(e)
+      e.target.parentElement.classList.add('active')
+    },
     addClient() {      
       if(this.anotherClient.name && this.anotherClient.dateOfBirth) {
         this.selectedUser.questions[10].questions.push(this.anotherClient)
@@ -576,7 +667,7 @@ export default {
         ref.get().then(snapshot => {
           snapshot.forEach(doc => {
             this.selectedUser.id = doc.id
-            let user = change.doc.data()
+            let user = doc.data()
             this.clients = user.questions[10].questions
             this.children = user.questions[8].questions        
             this.bankAccounts = user.questions[0].questions        
@@ -619,7 +710,7 @@ export default {
     ref.get().then(snapshot => {
       snapshot.forEach(doc => {
         this.selectedUser.id = doc.id
-        let user = change.doc.data()
+        let user = doc.data()
         this.clients = user.questions[10].questions
         this.children = user.questions[8].questions        
         this.bankAccounts = user.questions[0].questions        
@@ -642,5 +733,142 @@ export default {
 
 <style lang='scss'>
 
+  $color-green-light: #b0c986;
+  $color-green: #7ba636;
+  $color-green-dark: #577937;
+  $color-blue: #b5c7e8;
+  $color-white: #fff;
+  $color-black: #333333;
+  $color-grey: #666;
+  $color-grey-light: #999;
+  $color-blue-dark: #014584;
+
+  .form-data {
+    height: calc(100vh - 120px);
+    overflow: scroll;
+
+    .sidebar & {
+      height: 100vh;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 20px;
+      font-weight: 700;
+      color: $color-black;
+
+      span {
+        color: $color-green-dark;
+      }
+    }
+  }
+  .field {
+    // margin-bottom: 60px;
+    max-height: 36px;
+    // background: $color-white;
+    border-bottom: 1px solid $color-grey-light;
+    overflow: hidden;
+    transition: max-height .5s;
+
+    &.active {
+      max-height: 1000px;
+    }
+    
+    h3 {
+      margin-bottom: 10px;
+      padding: 10px 5px;
+      font-size: 16px;
+      font-weight: 700;
+      // background: rgba($color-grey-light, .5);
+    }
+  }
+  .questions {
+    margin-bottom: 60px;
+
+    ul {
+      display: flex; 
+      flex-wrap: wrap;
+      margin-bottom: 20px;   
+    }
+    li {
+      display: flex;
+      flex-direction: column;
+      margin: 10px 40px;
+      margin-left: 0;
+      padding: 40px 60px;
+      border: 1px solid $color-grey-light;
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px $color-grey-light;
+
+      .sub-field {
+        display: flex;
+        margin-bottom: 20px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        label {
+          flex-grow: 1;
+          margin-right: 10px;
+        }
+      }
+    }
+    .new-question {
+      display: inline-flex;
+      flex-direction: column;
+      width: auto;
+
+      div {
+        display: flex;
+        margin-bottom: 5px;
+
+        label {
+          flex-grow: 1;
+          margin-right: 10px;
+        }
+        input {
+          border-color: $color-grey-light;
+        }
+      }
+      a {
+        margin-top: 5px;
+        color: $color-green-dark;
+        font-size: 13px;
+        text-transform: uppercase;
+        cursor: pointer;
+        font-weight: bold;
+      }
+    }
+  }
+  input {
+    padding-bottom: 5px;
+    border: none;
+    border-bottom: 1px solid rgba($color-grey-light, .5);
+
+    .field--financial-gifts &,
+    .field--child-support &,
+    .field--alimony & {
+      margin-bottom: 40px;
+    }
+  }
+  .update-info {
+    margin: 20px 0 40px;
+    padding: 10px 30px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: none;
+    background-color: $color-green; 
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: $color-white;
+    cursor: pointer;
+    transition: .3s ease-out;
+
+    &:hover {
+      box-shadow: 2px 2px 5px $color-grey-light;
+    }
+  }
 </style>
 

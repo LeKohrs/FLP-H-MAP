@@ -727,7 +727,6 @@ export default {
     }
     
     if(this.$store.state.selectedUser) {
-      // this.selectedUser = this.$store.state.selectedUser
       this.slug = this.selectedUser.slug
       this.clients = this.selectedUser.questions[10].questions
       this.children = this.selectedUser.questions[8].questions        

@@ -1,5 +1,9 @@
 <template>
   <div class="client">
+    <div class="client__intro">
+      Please answer the questions to the best of your ability.
+      <button>Continue</button>
+    </div>
     <div v-if="selectedUser !== undefined && showClientQuestions" class="admin__selected-client">
         <DataForm v-bind:selectedUser = "selectedUser" />
     </div>
@@ -46,7 +50,6 @@ export default {
         snapshot.forEach(doc => {
           this.$store.state.loggedinUser = doc.data()
           this.$store.state.selectedUser = doc.data()
-          console.log(this.$store.state.selectedUser)
           this.$store.state.loggedinUser.id = doc.id
           localStorage.setItem('user', localStorage.getItem('user'))
         })

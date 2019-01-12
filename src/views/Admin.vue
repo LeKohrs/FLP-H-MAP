@@ -252,52 +252,49 @@ export default {
 
     &__sidebar {
       margin-right: 25px;
+      padding-left: 10px;
       border-right: 1px solid $color-grey-light;
 
+      h3 {
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
       .clients {
-        padding: 10px 40px;
+        padding: 10px 40px 10px 15px;
+      }
+      .user {
+        margin-bottom: 5px;
+
+        a {
+          text-decoration: none;
+          color: $color-black;
+          transition: .3s ease-out;
+
+          &:hover {
+            color: $color-green-dark;
+          }
+        }
       }
       button {
         display: block;
         margin: 0 auto;
+        padding: 5px 10px;
+        border-radius: 5px;
+        border: none;
+        background-color: $color-green;
+        color: $color-white;
+        font-weight: 700;
+        cursor: pointer;
+        transition: .3s ease-out;
+
+        &:hover {
+          box-shadow: 2px 2px 5px $color-grey-light;
+        }
       }
     }
     &__main {
       width: calc(100% - 200px);
-    }
-    &__selected-client {
-      h2 {
-        margin-bottom: 20px;
-        font-size: 20px;
-        font-weight: 700;
-        color: $color-black;
-
-        span {
-          color: $color-green-dark;
-        }
-      }
-      .field {
-        margin-bottom: 20px;
-
-        h3 {
-          margin-bottom: 10px;
-          font-size: 16px;
-          font-weight: 700;
-        }
-        .questions {
-          li {
-            display: flex;
-            margin-bottom: 5px;
-          }
-          label {
-            margin-right: 5px;
-          }
-          input {
-            border: none;
-            border-bottom: 1px solid $color-black;
-          }
-        }
-      }
     }
   }
 </style>
