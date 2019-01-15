@@ -1118,8 +1118,8 @@ export default {
       display: inline-block;
       position: absolute;
       top: 40px;
-      right: 40px;
-      padding: 10px;
+      right: 65px;
+      padding: 10px 12px;
       border-radius: 50%;
       border: 1px solid $color-green-dark;
       color: $color-green-dark;
