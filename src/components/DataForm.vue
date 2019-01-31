@@ -4,7 +4,7 @@
     <div class="admin__selected-user__answers">
       <form @submit.prevent="editQuestions" class="edit-questions__form">
         <div class="field field--client">
-          <h3 @click="openSection($event)">{{ selectedUser.questions[10].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[14].title }}</h3>
           <div class="questions client-questions">
             <ul>
               <li v-if="clients[key].name" v-for="(client, key) in clients" :key="key">
@@ -33,7 +33,7 @@
           </div>
         </div>
         <div class="field field--client">
-          <h3 @click="openSection($event)">{{ selectedUser.questions[8].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[12].title }}</h3>
           <div class="questions client-questions">
             <ul>
               <li v-if="children[key].name" v-for="(child, key) in children" :key="key">
@@ -61,8 +61,16 @@
             </div>
           </div>
         </div>
+        <div class="field field--gross-income">
+          <h3 @click="openSection($event)">{{ selectedUser.questions[11].title }}:</h3>
+          <input type="text" name="gross-income" v-model="grossIncome">
+        </div>
+        <div class="field field--taxes">
+          <h3 @click="openSection($event)">{{ selectedUser.questions[18].title }}:</h3>
+          <input type="text" name="taxes" v-model="taxes">
+        </div>
         <div class="field field--bank-account">
-          <h3 @click="openSection($event)">{{ selectedUser.questions[0].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[1].title }}</h3>
           <div class="questions bank-account-questions">
             <ul>
               <li v-if="bankAccounts[key].startBalance" v-for="(account, key) in bankAccounts" :key="key">
@@ -90,8 +98,12 @@
             </div>
           </div>
         </div>
+        <div class="field field--new-mortgages">
+          <h3 @click="openSection($event)">{{ selectedUser.questions[3].title }}:</h3>
+          <input type="text" name="new-mortgages" v-model="newMortgages">
+        </div>
         <div class="field field--mortgage">
-          <h3 @click="openSection($event)">{{ selectedUser.questions[2].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[4].title }}</h3>
           <div class="questions mortgage-questions">
             <ul>
               <li v-if="mortgages[key].startBalance" v-for="(mortgage, key) in mortgages" :key="key">
@@ -120,7 +132,7 @@
           </div>
         </div>
         <div class="field field--credit-card">
-          <h3 @click="openSection($event)">{{ selectedUser.questions[5].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[8].title }}</h3>
           <div class="questions credit-card-questions">
             <ul>
               <li v-if="creditCards[key].startBalance" v-for="(creditCard, key) in creditCards" :key="key">
@@ -149,7 +161,7 @@
           </div>
         </div>
         <div class="field field--529-plan-account">
-          <h3 @click="openSection($event)">{{ selectedUser.questions[7].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[10].title }}</h3>
           <div class="questions plan-529-account-questions">
             <ul>
               <li v-if="plan529Accounts[key].startBalance" v-for="(account, key) in plan529Accounts" :key="key">
@@ -194,7 +206,7 @@
           </div>
         </div>
         <div class="field field--investment-account">
-          <h3 @click="openSection($event)">{{ selectedUser.questions[9].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[13].title }}</h3>
           <div class="questions investment-account-questions">
             <ul>
               <li v-if="investmentAccounts[key].startBalance" v-for="(account, key) in investmentAccounts" :key="key">
@@ -238,8 +250,12 @@
             </div> 
           </div>
         </div>
+        <div class="field field--new-auto-loans">
+          <h3 @click="openSection($event)">{{ selectedUser.questions[0].title }}:</h3>
+          <input type="text" name="new-auto-loans" v-model="newAutoLoans">
+        </div>
         <div class="field field--auto-loan">
-          <h3 @click="openSection($event)">{{ selectedUser.questions[11].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[15].title }}</h3>
           <div class="questions auto-loan-questions">
             <ul>
               <li v-if="autoLoans[key].startBalance" v-for="(autoLoan, key) in autoLoans" :key="key">
@@ -267,8 +283,12 @@
             </div>
           </div>
         </div>
-          <div class="field field--student-loan">
-          <h3 @click="openSection($event)">{{ selectedUser.questions[12].title }}</h3>
+        <div class="field field--new-student-loans">
+          <h3 @click="openSection($event)">{{ selectedUser.questions[6].title }}:</h3>
+          <input type="text" name="new-student-loans" v-model="newStudentLoans">
+        </div>
+        <div class="field field--student-loan">
+          <h3 @click="openSection($event)">{{ selectedUser.questions[16].title }}</h3>
           <div class="questions student-loan-questions">
             <ul>
               <li v-if="studentLoans[key].startBalance" v-for="(studentLoan, key) in studentLoans" :key="key">
@@ -297,7 +317,7 @@
           </div>
         </div>
         <div class="field field--retirement-account">
-          <h3 @click="openSection($event)">{{ selectedUser.questions[13].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[17].title }}</h3>
           <div class="questions retirement-account-questions">
             <ul>
               <li v-if="retirementAccounts[key].startBalance" v-for="(account, key) in retirementAccounts" :key="key">
@@ -322,7 +342,7 @@
             <div class="new-question">
               <div for="start-balance">
                 <label> Balance on January 1, 2018:</label>
-                <input type="text" name="start-balance" v-model="anotherRetirementAccount.startBalance">                
+                <input type="text" name="start-balance" v-model="anotherRetirementAccount.startBalance">             
               </div>
               <div for="contributions">
                 <label> Contributions during current year:</label>
@@ -342,7 +362,7 @@
           </div>
         </div>
         <div class="field field--hsa-account">
-          <h3 @click="openSection($event)">{{ selectedUser.questions[14].title }}</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[19].title }}</h3>
           <div class="questions hsa-account-questions">
             <ul>
               <li v-if="hsaAccounts[key].startBalance" v-for="(account, key) in hsaAccounts" :key="key">
@@ -387,15 +407,15 @@
           </div>
         </div>
         <div class="field field--financial-gifts">
-          <h3 @click="openSection($event)">{{ selectedUser.questions[3].title }}:</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[5].title }}:</h3>
           <input type="text" name="financial-gifts" v-model="financialGifts">
         </div>
         <div class="field field--child-support">
-          <h3 @click="openSection($event)">{{ selectedUser.questions[4].title }}:</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[7].title }}:</h3>
           <input type="text" name="child-support" v-model="childSupport">
         </div>
         <div class="field field--alimony">
-          <h3 @click="openSection($event)">{{ selectedUser.questions[6].title }}:</h3>
+          <h3 @click="openSection($event)">{{ selectedUser.questions[9].title }}:</h3>
           <input type="text" name="alimony" v-model="alimony">
         </div>
         <button class="update-info" @click.prevent="editClientInfo">Save</button>
@@ -437,6 +457,11 @@ export default {
       mortgageMsg: null,
       financialGifts: this.selectedUser.questions[3].answer,
       childSupport: this.selectedUser.questions[4].answer,
+      grossIncome: this.selectedUser.questions[8].answer,
+      taxes: this.selectedUser.questions[15].answer,
+      newMortgages: this.selectedUser.questions[3].answer,
+      newAutoLoan: this.selectedUser.questions[0].answer,
+      newStudentLoan: this.selectedUser.questions[6].answer,
       anotherCreditCard: {
         startBalance: null,
         endBalance: null
@@ -545,6 +570,7 @@ export default {
         this.selectedUser.questions[2].questions.push(this.anotherMortgage)                
         this.anotherMortgage = {
           startBalance: null,
+          newMortgage: null,
           endBalance: null
         }
         this.mortgageFeedBack = null        
@@ -597,6 +623,7 @@ export default {
         this.selectedUser.questions[11].questions.push(this.anotherAutoLoan)                                                
         this.anotherAutoLoan = {
           startBalance: null,
+          newAutoLoan: null,
           endBalance: null
         }
         this.autoLoanFeedBack = null        
@@ -609,6 +636,7 @@ export default {
         this.selectedUser.questions[12].questions.push(this.anotherStudentLoan)                                                        
         this.anotherStudentLoan = {
           startBalance: null,
+          newStudentLoan: null,
           endBalance: null
         }
         this.studentLoansFeedBack = null        
@@ -647,13 +675,28 @@ export default {
     editClientInfo() {
       let ref = db.collection('users').where('slug', '==', this.selectedUser.slug)
       if(this.financialGifts) {
-        this.selectedUser.questions[3].answer = this.financialGifts
+        this.selectedUser.questions[5].answer = this.financialGifts
       }    
       if(this.childSupport) {
-        this.selectedUser.questions[4].answer = this.childSupport        
+        this.selectedUser.questions[7].answer = this.childSupport        
       }
       if(this.alimony) {
+        this.selectedUser.questions[9].answer = this.alimony       
+      }
+      if(this.grossIncome) {
+        this.selectedUser.questions[11].answer = this.alimony       
+      }
+      if(this.taxes) {
+        this.selectedUser.questions[18].answer = this.alimony       
+      }
+      if(this.newAutoLoan) {
+        this.selectedUser.questions[0].answer = this.alimony       
+      }
+      if(this.newStudentLoan) {
         this.selectedUser.questions[6].answer = this.alimony       
+      }
+      if(this.newMortgages) {
+        this.selectedUser.questions[3].answer = this.alimony       
       }
       ref.get().then(snapshot => {
         snapshot.forEach(doc => {
@@ -668,20 +711,25 @@ export default {
           snapshot.forEach(doc => {
             this.selectedUser.id = doc.id
             let user = doc.data()
-            this.clients = user.questions[10].questions
-            this.children = user.questions[8].questions        
-            this.bankAccounts = user.questions[0].questions        
-            this.mortgages = user.questions[2].questions        
-            this.financialGifts = user.questions[3].answer        
-            this.childSupport = user.questions[4].answer        
-            this.creditCards = user.questions[5].questions        
-            this.alimony = user.questions[6].answer        
-            this.plan529Accounts = user.questions[7].questions        
-            this.investmentAccounts = user.questions[9].questions
-            this.autoLoans = user.questions[11].questions        
-            this.studentLoans = user.questions[12].questions        
-            this.retirementAccounts = user.questions[13].questions        
-            this.hsaAccounts = user.questions[14].questions   
+            this.clients = user.questions[14].questions
+            this.children = user.questions[12].questions        
+            this.bankAccounts = user.questions[1].questions        
+            this.mortgages = user.questions[4].questions        
+            this.financialGifts = user.questions[5].answer        
+            this.childSupport = user.questions[7].answer        
+            this.creditCards = user.questions[8].questions        
+            this.alimony = user.questions[9].answer        
+            this.plan529Accounts = user.questions[10].questions        
+            this.investmentAccounts = user.questions[13].questions
+            this.autoLoans = user.questions[15].questions        
+            this.studentLoans = user.questions[16].questions        
+            this.retirementAccounts = user.questions[17].questions        
+            this.hsaAccounts = user.questions[19].questions   
+            this.grossIncome = user.questions[11].answer
+            this.taxes = user.questions[18].answer
+            this.newAutoLoans = user.questions[0].answer
+            this.newStudentLoans = user.questions[6].answer
+            this.newMortgages = user.questions[3].answer
           })
         })
       })    
@@ -689,20 +737,25 @@ export default {
   },
   watch: {
     selectedUser() {
-        this.clients = this.selectedUser.questions[10].questions
-        this.children = this.selectedUser.questions[8].questions        
-        this.bankAccounts = this.selectedUser.questions[0].questions        
-        this.mortgages = this.selectedUser.questions[2].questions        
-        this.financialGifts = this.selectedUser.questions[3].answer        
-        this.childSupport = this.selectedUser.questions[4].answer        
-        this.creditCards = this.selectedUser.questions[5].questions        
-        this.alimony = this.selectedUser.questions[6].answer        
-        this.plan529Accounts = this.selectedUser.questions[7].questions        
-        this.investmentAccounts = this.selectedUser.questions[9].questions
-        this.autoLoans = this.selectedUser.questions[11].questions        
-        this.studentLoans = this.selectedUser.questions[12].questions        
-        this.retirementAccounts = this.selectedUser.questions[13].questions        
-        this.hsaAccounts = this.selectedUser.questions[14].questions   
+        this.clients = this.selectedUser.questions[14].questions
+        this.children = this.selectedUser.questions[12].questions        
+        this.bankAccounts = this.selectedUser.questions[1].questions        
+        this.mortgages = this.selectedUser.questions[4].questions        
+        this.financialGifts = this.selectedUser.questions[5].answer        
+        this.childSupport = this.selectedUser.questions[7].answer        
+        this.creditCards = this.selectedUser.questions[8].questions        
+        this.alimony = this.selectedUser.questions[9].answer        
+        this.plan529Accounts = this.selectedUser.questions[10].questions        
+        this.investmentAccounts = this.selectedUser.questions[13].questions
+        this.autoLoans = this.selectedUser.questions[15].questions        
+        this.studentLoans = this.selectedUser.questions[16].questions        
+        this.retirementAccounts = this.selectedUser.questions[17].questions        
+        this.hsaAccounts = this.selectedUser.questions[19].questions   
+        this.grossIncome = this.selectedUser.questions[11].answer
+        this.taxes = this.selectedUser.questions[18].answer
+        this.newAutoLoans = this.selectedUser.questions[0].answer
+        this.newStudentLoans = this.selectedUser.questions[6].answer
+        this.newMortgages = this.selectedUser.questions[3].answer
     }
   },
   created() {
@@ -711,20 +764,25 @@ export default {
       snapshot.forEach(doc => {
         this.selectedUser.id = doc.id
         let user = doc.data()
-        this.clients = user.questions[10].questions
-        this.children = user.questions[8].questions        
-        this.bankAccounts = user.questions[0].questions        
-        this.mortgages = user.questions[2].questions        
-        this.financialGifts = user.questions[3].answer        
-        this.childSupport = user.questions[4].answer        
-        this.creditCards = user.questions[5].questions        
-        this.alimony = user.questions[6].answer        
-        this.plan529Accounts = user.questions[7].questions        
-        this.investmentAccounts = user.questions[9].questions
-        this.autoLoans = user.questions[11].questions        
-        this.studentLoans = user.questions[12].questions        
-        this.retirementAccounts = user.questions[13].questions        
-        this.hsaAccounts = user.questions[14].questions   
+        this.clients = user.questions[14].questions
+        this.children = user.questions[12].questions        
+        this.bankAccounts = user.questions[1].questions        
+        this.mortgages = user.questions[4].questions        
+        this.financialGifts = user.questions[5].answer        
+        this.childSupport = user.questions[7].answer        
+        this.creditCards = user.questions[8].questions        
+        this.alimony = user.questions[9].answer        
+        this.plan529Accounts = user.questions[10].questions        
+        this.investmentAccounts = user.questions[13].questions
+        this.autoLoans = user.questions[15].questions        
+        this.studentLoans = user.questions[16].questions        
+        this.retirementAccounts = user.questions[17].questions        
+        this.hsaAccounts = user.questions[19].questions   
+        this.grossIncome = user.questions[11].answer
+        this.taxes = user.questions[18].answer
+        this.newAutoLoans = user.questions[0].answer
+        this.newStudentLoans = user.questions[6].answer
+        this.newMortgages = user.questions[3].answer
       })
     })
   }

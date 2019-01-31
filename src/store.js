@@ -18,9 +18,13 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-
+    SET_USERs(state, users) {
+      state.users = users
+    }
   },
   actions: {
+    fetchUser({ commit }) {
 
+    }
   }
 })

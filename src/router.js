@@ -25,7 +25,7 @@ export default new Router({
     {
       path: '/client',
       name: 'client',
-      component: () => import(/* webpackChunkName: "admin" */ './views/Client.vue'), 
+      component: () => import(/* webpackChunkName: "client" */ './views/Client.vue'), 
       props: true     
     }
   ]
