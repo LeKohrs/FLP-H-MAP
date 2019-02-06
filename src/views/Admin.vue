@@ -1,14 +1,15 @@
 <template>
   <div class="admin">
     <section class="admin__sidebar">
-      <div class="clients">
+      <ClientList />
+      <!-- <div class="clients">
         <h3>List of clients</h3>
         <ul class="clients-list">
           <li v-if="user.role === 'user'" v-for="(user, key) in users" :key="key" class="user">
             <a @click="selectClient(user.slug)" href="#">{{ user.firstName }} {{ user.lastName }}</a>
           </li>
         </ul>
-      </div>
+      </div> -->
       <button @click.prevent="createClient" class="admin__create-new-client">Create New Client</button>
     </section>
     <section class="admin__main">
@@ -63,8 +64,9 @@
           <p>Thanks! Questions have been submited.</p>
         </div>   
       </div>
-      <div v-if="selectedUser !== null && showSelectedClient" class="admin__selected-client">
-        <DataForm v-bind:selectedUser = "selectedUser" />
+      <div v-if="selectedUser !== null" class="admin__selected-client">
+        <!-- <DataForm v-bind:selectedUser = "selectedUser" /> -->
+        <DataForm  />
       </div>
     </section>
   </div>
@@ -75,11 +77,13 @@ import slugify from 'slugify'
 import db from '@/firebase/init'
 import firebase from 'firebase'
 import DataForm from '@/components/DataForm.vue'
+import ClientList from '@/components/ClientList'
 
 export default {
   name: 'Admin',
   components: {
-    DataForm
+    DataForm,
+    ClientList
   },
   data() {
     return {
@@ -99,7 +103,6 @@ export default {
       slug: null,
       showChooseQuestions: false,
       questions: [],
-      selectedUser: this.$store.state.selectedUser,
       showSelectedClient: false,
     }
   },
@@ -191,6 +194,11 @@ export default {
         })
       }) 
     },
+  },
+  computed: {
+    seletedUser() {
+      return this.$store.state.selectedUser
+    }
   },
   created() {
     if(localStorage.getItem('user')) {

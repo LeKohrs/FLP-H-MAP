@@ -21,7 +21,7 @@
             <div class="new-question">
               <div for="client-name">
                 <label>Name:</label>
-                <input type="text" name="client-name" v-model="anotherClient.name">              
+                <input type="text" name="client-name" v-model="anotherClient.name">    
               </div>
               <div for="client-birthday">
                 <label>Date of Birth:</label>
@@ -32,9 +32,9 @@
             </div>
           </div>
         </div>
-        <div class="field field--client">
+        <div class="field field--child">
           <h3 @click="openSection($event)">{{ selectedUser.questions[12].title }}</h3>
-          <div class="questions client-questions">
+          <div class="questions child-questions">
             <ul>
               <li v-if="children[key].name" v-for="(child, key) in children" :key="key">
                 <div class="sub-field"> 
@@ -430,7 +430,7 @@ import db from '@/firebase/init'
 
 export default {
   name: 'DataForm',
-  props: ['selectedUser'],
+  // props: ['selectedUser'],
   data() {
     return {
       msg: 'You must enter a value in all fields',
@@ -441,32 +441,32 @@ export default {
         name: null,
         dateOfBirth: null
       },
-      clients: this.selectedUser.questions[10].questions,
+      clients: this.selectedUser.questions[14].questions,
       clientMsg: null,
       anotherBankAccount: {
         startBalance: null,
         endBalance: null
       },
-      bankAccounts: this.selectedUser.questions[0].questions,
+      bankAccounts: this.selectedUser.questions[1].questions,
       bankAccountMsg: null,
       anotherMortgage: {
         startBalance: null,
         endBalance: null
       },
-      mortgages: this.selectedUser.questions[2].questions,
+      mortgages: this.selectedUser.questions[4].questions,
       mortgageMsg: null,
-      financialGifts: this.selectedUser.questions[3].answer,
-      childSupport: this.selectedUser.questions[4].answer,
-      grossIncome: this.selectedUser.questions[8].answer,
-      taxes: this.selectedUser.questions[15].answer,
+      financialGifts: this.selectedUser.questions[5].answer,
+      childSupport: this.selectedUser.questions[7].answer,
+      grossIncome: this.selectedUser.questions[11].answer,
+      taxes: this.selectedUser.questions[18].answer,
       newMortgages: this.selectedUser.questions[3].answer,
-      newAutoLoan: this.selectedUser.questions[0].answer,
-      newStudentLoan: this.selectedUser.questions[6].answer,
+      newAutoLoans: this.selectedUser.questions[0].answer,
+      newStudentLoans: this.selectedUser.questions[6].answer,
       anotherCreditCard: {
         startBalance: null,
         endBalance: null
       },
-      creditCards: this.selectedUser.questions[5].questions ,
+      creditCards: this.selectedUser.questions[8].questions ,
       creditCardMsg: null,
       alimony: null,
       another529Plan: {
@@ -475,13 +475,13 @@ export default {
         withdrawals: null,
         endBalance: null
       },
-      plan529Accounts: this.selectedUser.questions[7].questions,
+      plan529Accounts: this.selectedUser.questions[10].questions,
       plan529AccountMsg: null,
       anotherChild: {
         name: null,
         dateOfBirth: null
       },
-      children: this.selectedUser.questions[8].questions,
+      children: this.selectedUser.questions[12].questions,
       childMsg: null,
       anotherInvestmentAccount: {
         startBalance: null,
@@ -489,19 +489,19 @@ export default {
         withdrawals: null,
         endBalance: null
       },
-      investmentAccounts: this.selectedUser.questions[9].questions,
+      investmentAccounts: this.selectedUser.questions[13].questions,
       investmentAccountMsg: null,
       anotherAutoLoan: {
         startBalance: null,
         endBalance: null
       },
-      autoLoans: this.selectedUser.questions[11].questions,
+      autoLoans: this.selectedUser.questions[15].questions,
       autoLoanMsg: null,
       anotherStudentLoan: {
         startBalance: null,
         endBalance: null
       },
-      studentLoans: this.selectedUser.questions[12].questions,
+      studentLoans: this.selectedUser.questions[16].questions,
       studentLoanMsg: null,
       anotherRetirementAccount: {
         startBalance: null,
@@ -509,7 +509,7 @@ export default {
         withdrawals: null,
         endBalance: null
       },
-      retirementAccounts: this.selectedUser.questions[13].questions,
+      retirementAccounts: this.selectedUser.questions[17].questions,
       retirementAccountMsg: null,
       anotherHSAAccount: {
         startBalance: null,
@@ -517,7 +517,7 @@ export default {
         withdrawals: null,
         endBalance: null
       },
-      hsaAccounts: this.selectedUser.questions[14].questions,
+      hsaAccounts: this.selectedUser.questions[19].questions,
       hsaAccountMsg: null,
     }
   },
@@ -527,12 +527,12 @@ export default {
       for(let field of fields) {
         field.classList.remove('active')
       }
-      console.log(e)
       e.target.parentElement.classList.add('active')
     },
     addClient() {      
       if(this.anotherClient.name && this.anotherClient.dateOfBirth) {
-        this.selectedUser.questions[10].questions.push(this.anotherClient)
+        this.selectedUser.questions[14].questions.push(this.anotherClient)
+        console.log(this.selectedUser.questions[14].questions)
         this.anotherClient = {
           name: null,
           dateOfBirth: null
@@ -544,7 +544,7 @@ export default {
     },
     addChild() {
       if(this.anotherChild.name && this.anotherChild.dateOfBirth) {
-        this.selectedUser.questions[8].questions.push(this.anotherChild)        
+        this.selectedUser.questions[12].questions.push(this.anotherChild)        
         this.anotherChild = {
           name: null,
           dateOfBirth: null
@@ -556,7 +556,7 @@ export default {
     },
     addBankAccount() {
       if(this.anotherBankAccount.startBalance && this.anotherBankAccount.endBalance) {
-        this.selectedUser.questions[0].questions.push(this.anotherBankAccount)        
+        this.selectedUser.questions[1].questions.push(this.anotherBankAccount)        
         this.anotherBankAccount = {
           startBalance: null,
           endBalance: null
@@ -567,7 +567,7 @@ export default {
     },
     addMortgage() {
       if(this.anotherMortgage.startBalance && this.anotherMortgage.endBalance) {
-        this.selectedUser.questions[2].questions.push(this.anotherMortgage)                
+        this.selectedUser.questions[3].questions.push(this.anotherMortgage)                
         this.anotherMortgage = {
           startBalance: null,
           newMortgage: null,
@@ -580,7 +580,7 @@ export default {
     },
     addCreditCard() {
       if(this.anotherCreditCard.startBalance && this.anotherCreditCard.endBalance) {
-        this.selectedUser.questions[5].questions.push(this.anotherCreditCard)                        
+        this.selectedUser.questions[8].questions.push(this.anotherCreditCard)                        
         this.anotherCreditCard = {
           startBalance: null,
           endBalance: null
@@ -592,7 +592,7 @@ export default {
     },
     add529Account() {
       if(this.another529Plan.startBalance && this.another529Plan.endBalance) {
-        this.selectedUser.questions[7].questions.push(this.another529Plan)                                
+        this.selectedUser.questions[10].questions.push(this.another529Plan)                                
         this.another529Plan = {
           startBalance: null,
           contributions: null,
@@ -606,7 +606,7 @@ export default {
     },
     addInvestmentAccount() {
       if(this.anotherInvestmentAccount.startBalance && this.anotherInvestmentAccount.endBalance) {
-        this.selectedUser.questions[9].questions.push(this.anotherInvestmentAccount)                                        
+        this.selectedUser.questions[13].questions.push(this.anotherInvestmentAccount)                                        
         this.anotherInvestmentAccount = {
           startBalance: null,
           contributions: null,
@@ -620,7 +620,7 @@ export default {
     },
     addAutoLoan() {
       if(this.anotherAutoLoan.startBalance && this.anotherAutoLoan.endBalance) {
-        this.selectedUser.questions[11].questions.push(this.anotherAutoLoan)                                                
+        this.selectedUser.questions[15].questions.push(this.anotherAutoLoan)                                                
         this.anotherAutoLoan = {
           startBalance: null,
           newAutoLoan: null,
@@ -633,7 +633,7 @@ export default {
     },
     addStudentLoan() {
       if(this.anotherStudentLoan.startBalance && this.anotherStudentLoan.endBalance) {
-        this.selectedUser.questions[12].questions.push(this.anotherStudentLoan)                                                        
+        this.selectedUser.questions[16].questions.push(this.anotherStudentLoan)                                                        
         this.anotherStudentLoan = {
           startBalance: null,
           newStudentLoan: null,
@@ -646,7 +646,7 @@ export default {
     },
     addRetirementAccount() {
       if(this.anotherRetirementAccount.startBalance && this.anotherRetirementAccount.endBalance) {
-        this.selectedUser.questions[13].questions.push(this.anotherRetirementAccount)                                                                
+        this.selectedUser.questions[17].questions.push(this.anotherRetirementAccount)                                                                
         this.anotherRetirementAccount = {
           startBalance: null,
           contributions: null,
@@ -660,7 +660,7 @@ export default {
     },
     addHSAAccount() {
       if(this.anotherHSAAccount.startBalance && this.anotherHSAAccount.endBalance) {
-        this.selectedUser.questions[14].questions.push(this.anotherHSAAccount)                                                                        
+        this.selectedUser.questions[19].questions.push(this.anotherHSAAccount)                                                                        
         this.anotherHSAAccount = {
           startBalance: null,
           contributions: null,
@@ -735,56 +735,63 @@ export default {
       })    
     },
   },
-  watch: {
+  computed: {
     selectedUser() {
-        this.clients = this.selectedUser.questions[14].questions
-        this.children = this.selectedUser.questions[12].questions        
-        this.bankAccounts = this.selectedUser.questions[1].questions        
-        this.mortgages = this.selectedUser.questions[4].questions        
-        this.financialGifts = this.selectedUser.questions[5].answer        
-        this.childSupport = this.selectedUser.questions[7].answer        
-        this.creditCards = this.selectedUser.questions[8].questions        
-        this.alimony = this.selectedUser.questions[9].answer        
-        this.plan529Accounts = this.selectedUser.questions[10].questions        
-        this.investmentAccounts = this.selectedUser.questions[13].questions
-        this.autoLoans = this.selectedUser.questions[15].questions        
-        this.studentLoans = this.selectedUser.questions[16].questions        
-        this.retirementAccounts = this.selectedUser.questions[17].questions        
-        this.hsaAccounts = this.selectedUser.questions[19].questions   
-        this.grossIncome = this.selectedUser.questions[11].answer
-        this.taxes = this.selectedUser.questions[18].answer
-        this.newAutoLoans = this.selectedUser.questions[0].answer
-        this.newStudentLoans = this.selectedUser.questions[6].answer
-        this.newMortgages = this.selectedUser.questions[3].answer
+      console.log(this.$store.state.selectedUser)
+      return this.$store.state.selectedUser
     }
   },
+  watch: {
+    // selectedUser() {
+    //     this.clients = this.selectedUser.questions[14].questions
+    //     this.children = this.selectedUser.questions[12].questions        
+    //     this.bankAccounts = this.selectedUser.questions[1].questions        
+    //     this.mortgages = this.selectedUser.questions[4].questions        
+    //     this.financialGifts = this.selectedUser.questions[5].answer        
+    //     this.childSupport = this.selectedUser.questions[7].answer        
+    //     this.creditCards = this.selectedUser.questions[8].questions        
+    //     this.alimony = this.selectedUser.questions[9].answer        
+    //     this.plan529Accounts = this.selectedUser.questions[10].questions        
+    //     this.investmentAccounts = this.selectedUser.questions[13].questions
+    //     this.autoLoans = this.selectedUser.questions[15].questions        
+    //     this.studentLoans = this.selectedUser.questions[16].questions        
+    //     this.retirementAccounts = this.selectedUser.questions[17].questions        
+    //     this.hsaAccounts = this.selectedUser.questions[19].questions   
+    //     this.grossIncome = this.selectedUser.questions[11].answer
+    //     this.taxes = this.selectedUser.questions[18].answer
+    //     this.newAutoLoans = this.selectedUser.questions[0].answer
+    //     this.newStudentLoans = this.selectedUser.questions[6].answer
+    //     this.newMortgages = this.selectedUser.questions[3].answer
+    // }
+  },
   created() {
-    let ref = db.collection('users').where('slug', '==', this.selectedUser.slug)
-    ref.get().then(snapshot => {
-      snapshot.forEach(doc => {
-        this.selectedUser.id = doc.id
-        let user = doc.data()
-        this.clients = user.questions[14].questions
-        this.children = user.questions[12].questions        
-        this.bankAccounts = user.questions[1].questions        
-        this.mortgages = user.questions[4].questions        
-        this.financialGifts = user.questions[5].answer        
-        this.childSupport = user.questions[7].answer        
-        this.creditCards = user.questions[8].questions        
-        this.alimony = user.questions[9].answer        
-        this.plan529Accounts = user.questions[10].questions        
-        this.investmentAccounts = user.questions[13].questions
-        this.autoLoans = user.questions[15].questions        
-        this.studentLoans = user.questions[16].questions        
-        this.retirementAccounts = user.questions[17].questions        
-        this.hsaAccounts = user.questions[19].questions   
-        this.grossIncome = user.questions[11].answer
-        this.taxes = user.questions[18].answer
-        this.newAutoLoans = user.questions[0].answer
-        this.newStudentLoans = user.questions[6].answer
-        this.newMortgages = user.questions[3].answer
-      })
-    })
+    
+    // let ref = db.collection('users').where('slug', '==', this.selectedUser.slug)
+    // ref.get().then(snapshot => {
+    //   snapshot.forEach(doc => {
+    //     this.selectedUser.id = doc.id
+    //     let user = doc.data()
+    //     this.clients = user.questions[14].questions
+    //     this.children = user.questions[12].questions        
+    //     this.bankAccounts = user.questions[1].questions        
+    //     this.mortgages = user.questions[4].questions        
+    //     this.financialGifts = user.questions[5].answer        
+    //     this.childSupport = user.questions[7].answer        
+    //     this.creditCards = user.questions[8].questions        
+    //     this.alimony = user.questions[9].answer        
+    //     this.plan529Accounts = user.questions[10].questions        
+    //     this.investmentAccounts = user.questions[13].questions
+    //     this.autoLoans = user.questions[15].questions        
+    //     this.studentLoans = user.questions[16].questions        
+    //     this.retirementAccounts = user.questions[17].questions        
+    //     this.hsaAccounts = user.questions[19].questions   
+    //     this.grossIncome = user.questions[11].answer
+    //     this.taxes = user.questions[18].answer
+    //     this.newAutoLoans = user.questions[0].answer
+    //     this.newStudentLoans = user.questions[6].answer
+    //     this.newMortgages = user.questions[3].answer
+    //   })
+    // })
   }
 }
 </script>
