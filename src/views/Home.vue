@@ -463,7 +463,8 @@
               <p>Jan. 1 <span>{{ investmentTotals.startBalance }}</span></p>
             </div>
             <div>
-              <p>In/Out <span>{{ investmentTotals.inOut }}</span></p>
+              <p>Contributions <span>{{ investmentTotals.contributions }}</span></p>
+              <p>Distributions <span>{{ investmentTotals.distributions }}</span></p>
             </div>
             <div>
               <p>Up/Down <span>{{ investmentTotals.upDown }}</span></p>
@@ -478,7 +479,8 @@
               <p>Jan. 1 <span>{{ collegeSavingsTotals.startBalance }}</span></p>
             </div>
             <div>
-              <p>In/Out <span>{{ collegeSavingsTotals.inOut }}</span></p>
+              <p>Contributions <span>{{ collegeSavingsTotals.contributions }}</span></p>
+              <p>Distributions <span>{{ collegeSavingsTotals.distributions }}</span></p>
             </div>
             <div>
               <p>Up/Down <span>{{ collegeSavingsTotals.upDown }}</span></p>
@@ -493,7 +495,8 @@
               <p>Jan. 1 <span>{{ retirementTotals.startBalance }}</span></p>
             </div>
             <div>
-              <p>In/Out <span>{{ retirementTotals.inOut }}</span></p>
+              <p>Contributions <span>{{ retirementTotals.contributions }}</span></p>
+              <p>Distributions <span>{{ retirementTotals.distributions }}</span></p>
             </div>
             <div>
               <p>Up/Down <span>{{ retirementTotals.upDown }}</span></p>
@@ -604,6 +607,7 @@ export default {
       mortgageMsg: null,
       financialGifts: null,
       childSupport: null,
+      grossIncome: null,
       anotherCreditCard: {
         startBalance: null,
         endBalance: null
@@ -728,21 +732,26 @@ export default {
     
     if(this.$store.state.selectedUser) {
       this.slug = this.selectedUser.slug
-      this.clients = this.selectedUser.questions[10].questions
-      this.children = this.selectedUser.questions[8].questions        
-      this.bankAccounts = this.selectedUser.questions[0].questions        
-      this.mortgages = this.selectedUser.questions[2].questions        
-      this.financialGifts = this.selectedUser.questions[3].answer        
-      this.childSupport = this.selectedUser.questions[4].answer        
-      this.creditCards = this.selectedUser.questions[5].questions        
-      this.alimony = this.selectedUser.questions[6].answer        
-      this.plan529Accounts = this.selectedUser.questions[7].questions        
-      this.investmentAccounts = this.selectedUser.questions[9].questions
-      this.autoLoans = this.selectedUser.questions[11].questions        
-      this.studentLoans = this.selectedUser.questions[12].questions        
-      this.retirementAccounts = this.selectedUser.questions[13].questions        
-      this.hsaAccounts = this.selectedUser.questions[14].questions  
-    }
+      this.clients = this.selectedUser.questions[14].questions
+      this.children = this.selectedUser.questions[12].questions        
+      this.bankAccounts = this.selectedUser.questions[1].questions        
+      this.mortgages = this.selectedUser.questions[4].questions        
+      this.financialGifts = this.selectedUser.questions[5].answer        
+      this.childSupport = this.selectedUser.questions[7].answer        
+      this.creditCards = this.selectedUser.questions[8].questions        
+      this.alimony = this.selectedUser.questions[9].answer        
+      this.plan529Accounts = this.selectedUser.questions[10].questions        
+      this.investmentAccounts = this.selectedUser.questions[13].questions
+      this.autoLoans = this.selectedUser.questions[15].questions        
+      this.studentLoans = this.selectedUser.questions[16].questions        
+      this.retirementAccounts = this.selectedUser.questions[17].questions        
+      this.hsaAccounts = this.selectedUser.questions[19].questions   
+      this.grossIncome = this.selectedUser.questions[11].answer
+      this.taxes = this.selectedUser.questions[18].answer
+      this.newAutoLoans = this.selectedUser.questions[0].answer
+      this.newStudentLoans = this.selectedUser.questions[6].answer
+      this.newMortgages = this.selectedUser.questions[3].answer
+  }
     if(this.$store.state.loggedinUser) {
       this.loggedinUser = this.$store.state.loggedinUser
     } else {
@@ -766,6 +775,10 @@ export default {
     })
   },
   computed: {
+    mapGrossIncome() {
+      console.log(this.grossIncome)
+      return accounting.formatMoney(this.grossIncome, 0)
+    },
     familyMembers() {
       let numberOfClients = 0
       let numberOfChildren = 0
@@ -818,6 +831,8 @@ export default {
       let investmentAccounts = {}
       let startBalance = 0
       let endBalance = 0
+      let contributions = 0
+      let distributions = 0
       let inOut = 0
       let upDown = 0
       for(let account of this.investmentAccounts) {
@@ -827,13 +842,21 @@ export default {
         if(account.endBalance) {
           endBalance = endBalance + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
         }
+        if(account.contributions) {
+          contributions = contributions + Number(account.contributions.replace(/[^0-9 ]/g, ""))
+        }
+        if(account.distributions) {
+          distributions = distributions + Number(account.distributions.replace(/[^0-9 ]/g, ""))
+        }
+
         if(account.contributions && account.withdrawals) {
           inOut = Number(account.contributions.replace(/[^0-9 ]/g, "")) - Number(account.withdrawals.replace(/[^0-9 ]/g, ""))
           upDown = endBalance - (startBalance + inOut)        
         }
         investmentAccounts.startBalance = accounting.formatMoney(startBalance, 0)
         investmentAccounts.endBalance = accounting.formatMoney(endBalance, '$', 0)  
-        investmentAccounts.inOut = accounting.formatMoney(inOut, '$', 0)
+        investmentAccounts.contributions = accounting.formatMoney(contributions, '$', 0)
+        investmentAccounts.distributions = accounting.formatMoney(distributions, '$', 0)
         investmentAccounts.upDown = accounting.formatMoney(upDown, '$', 0)
       }
         return investmentAccounts      
@@ -842,6 +865,8 @@ export default {
       let collegeSavingsAccounts = {}
       let startBalance = 0
       let endBalance = 0
+      let contributions = 0
+      let distributions = 0
       let inOut = 0
       let upDown = 0
       for(let account of this.plan529Accounts) {
@@ -851,12 +876,20 @@ export default {
         if(account.endBalance) {
           endBalance = endBalance + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
         }
+        if(account.contributions) {
+          contributions = contributions + Number(account.contributions.replace(/[^0-9 ]/g, ""))
+        }
+        if(account.distributions) {
+          distributions = distributions + Number(account.distributions.replace(/[^0-9 ]/g, ""))
+        }
         if(account.contributions && account.withdrawals) {
           inOut = Number(account.contributions.replace(/[^0-9 ]/g, "")) - Number(account.withdrawals.replace(/[^0-9 ]/g, ""))
           upDown = endBalance - (startBalance + inOut)        
         }
         collegeSavingsAccounts.startBalance = accounting.formatMoney(startBalance, 0)
         collegeSavingsAccounts.endBalance = accounting.formatMoney(endBalance, '$', 0)  
+        collegeSavingsAccounts.contributions = accounting.formatMoney(contributions, '$', 0)  
+        collegeSavingsAccounts.distributions = accounting.formatMoney(distributions, '$', 0)  
         collegeSavingsAccounts.inOut = accounting.formatMoney(inOut, '$', 0)
         collegeSavingsAccounts.upDown = accounting.formatMoney(upDown, '$', 0)
       }
@@ -866,6 +899,8 @@ export default {
       let retirementAccounts = {}
       let startBalance = 0
       let endBalance = 0
+      let contributions = 0
+      let distributions = 0
       let inOut = 0
       let upDown = 0
       for(let account of this.retirementAccounts) {
@@ -875,12 +910,20 @@ export default {
         if(account.endBalance) {
           endBalance = endBalance + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
         }
+        if(account.contributions) {
+          contributions = contributions + Number(account.contributions.replace(/[^0-9 ]/g, ""))
+        }
+        if(account.distributions) {
+          distributions = distributions + Number(account.distributions.replace(/[^0-9 ]/g, ""))
+        }
         if(account.contributions && account.withdrawals) {
           inOut = Number(account.contributions.replace(/[^0-9 ]/g, "")) - Number(account.withdrawals.replace(/[^0-9 ]/g, ""))
           upDown = endBalance - (startBalance + inOut)        
         }
         retirementAccounts.startBalance = accounting.formatMoney(startBalance, 0)
         retirementAccounts.endBalance = accounting.formatMoney(endBalance, '$', 0)  
+        retirementAccounts.contributions = accounting.formatMoney(contributions, '$', 0)  
+        retirementAccounts.distributions = accounting.formatMoney(distributions, '$', 0)  
         retirementAccounts.inOut = accounting.formatMoney(inOut, '$', 0)
         retirementAccounts.upDown = accounting.formatMoney(upDown, '$', 0)
       }

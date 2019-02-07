@@ -13,7 +13,7 @@ export default new Vuex.Store({
     activeUser: null,
     currentClient: null,
     thankYou: false,
-    selectedUser: null,
+    selectedUser: '',
     userId: null,
     showLogin: true,
     loggedinUser: {

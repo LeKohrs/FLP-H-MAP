@@ -64,9 +64,9 @@
           <p>Thanks! Questions have been submited.</p>
         </div>   
       </div>
-      <div v-if="selectedUser !== null" class="admin__selected-client">
-        <!-- <DataForm v-bind:selectedUser = "selectedUser" /> -->
-        <DataForm  />
+      <div v-if="selectedUser" class="admin__selected-client">
+        <DataForm v-bind:selectedUser = "selectedUser" /> 
+        <!-- <DataForm  /> -->
       </div>
     </section>
   </div>
@@ -196,7 +196,7 @@ export default {
     },
   },
   computed: {
-    seletedUser() {
+    selectedUser() {
       return this.$store.state.selectedUser
     }
   },

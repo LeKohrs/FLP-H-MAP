@@ -430,7 +430,7 @@ import db from '@/firebase/init'
 
 export default {
   name: 'DataForm',
-  // props: ['selectedUser'],
+  props: ['selectedUser'],
   data() {
     return {
       msg: 'You must enter a value in all fields',
@@ -567,7 +567,7 @@ export default {
     },
     addMortgage() {
       if(this.anotherMortgage.startBalance && this.anotherMortgage.endBalance) {
-        this.selectedUser.questions[3].questions.push(this.anotherMortgage)                
+        this.selectedUser.questions[4].questions.push(this.anotherMortgage)                
         this.anotherMortgage = {
           startBalance: null,
           newMortgage: null,
@@ -684,19 +684,19 @@ export default {
         this.selectedUser.questions[9].answer = this.alimony       
       }
       if(this.grossIncome) {
-        this.selectedUser.questions[11].answer = this.alimony       
+        this.selectedUser.questions[11].answer = this.grossIncome       
       }
       if(this.taxes) {
-        this.selectedUser.questions[18].answer = this.alimony       
+        this.selectedUser.questions[18].answer = this.taxes       
       }
-      if(this.newAutoLoan) {
-        this.selectedUser.questions[0].answer = this.alimony       
+      if(this.newAutoLoans) {
+        this.selectedUser.questions[0].answer = this.newAutoLoans       
       }
-      if(this.newStudentLoan) {
-        this.selectedUser.questions[6].answer = this.alimony       
+      if(this.newStudentLoans) {
+        this.selectedUser.questions[6].answer = this.newStudentLoans       
       }
       if(this.newMortgages) {
-        this.selectedUser.questions[3].answer = this.alimony       
+        this.selectedUser.questions[3].answer = this.newMortgages       
       }
       ref.get().then(snapshot => {
         snapshot.forEach(doc => {
@@ -711,6 +711,7 @@ export default {
           snapshot.forEach(doc => {
             this.selectedUser.id = doc.id
             let user = doc.data()
+            console.log(user.questions[9].answer)
             this.clients = user.questions[14].questions
             this.children = user.questions[12].questions        
             this.bankAccounts = user.questions[1].questions        
@@ -735,34 +736,28 @@ export default {
       })    
     },
   },
-  computed: {
-    selectedUser() {
-      console.log(this.$store.state.selectedUser)
-      return this.$store.state.selectedUser
-    }
-  },
   watch: {
-    // selectedUser() {
-    //     this.clients = this.selectedUser.questions[14].questions
-    //     this.children = this.selectedUser.questions[12].questions        
-    //     this.bankAccounts = this.selectedUser.questions[1].questions        
-    //     this.mortgages = this.selectedUser.questions[4].questions        
-    //     this.financialGifts = this.selectedUser.questions[5].answer        
-    //     this.childSupport = this.selectedUser.questions[7].answer        
-    //     this.creditCards = this.selectedUser.questions[8].questions        
-    //     this.alimony = this.selectedUser.questions[9].answer        
-    //     this.plan529Accounts = this.selectedUser.questions[10].questions        
-    //     this.investmentAccounts = this.selectedUser.questions[13].questions
-    //     this.autoLoans = this.selectedUser.questions[15].questions        
-    //     this.studentLoans = this.selectedUser.questions[16].questions        
-    //     this.retirementAccounts = this.selectedUser.questions[17].questions        
-    //     this.hsaAccounts = this.selectedUser.questions[19].questions   
-    //     this.grossIncome = this.selectedUser.questions[11].answer
-    //     this.taxes = this.selectedUser.questions[18].answer
-    //     this.newAutoLoans = this.selectedUser.questions[0].answer
-    //     this.newStudentLoans = this.selectedUser.questions[6].answer
-    //     this.newMortgages = this.selectedUser.questions[3].answer
-    // }
+    selectedUser() {
+        this.clients = this.selectedUser.questions[14].questions
+        this.children = this.selectedUser.questions[12].questions        
+        this.bankAccounts = this.selectedUser.questions[1].questions        
+        this.mortgages = this.selectedUser.questions[4].questions        
+        this.financialGifts = this.selectedUser.questions[5].answer        
+        this.childSupport = this.selectedUser.questions[7].answer        
+        this.creditCards = this.selectedUser.questions[8].questions        
+        this.alimony = this.selectedUser.questions[9].answer        
+        this.plan529Accounts = this.selectedUser.questions[10].questions        
+        this.investmentAccounts = this.selectedUser.questions[13].questions
+        this.autoLoans = this.selectedUser.questions[15].questions        
+        this.studentLoans = this.selectedUser.questions[16].questions        
+        this.retirementAccounts = this.selectedUser.questions[17].questions        
+        this.hsaAccounts = this.selectedUser.questions[19].questions   
+        this.grossIncome = this.selectedUser.questions[11].answer
+        this.taxes = this.selectedUser.questions[18].answer
+        this.newAutoLoans = this.selectedUser.questions[0].answer
+        this.newStudentLoans = this.selectedUser.questions[6].answer
+        this.newMortgages = this.selectedUser.questions[3].answer
+    }
   },
   created() {
     
