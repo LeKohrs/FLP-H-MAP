@@ -111,13 +111,13 @@
         <text transform="matrix(1 0 0 1 50.8168 131.9771)" class="st26 st23 st27">{{ mapTaxes }}</text>
         <text transform="matrix(1 0 0 1 578.2924 308.3589)" class="st19 st20 st21">SPENDING</text>
         <text transform="matrix(1 0 0 1 638.6527 308.3589)" class="st19 st28 st21"> </text>
-        <text transform="matrix(1 0 0 1 580.786 326.3589)" class="st19 st23 st25">$54,000</text>
+        <text transform="matrix(1 0 0 1 580.786 326.3589)" class="st19 st23 st25">{{ spending }}</text>
         <text transform="matrix(1 0 0 1 315.2094 326.6695)"><tspan x="0" y="0" class="st26 st20 st24">Mon</tspan><tspan x="20.7" y="0" class="st26 st20 st24">e</tspan><tspan x="25.9" y="0" class="st26 st20 st24">y S</tspan><tspan x="38.5" y="0" class="st26 st20 st24">a</tspan><tspan x="43.6" y="0" class="st26 st20 st24">v</tspan><tspan x="48.7" y="0" class="st26 st20 st24">ed</tspan></text>
         <text transform="matrix(1 0 0 1 374.9545 326.6695)" class="st26 st29 st24"> </text>
         <text transform="matrix(1 0 0 1 317.1869 340.6695)" class="st26 st23 st27">({{ mapMoneySaved }})</text>
         <text transform="matrix(1 0 0 1 635.1317 169.0289)"><tspan x="0" y="0" class="st26 st20 st24">Debt </tspan><tspan x="24.3" y="0" class="st26 st20 st24">P</tspan><tspan x="30.3" y="0" class="st26 st20 st24">aid</tspan></text>
         <text transform="matrix(1 0 0 1 679.0912 169.0289)" class="st26 st20 st24"> </text>
-        <text transform="matrix(1 0 0 1 629.2167 183.0289)" class="st26 st23 st27">($21,000)</text>
+        <text transform="matrix(1 0 0 1 629.2167 183.0289)" class="st26 st23 st27">({{ mapDebtPaid }})</text>
         <g>
           <defs>
             <rect id="SVGID_7_" x="7.1" y="2.7" width="718.1" height="343.5"/>
@@ -293,10 +293,10 @@
         </g>
         <text transform="matrix(1 0 0 1 454.5521 262.0298)"><tspan x="0" y="0" class="st26 st20 st24">Mon</tspan><tspan x="20.7" y="0" class="st26 st20 st24">e</tspan><tspan x="25.9" y="0" class="st26 st20 st24">y Borrowed</tspan></text>
         <text transform="matrix(1 0 0 1 532.6722 262.0298)" class="st26 st20 st24"> </text>
-        <text transform="matrix(1 0 0 1 469.6166 276.0298)" class="st26 st23 st27">$10,000</text>
+        <text transform="matrix(1 0 0 1 469.6166 276.0298)" class="st26 st23 st27">{{ mapMoneyBorrowed }}</text>
         <text transform="matrix(1 0 0 1 505.9247 169.9097)"><tspan x="0" y="0" class="st26 st20 st24">S</tspan><tspan x="5.4" y="0" class="st26 st20 st24">a</tspan><tspan x="10.4" y="0" class="st26 st20 st24">vings Used</tspan></text>
         <text transform="matrix(1 0 0 1 564.2445 169.9097)" class="st26 st29 st24"> </text>
-        <text transform="matrix(1 0 0 1 511.0868 183.9097)" class="st26 st23 st27">$15,000</text>
+        <text transform="matrix(1 0 0 1 511.0868 183.9097)" class="st26 st23 st27">{{ mapSavingsUsed }}</text>
         <polygon class="st45" points="457.9,235.3 461.3,235.2 461.5,245.7 457.1,245.7 "/>
         <polygon class="st42" points="462.5,236 464.7,234.9 467.9,236 471.2,236.3 473.7,236 475.5,237.1 474.1,238.5 469.7,239.9 
           472.5,241 477.3,240.3 482,239.2 484.1,239.6 484.9,240.7 483.1,242.5 474.4,246.1 462.2,244.2 "/>
@@ -608,6 +608,10 @@ export default {
       financialGifts: null,
       childSupport: null,
       grossIncome: null,
+      taxes: null,
+      newMortgages: null,
+      newStudentLoans: null,
+      newAutoLoans: null,
       anotherCreditCard: {
         startBalance: null,
         endBalance: null
@@ -776,23 +780,27 @@ export default {
   },
   computed: {
     mapGrossIncome() {
+      let grossIncome = 0
       if(this.grossIncome) {
-        let grossIncome = this.grossIncome
+        grossIncome = this.grossIncome
         grossIncome = Number(grossIncome.replace(/[^0-9 ]/g, ""))
-        return accounting.formatMoney(grossIncome, 0)
       }
+      
+      return accounting.formatMoney(grossIncome, 0)
     },
     mapTaxes() {
+      let taxes = 0
       if(this.taxes) {
-        let taxes = Number(this.taxes.replace(/[^0-9 ]/g, ""))
-        return accounting.formatMoney(taxes, 0)
+        taxes = Number(this.taxes.replace(/[^0-9 ]/g, ""))
       }
+      return accounting.formatMoney(taxes, 0)
     },
     mapAvailableIncome() {
+      let income = 0
       if(this.grossIncome && this.taxes) {
-        let income = Number(this.grossIncome.replace(/[^0-9 ]/g, "")) - Number(this.taxes.replace(/[^0-9 ]/g, ""))
-        return accounting.formatMoney(income, 0)
+        income = Number(this.grossIncome.replace(/[^0-9 ]/g, "")) - Number(this.taxes.replace(/[^0-9 ]/g, ""))
       }
+      return accounting.formatMoney(income, 0)
     },
     mapMoneySaved() {
       let investmentSavings = 0
@@ -836,19 +844,127 @@ export default {
       let creditCardTotals
       let totalBorrowed
 
-      for(let account of this.creditCards) {
-        creditCardsStart = creditCardsStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
-        creditCardsEnd = creditCardsEnd + Number(account.EndBalance.replace(/[^0-9 ]/g, ""))
+      if(this.newMortgages) {
+        newMortgages = Number(this.newMortgages.replace(/[^0-9 ]/g, ""))
       }
-      creditCardTotals = creditCardsEnd - creditCardsStart
+      if(this.newStudentLoans) {
+        newStudentLoans = Number(this.newStudentLoans.replace(/[^0-9 ]/g, ""))
+      }
+      if(this.newAutoLoans) {
+        newAutoLoans = Number(this.newAutoLoans.replace(/[^0-9 ]/g, ""))
+      }
 
+      if(this.creditCards) {
+        for(let account of this.creditCards) {
+          creditCardsStart = creditCardsStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
+          creditCardsEnd = creditCardsEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
+        }
+        creditCardTotals = creditCardsEnd - creditCardsStart
+      }
+      
       if(creditCardTotals < 0) {
-        totalBorrowed = (Number(this.newMortgages.replace(/[^0-9 ]/g, "")) + Number(this.newAutoLoans.replace(/[^0-9 ]/g, "")) + Number(this.newStudentLoans.replace(/[^0-9 ]/g, "")))  
+        totalBorrowed = (newMortgages + newAutoLoans + newStudentLoans)  
       } else {
-        totalBorrowed = (Number(this.newMortgages.replace(/[^0-9 ]/g, "")) + Number(this.newAutoLoans.replace(/[^0-9 ]/g, "")) + Number(this.newStudentLoans.replace(/[^0-9 ]/g, ""))) - creditCardTotals  
+        totalBorrowed = (newMortgages + newAutoLoans + newStudentLoans) - creditCardTotals  
       }
 
-      return totalBorrowed
+      return accounting.formatMoney(totalBorrowed, 0)
+    },
+    mapSavingsUsed() {
+      let investmentDistributions = 0
+      let retirementDistributions = 0
+      let collegeDistributions = 0
+      let bankAccountStart = 0
+      let bankAccountEnd = 0
+      let totalSavingsUsed = 0
+
+      if(this.investmentAccounts) {
+        for(let account of this.investmentAccounts) {
+          investmentDistributions = investmentDistributions + Number(account.withdrawals.replace(/[^0-9 ]/g, ""))
+        }
+      }
+      if(this.plan529Accounts) {
+        for(let account of this.plan529Accounts) {
+          collegeDistributions = collegeDistributions + Number(account.withdrawals.replace(/[^0-9 ]/g, ""))
+        }
+      }
+      if(this.retirementAccounts) {
+        for(let account of this.retirementAccounts) {
+          retirementDistributions = retirementDistributions + Number(account.withdrawals.replace(/[^0-9 ]/g, ""))
+        }
+      }
+      if(this.bankAccounts) {
+        for(let account of this.bankAccounts) {
+          bankAccountStart = bankAccountStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
+          bankAccountEnd = bankAccountEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
+        }
+      }
+
+      totalSavingsUsed = (investmentDistributions - collegeDistributions - retirementDistributions) - (bankAccountEnd - bankAccountStart)
+
+      if(totalSavingsUsed < 0) {
+        totalSavingsUsed = totalSavingsUsed * -1
+      }
+      return accounting.formatMoney(totalSavingsUsed, 0)
+    },
+    mapDebtPaid() {
+      let mortgagesEnd = 0
+      let mortgagesStart = 0
+      let newMortgages = 0
+      let studentLoansEnd = 0
+      let studentLoansStart = 0
+      let newStudentLoans = 0
+      let autoLoansEnd = 0
+      let autoLoansStart = 0
+      let newAutoLoans = 0
+      let creditCardsEnd = 0
+      let creditCardsStart = 0
+      let creditCardTotals = 0
+      let totalDebtPaid = 0
+
+      if(this.mortgages) {
+        for(let account of this.mortgages) {
+          mortgagesEnd = mortgagesEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
+          mortgagesStart = mortgagesStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
+        }
+      }
+      if(this.newMortgages) {
+        newMortgages = newMortgages + this.newMortgages
+      }
+      if(this.plan529Accounts) {
+        for(let account of this.plan529Accounts) {
+          studentLoansEnd = studentLoansEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
+          studentLoansStart = studentLoansStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
+        }
+      }
+      if(this.newStudentLoans) {
+        newStudentLoans = newStudentLoans + this.newStudentLoans
+      }
+      if(this.autoLoans) {
+        for(let account of this.autoLoans) {
+          autoLoansEnd = autoLoansEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
+          autoLoansStart = autoLoansStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
+        }
+      }
+      if(this.newAutoLoans) {
+        newAutoLoans = newAutoLoans + this.newAutoLoans
+      }
+      if(this.creditCards) {
+        for(let account of this.creditCards) {
+          creditCardsStart = creditCardsStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
+          creditCardsEnd = creditCardsEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
+        }
+        creditCardTotals = creditCardsEnd - creditCardsStart
+      }
+
+      totalDebtPaid = ((mortgagesEnd - mortgagesStart) - newMortgages) + ((studentLoansEnd - studentLoansStart) - newStudentLoans) + ((autoLoansEnd - autoLoansStart) - newAutoLoans) + (creditCardTotals)
+      
+      return accounting.formatMoney(totalDebtPaid, 0)
+    },
+    spending() {
+      let availableSpending = 0
+      availableSpending = Number(this.mapAvailableIncome.replace(/[^0-9 ]/g, "")) + Number(this.mapMoneySaved.replace(/[^0-9 ]/g, "")) - Number(this.mapMoneyBorrowed.replace(/[^0-9 ]/g, "")) - Number(this.mapSavingsUsed.replace(/[^0-9 ]/g, "")) + Number(this.mapDebtPaid.replace(/[^0-9 ]/g, ""))
+      return availableSpending
     },
     familyMembers() {
       let numberOfClients = 0
@@ -916,8 +1032,8 @@ export default {
         if(account.contributions) {
           contributions = contributions + Number(account.contributions.replace(/[^0-9 ]/g, ""))
         }
-        if(account.distributions) {
-          distributions = distributions + Number(account.distributions.replace(/[^0-9 ]/g, ""))
+        if(account.withdrawals) {
+          distributions = distributions + Number(account.withdrawals.replace(/[^0-9 ]/g, ""))
         }
 
         if(account.contributions && account.withdrawals) {
@@ -950,8 +1066,8 @@ export default {
         if(account.contributions) {
           contributions = contributions + Number(account.contributions.replace(/[^0-9 ]/g, ""))
         }
-        if(account.distributions) {
-          distributions = distributions + Number(account.distributions.replace(/[^0-9 ]/g, ""))
+        if(account.withdrawals) {
+          distributions = distributions + Number(account.withdrawals.replace(/[^0-9 ]/g, ""))
         }
         if(account.contributions && account.withdrawals) {
           inOut = Number(account.contributions.replace(/[^0-9 ]/g, "")) - Number(account.withdrawals.replace(/[^0-9 ]/g, ""))
@@ -984,8 +1100,8 @@ export default {
         if(account.contributions) {
           contributions = contributions + Number(account.contributions.replace(/[^0-9 ]/g, ""))
         }
-        if(account.distributions) {
-          distributions = distributions + Number(account.distributions.replace(/[^0-9 ]/g, ""))
+        if(account.withdrawals) {
+          distributions = distributions + Number(account.withdrawals.replace(/[^0-9 ]/g, ""))
         }
         if(account.contributions && account.withdrawals) {
           inOut = Number(account.contributions.replace(/[^0-9 ]/g, "")) - Number(account.withdrawals.replace(/[^0-9 ]/g, ""))
