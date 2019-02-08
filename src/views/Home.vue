@@ -560,7 +560,7 @@ import db from '@/firebase/init'
 import Hmap from '@/components/Hmap.vue'
 import Login from '@/components/Login.vue'
 import DataForm from '@/components/DataForm.vue'
-import accounting from 'accounting-js'
+import moneyFormat from '@/js/moneyFormat.js'
 
 
 export default {
@@ -573,7 +573,7 @@ export default {
   data() {
     return {
       openTray: false,
-      selectedUser: this.$store.state.selectedUser,
+      // selectedUser: this.$store.state.selectedUser,
       loggedinUser: this.$store.state.loggedinUser,
       email: null,
       password: null,
@@ -718,6 +718,7 @@ export default {
     }
   },
   created() {
+    
     if(localStorage.getItem('user')) {
       this.$store.state.userId = localStorage.getItem('user')
       let ref = db.collection('users').where('user_id', '==', this.$store.state.userId)
@@ -779,28 +780,30 @@ export default {
     })
   },
   computed: {
+    selectedUser() {
+      return this.$store.state.selectedUser
+    },
     mapGrossIncome() {
       let grossIncome = 0
       if(this.grossIncome) {
         grossIncome = this.grossIncome
         grossIncome = Number(grossIncome.replace(/[^0-9 ]/g, ""))
       }
-      
-      return accounting.formatMoney(grossIncome, 0)
+      return grossIncome.formatMoney(0, "$")
     },
     mapTaxes() {
       let taxes = 0
       if(this.taxes) {
         taxes = Number(this.taxes.replace(/[^0-9 ]/g, ""))
       }
-      return accounting.formatMoney(taxes, 0)
+      return taxes.formatMoney(0, "$")
     },
     mapAvailableIncome() {
       let income = 0
       if(this.grossIncome && this.taxes) {
         income = Number(this.grossIncome.replace(/[^0-9 ]/g, "")) - Number(this.taxes.replace(/[^0-9 ]/g, ""))
       }
-      return accounting.formatMoney(income, 0)
+      return income.formatMoney(0, "$")
     },
     mapMoneySaved() {
       let investmentSavings = 0
@@ -829,11 +832,9 @@ export default {
           bankAccountStart = bankAccountStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
           bankAccountEnd = bankAccountEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
         }
-      }
-      
+      }      
       totalSavings = (investmentSavings + collegeSavings + retirementSavings) + (bankAccountEnd - bankAccountStart)
-
-      return accounting.formatMoney(totalSavings, 0)
+      return totalSavings.formatMoney(0, "$")
     },
     mapMoneyBorrowed() {
       let newMortgages = 0
@@ -867,8 +868,7 @@ export default {
       } else {
         totalBorrowed = (newMortgages + newAutoLoans + newStudentLoans) - creditCardTotals  
       }
-
-      return accounting.formatMoney(totalBorrowed, 0)
+      return totalBorrowed.formatMoney(0, "$")
     },
     mapSavingsUsed() {
       let investmentDistributions = 0
@@ -905,7 +905,7 @@ export default {
       if(totalSavingsUsed < 0) {
         totalSavingsUsed = totalSavingsUsed * -1
       }
-      return accounting.formatMoney(totalSavingsUsed, 0)
+      return totalSavingsUsed.formatMoney(0, "$")
     },
     mapDebtPaid() {
       let mortgagesEnd = 0
@@ -959,12 +959,14 @@ export default {
 
       totalDebtPaid = ((mortgagesEnd - mortgagesStart) - newMortgages) + ((studentLoansEnd - studentLoansStart) - newStudentLoans) + ((autoLoansEnd - autoLoansStart) - newAutoLoans) + (creditCardTotals)
       
-      return accounting.formatMoney(totalDebtPaid, 0)
+      return totalDebtPaid.formatMoney(0, "$")
     },
     spending() {
       let availableSpending = 0
+
       availableSpending = Number(this.mapAvailableIncome.replace(/[^0-9 ]/g, "")) + Number(this.mapMoneySaved.replace(/[^0-9 ]/g, "")) - Number(this.mapMoneyBorrowed.replace(/[^0-9 ]/g, "")) - Number(this.mapSavingsUsed.replace(/[^0-9 ]/g, "")) + Number(this.mapDebtPaid.replace(/[^0-9 ]/g, ""))
-      return availableSpending
+      return availableSpending.formatMoney(0, "$")
+
     },
     familyMembers() {
       let numberOfClients = 0
@@ -1010,9 +1012,10 @@ export default {
           endBalance = endBalance + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
         }
       }
-      bankAccounts.startBalance = accounting.formatMoney(startBalance, 0)
-      bankAccounts.endBalance = accounting.formatMoney(endBalance, '$', 0)  
+      bankAccounts.startBalance = startBalance.formatMoney(0, "$")
+      bankAccounts.endBalance = endBalance.formatMoney(0, "$")
       return bankAccounts
+      
     },
     investmentTotals() {
       let investmentAccounts = {}
@@ -1040,11 +1043,11 @@ export default {
           inOut = Number(account.contributions.replace(/[^0-9 ]/g, "")) - Number(account.withdrawals.replace(/[^0-9 ]/g, ""))
           upDown = endBalance - (startBalance + inOut)        
         }
-        investmentAccounts.startBalance = accounting.formatMoney(startBalance, 0)
-        investmentAccounts.endBalance = accounting.formatMoney(endBalance, '$', 0)  
-        investmentAccounts.contributions = accounting.formatMoney(contributions, '$', 0)
-        investmentAccounts.distributions = accounting.formatMoney(distributions, '$', 0)
-        investmentAccounts.upDown = accounting.formatMoney(upDown, '$', 0)
+        investmentAccounts.startBalance = startBalance.formatMoney(0, "$")
+        investmentAccounts.endBalance = endBalance.formatMoney(0, "$") 
+        investmentAccounts.contributions = contributions.formatMoney(0, "$")
+        investmentAccounts.distributions = distributions.formatMoney(0, "$")
+        investmentAccounts.upDown = upDown.formatMoney(0, "$")
       }
         return investmentAccounts      
     },
@@ -1073,12 +1076,11 @@ export default {
           inOut = Number(account.contributions.replace(/[^0-9 ]/g, "")) - Number(account.withdrawals.replace(/[^0-9 ]/g, ""))
           upDown = endBalance - (startBalance + inOut)        
         }
-        collegeSavingsAccounts.startBalance = accounting.formatMoney(startBalance, 0)
-        collegeSavingsAccounts.endBalance = accounting.formatMoney(endBalance, '$', 0)  
-        collegeSavingsAccounts.contributions = accounting.formatMoney(contributions, '$', 0)  
-        collegeSavingsAccounts.distributions = accounting.formatMoney(distributions, '$', 0)  
-        collegeSavingsAccounts.inOut = accounting.formatMoney(inOut, '$', 0)
-        collegeSavingsAccounts.upDown = accounting.formatMoney(upDown, '$', 0)
+        collegeSavingsAccounts.startBalance = startBalance.formatMoney(0, "$")
+        collegeSavingsAccounts.endBalance = endBalance.formatMoney(0, "$")  
+        collegeSavingsAccounts.contributions = contributions.formatMoney(0, "$")
+        collegeSavingsAccounts.distributions = distributions.formatMoney(0, "$")
+        collegeSavingsAccounts.upDown = upDown.formatMoney(0, "$")
       }
         return collegeSavingsAccounts      
     },
@@ -1107,12 +1109,11 @@ export default {
           inOut = Number(account.contributions.replace(/[^0-9 ]/g, "")) - Number(account.withdrawals.replace(/[^0-9 ]/g, ""))
           upDown = endBalance - (startBalance + inOut)        
         }
-        retirementAccounts.startBalance = accounting.formatMoney(startBalance, 0)
-        retirementAccounts.endBalance = accounting.formatMoney(endBalance, '$', 0)  
-        retirementAccounts.contributions = accounting.formatMoney(contributions, '$', 0)  
-        retirementAccounts.distributions = accounting.formatMoney(distributions, '$', 0)  
-        retirementAccounts.inOut = accounting.formatMoney(inOut, '$', 0)
-        retirementAccounts.upDown = accounting.formatMoney(upDown, '$', 0)
+        retirementAccounts.startBalance = startBalance.formatMoney(0, "$")
+        retirementAccounts.endBalance = endBalance.formatMoney(0, "$")  
+        retirementAccounts.contributions = contributions.formatMoney(0, "$")
+        retirementAccounts.distributions = distributions.formatMoney(0, "$") 
+        retirementAccounts.upDown = upDown.formatMoney(0, "$")
       }
         return retirementAccounts      
     },
@@ -1128,8 +1129,8 @@ export default {
           endBalance = endBalance + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
         }
       }
-      mortgages.startBalance = accounting.formatMoney(startBalance, 0)
-      mortgages.endBalance = accounting.formatMoney(endBalance, '$', 0)  
+      mortgages.startBalance = startBalance.formatMoney(0, "$")
+      mortgages.endBalance = endBalance.formatMoney(0, "$") 
       return mortgages
     },
     studentLoanTotals() {
@@ -1144,8 +1145,8 @@ export default {
           endBalance = endBalance + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
         }
       }
-      studentLoans.startBalance = accounting.formatMoney(startBalance, 0)
-      studentLoans.endBalance = accounting.formatMoney(endBalance, '$', 0)  
+      studentLoans.startBalance = startBalance.formatMoney(0, "$")
+      studentLoans.endBalance = endBalance.formatMoney(0, "$")  
       return studentLoans
     },
     creditCardTotals() {
@@ -1160,8 +1161,8 @@ export default {
           endBalance = endBalance + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
         }
       }
-      creditCards.startBalance = accounting.formatMoney(startBalance, 0)
-      creditCards.endBalance = accounting.formatMoney(endBalance, '$', 0)  
+      creditCards.startBalance = startBalance.formatMoney(0, "$")
+      creditCards.endBalance = endBalance.formatMoney(0, "$")  
       return creditCards
     },
     autoLoanTotals() {
@@ -1176,8 +1177,8 @@ export default {
           endBalance = endBalance + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
         }
       }
-      autoLoans.startBalance = accounting.formatMoney(startBalance, 0)
-      autoLoans.endBalance = accounting.formatMoney(endBalance, '$', 0)  
+      autoLoans.startBalance = startBalance.formatMoney(0, "$")
+      autoLoans.endBalance = endBalance.formatMoney(0, "$")  
       return autoLoans
     },
   }
