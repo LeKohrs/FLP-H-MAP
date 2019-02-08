@@ -103,18 +103,18 @@
         </g>
         <text transform="matrix(1 0 0 1 207.6713 231.6792)"><tspan x="0" y="0" class="st19 st20 st21 st22">AV</tspan><tspan x="15" y="0" class="st19 st20 st21">AILABLE INCOME</tspan></text>
         <text transform="matrix(1 0 0 1 321.4125 231.6792)" class="st19 st23 st24"> </text>
-        <text transform="matrix(1 0 0 1 236.8524 249.6792)" class="st19 st23 st25">$90,000</text>
+        <text transform="matrix(1 0 0 1 236.8524 249.6792)" class="st19 st23 st25">{{ mapAvailableIncome }}</text>
         <text transform="matrix(1 0 0 1 44.9369 106.9771)"><tspan x="0" y="0" class="st26 st20 st24 st22">T</tspan><tspan x="4.7" y="0" class="st26 st20 st24">a</tspan><tspan x="10" y="0" class="st26 st20 st24">x</tspan><tspan x="15.1" y="0" class="st26 st20 st24">es Income </tspan></text>
         <text transform="matrix(1 0 0 1 58.9969 117.9771)" class="st26 st20 st24">&amp; FICA</text>
         <text transform="matrix(1 0 0 1 90.6268 117.9771)" class="st26 st23 st24"> </text>
         <text transform="matrix(1 0 0 1 92.557 117.9771)" class="st26 st23 st24"> </text>
-        <text transform="matrix(1 0 0 1 50.8168 131.9771)" class="st26 st23 st27">$45,000</text>
+        <text transform="matrix(1 0 0 1 50.8168 131.9771)" class="st26 st23 st27">{{ mapTaxes }}</text>
         <text transform="matrix(1 0 0 1 578.2924 308.3589)" class="st19 st20 st21">SPENDING</text>
         <text transform="matrix(1 0 0 1 638.6527 308.3589)" class="st19 st28 st21"> </text>
         <text transform="matrix(1 0 0 1 580.786 326.3589)" class="st19 st23 st25">$54,000</text>
         <text transform="matrix(1 0 0 1 315.2094 326.6695)"><tspan x="0" y="0" class="st26 st20 st24">Mon</tspan><tspan x="20.7" y="0" class="st26 st20 st24">e</tspan><tspan x="25.9" y="0" class="st26 st20 st24">y S</tspan><tspan x="38.5" y="0" class="st26 st20 st24">a</tspan><tspan x="43.6" y="0" class="st26 st20 st24">v</tspan><tspan x="48.7" y="0" class="st26 st20 st24">ed</tspan></text>
         <text transform="matrix(1 0 0 1 374.9545 326.6695)" class="st26 st29 st24"> </text>
-        <text transform="matrix(1 0 0 1 317.1869 340.6695)" class="st26 st23 st27">($15,000)</text>
+        <text transform="matrix(1 0 0 1 317.1869 340.6695)" class="st26 st23 st27">({{ mapMoneySaved }})</text>
         <text transform="matrix(1 0 0 1 635.1317 169.0289)"><tspan x="0" y="0" class="st26 st20 st24">Debt </tspan><tspan x="24.3" y="0" class="st26 st20 st24">P</tspan><tspan x="30.3" y="0" class="st26 st20 st24">aid</tspan></text>
         <text transform="matrix(1 0 0 1 679.0912 169.0289)" class="st26 st20 st24"> </text>
         <text transform="matrix(1 0 0 1 629.2167 183.0289)" class="st26 st23 st27">($21,000)</text>
@@ -274,7 +274,7 @@
         <text transform="matrix(1 0 0 1 121.1351 72.7476)"><tspan x="0" y="0" class="st19 st20 st21">G</tspan><tspan x="8.7" y="0" class="st19 st20 st21">R</tspan><tspan x="16.2" y="0" class="st19 st20 st21">OSS INCOME</tspan></text>
         <text transform="matrix(1 0 0 1 210.6791 72.7476)" class="st19 st23 st21"> </text>
         <text transform="matrix(1 0 0 1 210.7152 72.7476)" class="st19 st23 st21"> </text>
-        <text transform="matrix(1 0 0 1 133.8676 90.7476)" class="st19 st23 st25">$150,000</text>
+        <text transform="matrix(1 0 0 1 133.8676 90.7476)" class="st19 st23 st25">{{ mapGrossIncome }}</text>
         <rect x="144.2" y="20.1" class="st37" width="43.6" height="29.3"/>
         <polygon class="st36" points="145.5,31.6 145.5,50.9 189.1,50.9 189.1,31.6 166.6,36.6 "/>
         <g>
@@ -776,8 +776,79 @@ export default {
   },
   computed: {
     mapGrossIncome() {
-      console.log(this.grossIncome)
-      return accounting.formatMoney(this.grossIncome, 0)
+      if(this.grossIncome) {
+        let grossIncome = this.grossIncome
+        grossIncome = Number(grossIncome.replace(/[^0-9 ]/g, ""))
+        return accounting.formatMoney(grossIncome, 0)
+      }
+    },
+    mapTaxes() {
+      if(this.taxes) {
+        let taxes = Number(this.taxes.replace(/[^0-9 ]/g, ""))
+        return accounting.formatMoney(taxes, 0)
+      }
+    },
+    mapAvailableIncome() {
+      if(this.grossIncome && this.taxes) {
+        let income = Number(this.grossIncome.replace(/[^0-9 ]/g, "")) - Number(this.taxes.replace(/[^0-9 ]/g, ""))
+        return accounting.formatMoney(income, 0)
+      }
+    },
+    mapMoneySaved() {
+      let investmentSavings = 0
+      let collegeSavings = 0
+      let retirementSavings = 0
+      let bankAccountStart = 0
+      let bankAccountEnd = 0
+      let totalSavings
+      if(this.investmentAccounts) {
+        for(let account of this.investmentAccounts) {
+          investmentSavings = investmentSavings + Number(account.contributions.replace(/[^0-9 ]/g, ""))
+        }
+      }
+      if(this.plan529Accounts) {
+        for(let account of this.plan529Accounts) {
+          collegeSavings = collegeSavings + Number(account.contributions.replace(/[^0-9 ]/g, ""))
+        }
+      }
+      if(this.retirementAccounts) {
+        for(let account of this.retirementAccounts) {
+          retirementSavings = retirementSavings + Number(account.contributions.replace(/[^0-9 ]/g, ""))
+        }
+      }
+      if(this.bankAccounts) {
+        for(let account of this.bankAccounts) {
+          bankAccountStart = bankAccountStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
+          bankAccountEnd = bankAccountEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
+        }
+      }
+      
+      totalSavings = (investmentSavings + collegeSavings + retirementSavings) + (bankAccountEnd - bankAccountStart)
+
+      return accounting.formatMoney(totalSavings, 0)
+    },
+    mapMoneyBorrowed() {
+      let newMortgages = 0
+      let newAutoLoans = 0
+      let newStudentLoans = 0
+      let creditCardsStart = 0
+      let creditCardsEnd = 0
+      let creditCardTotals
+      let totalBorrowed
+
+      for(let account of this.creditCards) {
+        creditCardsStart = creditCardsStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
+        creditCardsEnd = creditCardsEnd + Number(account.EndBalance.replace(/[^0-9 ]/g, ""))
+      }
+      creditCardTotals = creditCardsEnd - creditCardsStart
+
+      if(creditCardTotals < 0) {
+        totalBorrowed = (Number(this.newMortgages.replace(/[^0-9 ]/g, "")) + Number(this.newAutoLoans.replace(/[^0-9 ]/g, "")) + Number(this.newStudentLoans.replace(/[^0-9 ]/g, "")))  
+      } else {
+        totalBorrowed = (Number(this.newMortgages.replace(/[^0-9 ]/g, "")) + Number(this.newAutoLoans.replace(/[^0-9 ]/g, "")) + Number(this.newStudentLoans.replace(/[^0-9 ]/g, ""))) - creditCardTotals  
+      }
+
+      return totalBorrowed
     },
     familyMembers() {
       let numberOfClients = 0
