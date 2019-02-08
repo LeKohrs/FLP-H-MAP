@@ -561,6 +561,7 @@ import Hmap from '@/components/Hmap.vue'
 import Login from '@/components/Login.vue'
 import DataForm from '@/components/DataForm.vue'
 import moneyFormat from '@/js/moneyFormat.js'
+import { mapState } from 'vuex'
 
 
 export default {
@@ -780,9 +781,6 @@ export default {
     })
   },
   computed: {
-    selectedUser() {
-      return this.$store.state.selectedUser
-    },
     mapGrossIncome() {
       let grossIncome = 0
       if(this.grossIncome) {
@@ -1181,6 +1179,31 @@ export default {
       autoLoans.endBalance = endBalance.formatMoney(0, "$")  
       return autoLoans
     },
+    ...mapState(['selectedUser'])
+  },
+  watch: {
+    selectedUser() {
+      this.slug = this.selectedUser.slug
+      this.clients = this.selectedUser.questions[14].questions
+      this.children = this.selectedUser.questions[12].questions        
+      this.bankAccounts = this.selectedUser.questions[1].questions        
+      this.mortgages = this.selectedUser.questions[4].questions        
+      this.financialGifts = this.selectedUser.questions[5].answer        
+      this.childSupport = this.selectedUser.questions[7].answer        
+      this.creditCards = this.selectedUser.questions[8].questions        
+      this.alimony = this.selectedUser.questions[9].answer        
+      this.plan529Accounts = this.selectedUser.questions[10].questions        
+      this.investmentAccounts = this.selectedUser.questions[13].questions
+      this.autoLoans = this.selectedUser.questions[15].questions        
+      this.studentLoans = this.selectedUser.questions[16].questions        
+      this.retirementAccounts = this.selectedUser.questions[17].questions        
+      this.hsaAccounts = this.selectedUser.questions[19].questions   
+      this.grossIncome = this.selectedUser.questions[11].answer
+      this.taxes = this.selectedUser.questions[18].answer
+      this.newAutoLoans = this.selectedUser.questions[0].answer
+      this.newStudentLoans = this.selectedUser.questions[6].answer
+      this.newMortgages = this.selectedUser.questions[3].answer
+    }
   }
 }
 </script>
