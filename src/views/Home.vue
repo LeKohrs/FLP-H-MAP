@@ -547,8 +547,8 @@
       </div>
     </div>
     <section v-if="!showLogin" :class="['sidebar',  { openTray: openTray }]">
-      <div class="tab" @click="openTray = true" >Info</div>
-      <div class="close" @click="openTray = false" >X</div>
+      <div class="tab" @click="toggleTray" >Info</div>
+      <div class="close" @click="toggleTray" >X</div>
       <DataForm v-bind:selectedUser = "selectedUser" />
     </section>
   </div>
@@ -573,7 +573,7 @@ export default {
   },
   data() {
     return {
-      openTray: false,
+      // openTray: false,
       // selectedUser: this.$store.state.selectedUser,
       loggedinUser: this.$store.state.loggedinUser,
       email: null,
@@ -673,6 +673,9 @@ export default {
     }
   },
   methods: {
+    toggleTray() {
+      this.$store.commit('toggleTray')
+    },
     login() {
       if(this.email && this.password) {
         firebase.auth().signInWithEmailAndPassword(this.email, this.password)
@@ -781,6 +784,9 @@ export default {
     })
   },
   computed: {
+    openTray() {
+      return this.$store.state.openTray
+    },
     mapGrossIncome() {
       let grossIncome = 0
       if(this.grossIncome) {

@@ -8,6 +8,7 @@ Vue.use(firebase)
 
 export default new Vuex.Store({
   state: {
+    openTray: false,
     questions: [],
     users: [],
     activeUser: null,
@@ -48,6 +49,9 @@ export default new Vuex.Store({
     setCurrentClient(state, value) {
       state.currentClient = value;
       this.dispatch("setSelectedUser");
+    },
+    toggleTray(state) {
+      state.openTray = !state.openTray
     }
   },
   actions: {

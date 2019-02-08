@@ -731,7 +731,13 @@ export default {
             this.newAutoLoans = user.questions[0].answer
             this.newStudentLoans = user.questions[6].answer
             this.newMortgages = user.questions[3].answer
+            
           })
+          const fields = document.getElementsByClassName('field');
+          for(let field of fields) {
+            field.classList.remove('active')
+          }
+          this.$store.commit('toggleTray')
         })
       })    
     },
@@ -761,32 +767,6 @@ export default {
   },
   created() {
     
-    // let ref = db.collection('users').where('slug', '==', this.selectedUser.slug)
-    // ref.get().then(snapshot => {
-    //   snapshot.forEach(doc => {
-    //     this.selectedUser.id = doc.id
-    //     let user = doc.data()
-    //     this.clients = user.questions[14].questions
-    //     this.children = user.questions[12].questions        
-    //     this.bankAccounts = user.questions[1].questions        
-    //     this.mortgages = user.questions[4].questions        
-    //     this.financialGifts = user.questions[5].answer        
-    //     this.childSupport = user.questions[7].answer        
-    //     this.creditCards = user.questions[8].questions        
-    //     this.alimony = user.questions[9].answer        
-    //     this.plan529Accounts = user.questions[10].questions        
-    //     this.investmentAccounts = user.questions[13].questions
-    //     this.autoLoans = user.questions[15].questions        
-    //     this.studentLoans = user.questions[16].questions        
-    //     this.retirementAccounts = user.questions[17].questions        
-    //     this.hsaAccounts = user.questions[19].questions   
-    //     this.grossIncome = user.questions[11].answer
-    //     this.taxes = user.questions[18].answer
-    //     this.newAutoLoans = user.questions[0].answer
-    //     this.newStudentLoans = user.questions[6].answer
-    //     this.newMortgages = user.questions[3].answer
-    //   })
-    // })
   }
 }
 </script>
