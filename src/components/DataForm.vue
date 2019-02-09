@@ -771,7 +771,7 @@ export default {
 }
 </script>
 
-<style lang='scss'>
+<style lang='scss' >
 
   $color-green-light: #b0c986;
   $color-green: #7ba636;
@@ -803,9 +803,7 @@ export default {
     }
   }
   .field {
-    // margin-bottom: 60px;
     max-height: 36px;
-    // background: $color-white;
     border-bottom: 1px solid $color-grey-light;
     overflow: hidden;
     transition: max-height .5s;
@@ -819,7 +817,6 @@ export default {
       padding: 10px 5px;
       font-size: 16px;
       font-weight: 700;
-      // background: rgba($color-grey-light, .5);
     }
   }
   .questions {
@@ -886,10 +883,15 @@ export default {
     border: none;
     border-bottom: 1px solid rgba($color-grey-light, .5);
 
+    .field--new-student-loans &,
+    .field--new-auto-loans &,
+    .field--new-mortgages &,
+    .field--taxes &,
+    .field--gross-income &,
     .field--financial-gifts &,
     .field--child-support &,
     .field--alimony & {
-      margin-bottom: 40px;
+      margin-bottom: 30px;
     }
   }
   .update-info {

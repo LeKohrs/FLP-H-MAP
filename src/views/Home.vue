@@ -3,16 +3,16 @@
     <div v-if="$store.state.showLogin" class="login">
       <form @submit.prevent="login" action="">
         <h2>Login</h2>
-        <div class="field">
+        <div class="field field--email">
           <label for="email">Email:</label>
           <input type="email" name="email" v-model="email">
         </div>
-        <div class="field">
+        <div class="field field--password">
           <label for="password">Password:</label>
           <input type="password" name="password" v-model="password">
         </div>
         <p v-if="feedback">{{ feedback }}</p>
-        <div class="field">
+        <div class="field field--login">
           <button>Login</button>
         </div>
       </form>
@@ -1253,6 +1253,11 @@ export default {
       margin-bottom: 10px;
       text-align: left;
 
+      &--email, 
+      &--password,
+      &--login {
+        border-bottom: none;
+      }
       &:last-child {
         margin-top: 10px;
         align-self: center;
@@ -1373,6 +1378,15 @@ export default {
       padding: 20px;
       width: auto;
       z-index: 2;
+      cursor: pointer;
+      transition: .3s;
+
+      &:hover {
+        border-left: 1px solid $color-green;
+        border-top: 1px solid $color-green;
+        border-bottom: 1px solid $color-green;
+        color: $color-green;
+      }
     }
     .close {
       display: inline-block;
