@@ -5,7 +5,7 @@
       <button>Continue</button>
     </div>
     <div v-if="selectedUser !== undefined && showClientQuestions" class="admin__selected-client">
-        <DataForm v-bind:selectedUser = "selectedUser" />
+        <ClientForm v-if="selectedUser" v-bind:selectedUser = "selectedUser" />
     </div>
   </div>
 </template>
@@ -14,12 +14,12 @@
 import slugify from 'slugify'
 import db from '@/firebase/init'
 import firebase from 'firebase'
-import DataForm from '@/components/DataForm.vue'
+import ClientForm from '@/components/ClientForm.vue'
 
 export default {
   name: 'client',
   components: {
-    DataForm
+    ClientForm,
   },
   data() {
     return {
@@ -33,7 +33,6 @@ export default {
       feedback: null,
       slug: null,
       questions: [],
-      selectedUser: this.$store.state.selectedUser,
       showClientQuestions: true, 
     }
   },
@@ -44,17 +43,21 @@ export default {
     if(!this.$store.state.loggedinUser) {
       this.$router.push({ name: 'home' })
     }
-
     let ref = db.collection('users').where('user_id', '==', localStorage.getItem('user'))
       ref.get().then(snapshot => {
         snapshot.forEach(doc => {
           this.$store.state.loggedinUser = doc.data()
-          this.$store.state.selectedUser = doc.data()
+          // this.$store.state.selectedUser = doc.data()
           this.$store.state.loggedinUser.id = doc.id
           localStorage.setItem('user', localStorage.getItem('user'))
+          this.$store.commit('setCurrentClient', doc.data().slug)
         })
       })
-    this.selectedUser = this.$store.state.loggedinUser
+  },
+  computed: {
+    selectedUser() {
+      return this.$store.state.selectedUser
+    }
   },
 }
 </script>

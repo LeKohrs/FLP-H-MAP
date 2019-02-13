@@ -44,7 +44,6 @@ export default new Vuex.Store({
     },
     updateSelectedUser(state, data) {
       state.selectedUser = data.doc.data()
-      console.log('update')
     },
     setCurrentClient(state, value) {
       state.currentClient = value;
@@ -68,7 +67,6 @@ export default new Vuex.Store({
       ref.onSnapshot(snapshot => {
         snapshot.docChanges().forEach(change => {
           context.commit("updateSelectedUser", change);
-          console.log('update')
         });
       });
     }
