@@ -1,6 +1,14 @@
 <template>
   <div class="form-data">
     <div class="admin__selected-user__answers">
+        <div class="progress-bar">
+            <div class="bar"></div>
+            <div class="bar-complete"></div>
+        </div>
+        <div class="client__intro">
+            Please answer the questions to the best of your ability.
+            <button @click.prevent="startQuestioniarre()">Continue</button>
+        </div>
       <form @submit.prevent="editQuestions" class="edit-questions__form">
         <div v-if="selectedUser.questions[14].show" class="field field--client">
           <h3 @click="openSection($event)">{{ selectedUser.questions[14].title }}</h3>
@@ -417,11 +425,15 @@
           <h3 @click="openSection($event)">{{ selectedUser.questions[9].title }}:</h3>
           <input type="text" name="alimony" v-model="alimony">
         </div>
+      </form>
+        <div class="question-nav">
+            <button class="question-nav--prev" @click.prevent="">Previous Question</button>
+            <button class="question-nav--next" @click.prevent="">Next Question</button>
+        </div>
         <div class="finalSection">
             <p>Thank you! If you are happy with your answers please press submit.</p>
             <button class="update-info" @click.prevent="editClientInfo">Save</button>
         </div>
-      </form>
     </div>
   </div>
 </template>
@@ -439,6 +451,7 @@ export default {
       firstName: null,
       lastName: null,
       feedback: null,
+      questionList: null,
       questionCount: 0,
       anotherClient: {
         name: null,
@@ -742,6 +755,21 @@ export default {
         })
       })    
     },
+    startQuestioniarre() {
+        this.createProgressBar(this.questionList)
+    },
+    createProgressBar(list) {
+        let progressBar = document.getElementsByClassName('progress-bar')[0]
+        if(progressBar) {
+            for(let item of list) {
+                var dot = document.createElement('div')
+                var text = document.createElement('p')
+                text.innerHTML = item
+                dot.appendChild(text)
+                progressBar.appendChild(dot)
+            }
+        }
+    },
   },
   watch: {
     selectedUser() {
@@ -767,13 +795,16 @@ export default {
     }
   },
   created() {
-    let count = 0;
+    let questionList = []
+    let count = 0
     for(let question of this.selectedUser.questions) {
         if(question.show) {
-            count++;
-        }
+            questionList.push(question.title);
+            count++
+        } 
     }
     this.questionCount = count
+    this.questionList = questionList
   }
 }
 </script>
@@ -788,119 +819,170 @@ export default {
   $color-black: #333333;
   $color-grey: #666;
   $color-grey-light: #999;
+  $color-grey-lighter: #ddd;
   $color-blue-dark: #014584;
 
+.client__selected-client {
   .form-data {
-    height: calc(100vh - 120px);
-    overflow: scroll;
-
-    .sidebar & {
-      height: 100vh;
-    }
-
-    h2 {
-      margin-bottom: 20px;
-      font-size: 20px;
-      font-weight: 700;
-      color: $color-black;
-
-      span {
-        color: $color-green-dark;
+      .edit-questions__form {
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
       }
-    }
-  }
-  .field {
-    max-height: 36px;
-    border-bottom: 1px solid $color-grey-light;
-    overflow: hidden;
-    transition: max-height .5s;
+      .progress-bar {
+          position: relative;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin: 0 auto;
+          width: 600px;
 
-    &.active {
-      max-height: 1000px;
-    }
+          div {
+              position: relative;
+              width: 30px;
+              height: 30px;
+              border-radius: 15px;
+              background-color: $color-grey-lighter;
+              z-index: 2;
+              transition-delay: .3s;
+
+              p {
+                  position: absolute;
+                  top: -15px;
+                  left: 50%;
+                  font-size: 10px;
+                  white-space: nowrap;
+                  transform: translateX(-50%);
+              }
+          }
+          .bar-complete,
+          .bar {
+              position: absolute;
+              width: 100%;
+              height: 10px;
+              top: 50%;
+              left: 0;
+              background-color: $color-grey-lighter;
+              z-index: 1; 
+              transform: translateY(-50%);
+          }
+          .bar-complete {
+              background-color: $color-green;
+              width: 0;
+              transition: .3s;
+          }
+      }
+  }
+//     height: calc(100vh - 120px);
+//     overflow: scroll;
+
+//     .sidebar & {
+//       height: 100vh;
+//     }
+
+//     h2 {
+//       margin-bottom: 20px;
+//       font-size: 20px;
+//       font-weight: 700;
+//       color: $color-black;
+
+//       span {
+//         color: $color-green-dark;
+//       }
+//     }
+//   }
+//   .field {
+//     max-height: 36px;
+//     border-bottom: 1px solid $color-grey-light;
+//     overflow: hidden;
+//     transition: max-height .5s;
+
+//     &.active {
+//       max-height: 1000px;
+//     }
     
-    h3 {
-      margin-bottom: 10px;
-      padding: 10px 5px;
-      font-size: 16px;
-      font-weight: 700;
-    }
-  }
-  .questions {
-    margin-bottom: 60px;
+//     h3 {
+//       margin-bottom: 10px;
+//       padding: 10px 5px;
+//       font-size: 16px;
+//       font-weight: 700;
+//     }
+//   }
+//   .questions {
+//     margin-bottom: 60px;
 
-    ul {
-      display: flex; 
-      flex-wrap: wrap;
-      margin-bottom: 20px;   
-    }
-    li {
-      display: flex;
-      flex-direction: column;
-      margin: 10px 40px;
-      margin-left: 0;
-      padding: 40px 60px;
-      border: 1px solid $color-grey-light;
-      border-radius: 10px;
-      box-shadow: 2px 2px 5px $color-grey-light;
+//     ul {
+//       display: flex; 
+//       flex-wrap: wrap;
+//       margin-bottom: 20px;   
+//     }
+//     li {
+//       display: flex;
+//       flex-direction: column;
+//       margin: 10px 40px;
+//       margin-left: 0;
+//       padding: 40px 60px;
+//       border: 1px solid $color-grey-light;
+//       border-radius: 10px;
+//       box-shadow: 2px 2px 5px $color-grey-light;
 
-      .sub-field {
-        display: flex;
-        margin-bottom: 20px;
+//       .sub-field {
+//         display: flex;
+//         margin-bottom: 20px;
 
-        &:last-child {
-          margin-bottom: 0;
-        }
+//         &:last-child {
+//           margin-bottom: 0;
+//         }
 
-        label {
-          flex-grow: 1;
-          margin-right: 10px;
-        }
-      }
-    }
-    .new-question {
-      display: inline-flex;
-      flex-direction: column;
-      width: auto;
+//         label {
+//           flex-grow: 1;
+//           margin-right: 10px;
+//         }
+//       }
+//     }
+//     .new-question {
+//       display: inline-flex;
+//       flex-direction: column;
+//       width: auto;
 
-      div {
-        display: flex;
-        margin-bottom: 5px;
+//       div {
+//         display: flex;
+//         margin-bottom: 5px;
 
-        label {
-          flex-grow: 1;
-          margin-right: 10px;
-        }
-        input {
-          border-color: $color-grey-light;
-        }
-      }
-      a {
-        margin-top: 5px;
-        color: $color-green-dark;
-        font-size: 13px;
-        text-transform: uppercase;
-        cursor: pointer;
-        font-weight: bold;
-      }
-    }
-  }
-  input {
-    padding-bottom: 5px;
-    border: none;
-    border-bottom: 1px solid rgba($color-grey-light, .5);
+//         label {
+//           flex-grow: 1;
+//           margin-right: 10px;
+//         }
+//         input {
+//           border-color: $color-grey-light;
+//         }
+//       }
+//       a {
+//         margin-top: 5px;
+//         color: $color-green-dark;
+//         font-size: 13px;
+//         text-transform: uppercase;
+//         cursor: pointer;
+//         font-weight: bold;
+//       }
+//     }
+//   }
+//   input {
+//     padding-bottom: 5px;
+//     border: none;
+//     border-bottom: 1px solid rgba($color-grey-light, .5);
 
-    .field--new-student-loans &,
-    .field--new-auto-loans &,
-    .field--new-mortgages &,
-    .field--taxes &,
-    .field--gross-income &,
-    .field--financial-gifts &,
-    .field--child-support &,
-    .field--alimony & {
-      margin-bottom: 30px;
-    }
-  }
+//     .field--new-student-loans &,
+//     .field--new-auto-loans &,
+//     .field--new-mortgages &,
+//     .field--taxes &,
+//     .field--gross-income &,
+//     .field--financial-gifts &,
+//     .field--child-support &,
+//     .field--alimony & {
+//       margin-bottom: 30px;
+//     }
+//   }
   .update-info {
     margin: 20px 0 40px;
     padding: 10px 30px;
@@ -918,6 +1000,7 @@ export default {
     &:hover {
       box-shadow: 2px 2px 5px $color-grey-light;
     }
-  }
+ }
+}
 </style>
 

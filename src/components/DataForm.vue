@@ -781,6 +781,8 @@ export default {
   $color-grey-light: #999;
   $color-blue-dark: #014584;
 
+.admin__selected-client,
+.sidebar {
   .form-data {
     height: calc(100vh - 120px);
     overflow: scroll;
@@ -910,5 +912,6 @@ export default {
       box-shadow: 2px 2px 5px $color-grey-light;
     }
   }
+}
 </style>
 

@@ -1,10 +1,6 @@
 <template>
   <div class="client">
-    <div class="client__intro">
-      Please answer the questions to the best of your ability.
-      <button>Continue</button>
-    </div>
-    <div v-if="selectedUser !== undefined && showClientQuestions" class="admin__selected-client">
+    <div v-if="selectedUser !== undefined && showClientQuestions" class="client__selected-client">
         <ClientForm v-if="selectedUser" v-bind:selectedUser = "selectedUser" />
     </div>
   </div>
@@ -61,3 +57,35 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+  $color-green-light: #b0c986;
+  $color-green: #7ba636;
+  $color-green-dark: #577937;
+  $color-blue: #b5c7e8;
+  $color-white: #fff;
+  $color-black: #333333;
+  $color-grey: #666;
+  $color-grey-light: #999;
+  $color-blue-dark: #014584;
+
+  .client__intro {
+    button {
+      margin: 20px 0 40px;
+      padding: 10px 30px;
+      border-radius: 10px;
+      border: none;
+      box-shadow: none;
+      background-color: $color-green; 
+      font-size: 15px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: $color-white;
+      cursor: pointer;
+      transition: .3s ease-out;
+
+      &:hover {
+        box-shadow: 2px 2px 5px $color-grey-light;
+      }
+    }
+  }
+</style>
