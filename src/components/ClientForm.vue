@@ -6,7 +6,7 @@
             <div class="bar-complete"></div>
         </div>
         <div class="client__intro show">
-            Please answer the questions to the best of your ability.
+            <p>Please answer the questions to the best of your ability.</p>
             <button @click.prevent="startQuestioniarre()">Continue</button>
         </div>
         <div class="">
@@ -431,11 +431,13 @@
             <button class="question-nav--next" @click.prevent="nextQuestion">Continue</button>
           </div>
       </div>
-        
-        <div class="finalSection">
-            <p>Thank you! If you are happy with your answers please press submit.</p>
+        <div class="review-questions">
+            <p>Please review your answers. Correct any mistakes and then click save.</p>
             <button class="update-info" @click.prevent="editClientInfo">Save</button>
         </div>
+    </div>
+    <div class="finalSection">
+        <p>Your answers have been submitted. Thank you!</p>
     </div>
   </div>
 </template>
@@ -752,11 +754,17 @@ export default {
             this.newStudentLoans = user.questions[6].answer
             this.newMortgages = user.questions[3].answer
           })
-          const fields = document.getElementsByClassName('field');
-          for(let field of fields) {
-            field.classList.remove('active')
-          }
-          this.$store.commit('toggleTray')
+          let finalSection = document.getElementsByClassName('finalSection')[0]
+          finalSection.classList.add('show')
+          let container = document.getElementsByClassName('edit-questions__form')[0]
+          container.classList.remove('show')      
+          let review = document.getElementsByClassName('review-questions')[0]
+          review.classList.remove('show')
+          let progressBar = document.getElementsByClassName('progress-bar')[0]
+          let completeDot = progressBar.getElementsByClassName('complete')[0]
+          completeDot.classList.add('alert')
+          this.questionNumber++
+          this.advanceBar()
         })
       })    
     },
@@ -776,10 +784,20 @@ export default {
     },
     displayQuestion() {
       let container = document.getElementsByClassName('edit-questions__form')[0]
-      console.log(this.currentQuestion)
+      let progressBar = document.getElementsByClassName('progress-bar')[0]
       let question = container.getElementsByClassName(this.currentQuestion)[0]
+      let indicator = progressBar.getElementsByClassName(this.currentQuestion)[0]
       this.clearFields()
       question.classList.add('show')
+      indicator.classList.add('alert')
+      this.advanceBar()
+    },
+    advanceBar() {
+      let barComplete = document.getElementsByClassName('bar-complete')[0]
+      let division = 100 / (this.questionList.length + 1)
+      let width = division * this.questionNumber
+      console.log(width)
+      barComplete.style.width = width + '%'
     },
     clearFields() {
       let container = document.getElementsByClassName('edit-questions__form')[0]
@@ -801,9 +819,24 @@ export default {
                 })
                 text.innerHTML = item
                 dot.classList.add(dotClass)
+                dot.classList.add('dot')
                 dot.appendChild(text)
                 progressBar.appendChild(dot)
             }
+            let reviewDot = document.createElement('div')
+            let reviewText = document.createElement('p')
+            reviewText.innerHTML = 'Review'
+            reviewDot.classList.add('review')
+            reviewDot.classList.add('dot')
+            reviewDot.appendChild(reviewText)
+            progressBar.appendChild(reviewDot)
+            let completeDot = document.createElement('div')
+            let completeText = document.createElement('p')
+            completeText.innerHTML = 'Complete!'
+            completeDot.classList.add('complete')
+            completeDot.classList.add('dot')
+            completeDot.appendChild(completeText)
+            progressBar.appendChild(completeDot)
         }
       let container = document.getElementsByClassName('edit-questions__form')[0]
       container.classList.add('show')
@@ -817,13 +850,20 @@ export default {
         this.setQuestion()
       } else {
         let container = document.getElementsByClassName('edit-questions__form')[0]
-        container.classList.remove('show')
-        let finalSection = document.getElementsByClassName('finalSection')[0]
-        finalSection.classList.add('show')
+        container.classList.add('review')
+        let fields = container.getElementsByClassName('field')
+        for (let field of fields) {
+          field.classList.add('show')
+        }        
+        let review = document.getElementsByClassName('review-questions')[0]
+        review.classList.add('show')
         let nav = document.getElementsByClassName('question-nav')[0]
         nav.classList.remove('show')
         let progressBar = document.getElementsByClassName('progress-bar')[0]
-        progressBar.classList.remove('show')
+        let reviewDot = progressBar.getElementsByClassName('review')[0]
+        reviewDot.classList.add('alert')
+        this.questionNumber++
+        this.advanceBar()
       }
     }
   },
@@ -888,6 +928,7 @@ export default {
     left: 50%;
     opacity: 0;
     visibility: hidden;
+    text-align: center;
     transform: translate(-50%, -50%);
 
     &.show {
@@ -907,15 +948,27 @@ export default {
         opacity: 1;
         visibility: visible;
       }
+      &.review {
+        text-align: center;
+
+        .field {
+          position: relative;
+          display: block;
+          margin: 0 auto;
+          top: auto;
+          left: auto;
+          transform: translateX(0);
+        }
+      }
 
       .field {
         position: absolute;
         left: 50%;
-        top: 20%;
+        top: 50%;
         opacity: 0;
         visibility: hidden;
-        transform: translateX(-50%);
-        transition: .3s;
+        transform: translate(-50%, -50%);
+        transition: opacity .3s;
 
         &.show {
           opacity: 1;
@@ -944,20 +997,25 @@ export default {
             visibility: visible;
           }
 
-          div {
+          .dot {
               position: relative;
               width: 30px;
               height: 30px;
               border-radius: 15px;
               background-color: $color-grey-lighter;
               z-index: 2;
-              transition-delay: .3s;
+              transition-delay: 1s;
               cursor: pointer;
+              transition: 1s;
 
               &:hover {
                 p {
                   opacity: 1;
                 }
+              }
+
+              &.alert {
+                background-color: $color-green;
               }
 
               p {
@@ -988,6 +1046,16 @@ export default {
               width: 0;
               transition: .3s;
           }
+      }
+      .review-questions {
+        opacity: 0;
+        visibility: hidden;
+        text-align: center;
+
+        &.show {
+          opacity: 1;
+          visibility: visible;
+        }
       }
       .finalSection {
         position: absolute;
@@ -1127,6 +1195,7 @@ export default {
 //       margin-bottom: 30px;
 //     }
 //   }
+  .question-nav--next,
   .update-info {
     margin: 20px 0 40px;
     padding: 10px 30px;
