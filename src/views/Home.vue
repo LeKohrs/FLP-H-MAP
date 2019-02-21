@@ -732,6 +732,9 @@ export default {
           this.$store.state.loggedinUser.id = doc.id
         })
       }).then(() => {
+        if(this.$store.state.loggedinUser.role === 'user') {
+          this.$router.push({ name: 'client' })
+        }
         this.$store.state.showLogin = false
       })
     }

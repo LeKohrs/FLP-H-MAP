@@ -761,8 +761,18 @@ export default {
           let review = document.getElementsByClassName('review-questions')[0]
           review.classList.remove('show')
           let progressBar = document.getElementsByClassName('progress-bar')[0]
+          let dots = progressBar.getElementsByClassName('dot')
           let completeDot = progressBar.getElementsByClassName('complete')[0]
+          let fields = container.getElementsByClassName('field')
+          for (let field of fields) {
+            field.classList.remove('show')
+          }       
           completeDot.classList.add('alert')
+          container.classList.remove('review')
+          for (let dot of dots) {
+            dot.classList.remove('active')
+          }
+          completeDot.classList.add('active')
           this.questionNumber++
           this.advanceBar()
         })
@@ -790,6 +800,7 @@ export default {
       this.clearFields()
       question.classList.add('show')
       indicator.classList.add('alert')
+      indicator.classList.add('active')
       this.advanceBar()
     },
     advanceBar() {
@@ -800,8 +811,13 @@ export default {
       barComplete.style.width = width + '%'
     },
     clearFields() {
+      let progressBar = document.getElementsByClassName('progress-bar')[0]
+      let dots = progressBar.getElementsByClassName('dot')
       let container = document.getElementsByClassName('edit-questions__form')[0]
       let fields =  container.getElementsByClassName('field')
+      for (let dot of dots) {
+        dot.classList.remove('active')
+      }
       for (let field of fields) {
         field.classList.remove('show')
       }
@@ -861,7 +877,12 @@ export default {
         nav.classList.remove('show')
         let progressBar = document.getElementsByClassName('progress-bar')[0]
         let reviewDot = progressBar.getElementsByClassName('review')[0]
+        let dots = progressBar.getElementsByClassName('dot')
         reviewDot.classList.add('alert')
+        for (let dot of dots) {
+          dot.classList.remove('active')
+        }
+        reviewDot.classList.add('active')        
         this.questionNumber++
         this.advanceBar()
       }
@@ -939,7 +960,7 @@ export default {
   .form-data {
     .edit-questions__form {
       position: relative;
-      min-height: 300px;
+      min-height: 200px;
       opacity: 0;
       visibility: hidden;
       transition: .3s;
@@ -949,6 +970,8 @@ export default {
         visibility: visible;
       }
       &.review {
+        padding-top: 40px;
+        padding-bottom: 40px;
         text-align: center;
 
         .field {
@@ -971,8 +994,87 @@ export default {
         transition: opacity .3s;
 
         &.show {
+          position: relative;
+          display: block;
+          margin: 0 auto;
+          padding-top: 40px;
+          top: auto;
+          left: auto;
           opacity: 1;
           visibility: visible;
+          text-align: center;
+          transform: translate(0,0);
+        }
+
+        input {
+          padding-bottom: 5px;
+          border: none;
+          border-bottom: 1px solid rgba($color-grey-light, .5);
+        }
+      }
+      .questions {
+        margin-bottom: 60px;
+
+        ul {
+          display: flex; 
+          justify-content: center;
+          flex-wrap: wrap;
+          margin-bottom: 20px;   
+        }
+        li {
+          display: flex;
+          flex-direction: column;
+          margin: 10px 40px;
+          margin-left: 0;
+          padding: 40px 60px;
+          border: 1px solid $color-grey-light;
+          border-radius: 10px;
+          box-shadow: 2px 2px 5px $color-grey-light;
+
+          &:last-child {
+              margin-right: 0;
+          }
+
+          .sub-field {
+            display: flex;
+            margin-bottom: 20px;
+
+            &:last-child {
+              margin-bottom: 0;
+            }
+
+            label {
+              flex-grow: 1;
+              margin-right: 10px;
+            }
+          }
+        }
+        .new-question {
+          display: inline-flex;
+          flex-direction: column;
+          width: auto;
+          margin-top: 40px;
+
+          div {
+            display: flex;
+            margin-bottom: 15px;
+
+            label {
+              flex-grow: 1;
+              margin-right: 10px;
+            }
+            input {
+              border-color: $color-grey-light;
+            }
+          }
+          a {
+            margin-top: 5px;
+            color: $color-green-dark;
+            font-size: 13px;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-weight: bold;
+          }
         }
       }
     }
@@ -988,6 +1090,7 @@ export default {
           justify-content: space-between;
           align-items: center;
           margin: 0 auto;
+          margin-top: 50px;
           width: 600px;
           opacity: 0;
           visibility: hidden;
@@ -1008,6 +1111,13 @@ export default {
               cursor: pointer;
               transition: 1s;
 
+              &:nth-child(3) {
+                margin-left: -2px;
+              }
+              &:last-child {
+                margin-right: -6px;
+              }
+
               &:hover {
                 p {
                   opacity: 1;
@@ -1017,7 +1127,11 @@ export default {
               &.alert {
                 background-color: $color-green;
               }
-
+              &.active {
+                p {
+                  opacity: 1;
+                }
+              }
               p {
                   position: absolute;
                   top: -15px;
@@ -1026,6 +1140,7 @@ export default {
                   white-space: nowrap;
                   transform: translateX(-50%);
                   opacity: 0;
+                  font-weight: 700;
                   transition: .3s;
               }
           }
@@ -1055,6 +1170,10 @@ export default {
         &.show {
           opacity: 1;
           visibility: visible;
+        }
+
+        p {
+          font-weight: 700;
         }
       }
       .finalSection {
