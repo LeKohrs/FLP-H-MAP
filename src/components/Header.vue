@@ -7,14 +7,14 @@
     </div>
     <div class="header__buttons">
 
-      <div v-if="$route.name === 'admin'" class="button--admin">
-        <router-link to="/">Map</router-link>
+      <div @click.prevent="toHome" v-if="$route.name === 'admin'" class="button--admin">
+        <p>Map</p>
       </div>
-      <div v-if="$store.state.loggedinUser && $store.state.loggedinUser.role === 'admin' && $route.name === 'home'" class="button--admin">
-        <router-link to="/admin">Admin</router-link>
+      <div @click.prevent="toAdmin" v-if="$store.state.loggedinUser && $store.state.loggedinUser.role === 'admin' && $route.name === 'home'" class="button--admin">
+        <p>Admin</p>
       </div>
-      <div v-if="!$store.state.showLogin" class="logout">
-        <a href="" @click.prevent="logout">Log out</a>
+      <div v-if="!$store.state.showLogin" class="logout" @click.prevent="logout">
+        <p>Log out</p>
       </div>
     </div>
     
@@ -23,6 +23,7 @@
 
 <script>
 import firebase from 'firebase'
+import db from '@/firebase/init'
 
 export default {
   name: 'Header',
@@ -40,9 +41,33 @@ export default {
         this.$store.state.showLogin = true        
         this.$router.push({ name: 'home' })
       })
+    },
+    toAdmin() {
+      this.$router.push({ name: 'admin' })
+    },
+    toHome() {
+      this.$router.push({ name: 'home' })
     }
   },
   created() {
+    if(localStorage.getItem('user')) {
+      this.$store.state.userId = localStorage.getItem('user')
+      let ref = db.collection('users').where('user_id', '==', this.$store.state.userId)
+      ref.get().then(snapshot => {
+        snapshot.forEach(doc => {
+          this.$store.state.loggedinUser = doc.data()
+          this.$store.state.loggedinUser.id = doc.id
+        })
+      }).then(() => {
+        this.$store.state.showLogin = false
+        if(this.$store.state.loggedinUser.role === 'user') {
+          this.$router.push({ name: 'client' })
+        }
+      })
+    }
+    else {
+      this.$store.state.showLogin = true
+    }
   }
 }
 </script>
@@ -100,20 +125,20 @@ export default {
       margin-right: 30px;
       padding: 10px 20px;
       border-radius: 5px; 
-      border: 1px solid $color-grey-light;      
+      border: 1px solid $color-grey-light;
+      cursor: pointer;      
       transition: all .3s ease-out;      
 
       &:hover {
         border: 1px solid $color-green;
         
-        a {
+        p {
           color: $color-green;
         }
       }
 
-      a {
+      p {
         text-decoration: none;
-        // text-transform: uppercase;
         font-size: 13px;
         color: $color-grey;
         transition: all .3s ease-out;

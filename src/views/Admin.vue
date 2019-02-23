@@ -14,10 +14,10 @@
     </section>
     <section class="admin__main">
       <div v-if="showCreateClient" class="admin__create-client">
+        <div class="close" @click="closeModal" >X</div>
         <div class="create-client">
-          <h3>Create new client here.</h3>
+          <h2>Create new client</h2>
           <form @submit.prevent="createUser" class="create-client__form">
-            <h2>Signup</h2>
             <div class="field">
               <label for="firstName">First Name:</label>
               <input type="text" name="firstName" v-model="firstName">
@@ -39,15 +39,13 @@
               <input type="text" name="username" v-model="username">
             </div>
             <p class="feedback" v-if="feedback">{{ feedback }}</p>
-            <div class="field">
-              <button class="btn">Create User</button>
-            </div>
+            <button class="btn">Create User</button>
           </form>
         </div>     
       </div>
       <div v-if="showQuestions" class="admin__pick-questions">
         <div class="questions">
-          <h3>Add questions for {{ firstName }} {{ lastName }}.</h3>
+          <h2>Add questions for {{ firstName }} {{ lastName }}.</h2>
           <form @submit.prevent="addQuestions" class="add-questions__form">
           <ul class="questions-list">
             <li v-for="(question, key) in questions" :key="key" class="question">
@@ -194,6 +192,9 @@ export default {
         })
       }) 
     },
+    closeModal() {
+      this.showCreateClient = false
+    }
   },
   computed: {
     selectedUser() {
@@ -258,6 +259,26 @@ export default {
   .admin {
     display: flex;
 
+    .close {
+      display: inline-block;
+      position: absolute;
+      top: 40px;
+      right: 65px;
+      padding: 10px 12px;
+      border-radius: 50%;
+      border: 1px solid $color-green-dark;
+      color: $color-green-dark;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .3s ease-out;
+
+      &:hover {
+        background-color: $color-green-dark;
+        color: $color-white;
+      }
+    }
+
     &__sidebar {
       margin-right: 25px;
       padding-left: 10px;
@@ -303,6 +324,63 @@ export default {
     }
     &__main {
       width: calc(100% - 200px);
+    }
+    &__pick-questions,
+    &__create-client {
+      position: absolute;
+      padding: 100px;
+      left: 50%;
+      top: 50%;
+      background-color: $color-white;
+      border: 2px solid $color-green-light;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      h2 {
+        align-self: center;
+        margin-bottom: 30px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: 700;
+      }
+      .field {
+        margin-bottom: 10px;
+        text-align: left;
+
+        &:last-child {
+          margin-top: 10px;
+          align-self: center;
+        }
+
+        input {
+          margin-left: 5px;
+          border: none;
+          border-bottom: 1px solid $color-black;
+        }
+      }
+      .btn {
+        margin: 20px 0 40px;
+        padding: 10px 30px;
+        border-radius: 10px;
+        border: none;
+        box-shadow: none;
+        background-color: $color-green; 
+        font-size: 15px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: $color-white;
+        cursor: pointer;
+        transition: .3s ease-out;
+
+        &:hover {
+          box-shadow: 2px 2px 5px $color-grey-light;
+        }
+      }
     }
   }
 </style>

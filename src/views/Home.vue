@@ -763,6 +763,8 @@ export default {
       this.newAutoLoans = this.selectedUser.questions[0].answer
       this.newStudentLoans = this.selectedUser.questions[6].answer
       this.newMortgages = this.selectedUser.questions[3].answer
+      console.log(this.selectedUser.questions[11].answer)
+
   }
     if(this.$store.state.loggedinUser) {
       this.loggedinUser = this.$store.state.loggedinUser
@@ -807,6 +809,7 @@ export default {
     },
     mapAvailableIncome() {
       let income = 0
+      console.log(this.grossIncome)
       if(this.grossIncome && this.taxes) {
         income = Number(this.grossIncome.replace(/[^0-9 ]/g, "")) - Number(this.taxes.replace(/[^0-9 ]/g, ""))
       }
@@ -964,14 +967,29 @@ export default {
         creditCardTotals = creditCardsEnd - creditCardsStart
       }
 
-      totalDebtPaid = ((mortgagesEnd - mortgagesStart) - newMortgages) + ((studentLoansEnd - studentLoansStart) - newStudentLoans) + ((autoLoansEnd - autoLoansStart) - newAutoLoans) + (creditCardTotals)
+      totalDebtPaid = ((mortgagesEnd - mortgagesStart) * -1) + ((studentLoansEnd - studentLoansStart) * -1) + ((autoLoansEnd - autoLoansStart) * -1) + ((creditCardTotals) * -1)
       
       return totalDebtPaid.formatMoney(0, "$")
     },
     spending() {
       let availableSpending = 0
+      let creditCards = {}
+      let startBalance = 0
+      let endBalance = 0
+      for(let account of this.creditCards) {
+        if(account.startBalance) {
+          startBalance = startBalance + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
+        }
+        if(account.endBalance) {
+          endBalance = endBalance + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
+        }
+      }
+      let totalCreditCard = endBalance - startBalance
+      if(totalCreditCard < 0) {
+        totalCreditCard = 0
+      }
 
-      availableSpending = Number(this.mapAvailableIncome.replace(/[^0-9 ]/g, "")) + Number(this.mapMoneySaved.replace(/[^0-9 ]/g, "")) - Number(this.mapMoneyBorrowed.replace(/[^0-9 ]/g, "")) - Number(this.mapSavingsUsed.replace(/[^0-9 ]/g, "")) + Number(this.mapDebtPaid.replace(/[^0-9 ]/g, ""))
+      availableSpending = Number(this.mapAvailableIncome.replace(/[^0-9 ]/g, "")) - Number(this.mapMoneySaved.replace(/[^0-9 ]/g, "")) + totalCreditCard + Number(this.mapSavingsUsed.replace(/[^0-9 ]/g, "")) - Number(this.mapDebtPaid.replace(/[^0-9 ]/g, ""))
       return availableSpending.formatMoney(0, "$")
 
     },
