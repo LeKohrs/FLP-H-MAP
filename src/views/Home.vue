@@ -763,7 +763,6 @@ export default {
       this.newAutoLoans = this.selectedUser.questions[0].answer
       this.newStudentLoans = this.selectedUser.questions[6].answer
       this.newMortgages = this.selectedUser.questions[3].answer
-      console.log(this.selectedUser.questions[11].answer)
 
   }
     if(this.$store.state.loggedinUser) {
@@ -809,7 +808,6 @@ export default {
     },
     mapAvailableIncome() {
       let income = 0
-      console.log(this.grossIncome)
       if(this.grossIncome && this.taxes) {
         income = Number(this.grossIncome.replace(/[^0-9 ]/g, "")) - Number(this.taxes.replace(/[^0-9 ]/g, ""))
       }
@@ -847,23 +845,10 @@ export default {
       return totalSavings.formatMoney(0, "$")
     },
     mapMoneyBorrowed() {
-      let newMortgages = 0
-      let newAutoLoans = 0
-      let newStudentLoans = 0
       let creditCardsStart = 0
       let creditCardsEnd = 0
       let creditCardTotals
       let totalBorrowed
-
-      if(this.newMortgages) {
-        newMortgages = Number(this.newMortgages.replace(/[^0-9 ]/g, ""))
-      }
-      if(this.newStudentLoans) {
-        newStudentLoans = Number(this.newStudentLoans.replace(/[^0-9 ]/g, ""))
-      }
-      if(this.newAutoLoans) {
-        newAutoLoans = Number(this.newAutoLoans.replace(/[^0-9 ]/g, ""))
-      }
 
       if(this.creditCards) {
         for(let account of this.creditCards) {
@@ -873,10 +858,10 @@ export default {
         creditCardTotals = creditCardsEnd - creditCardsStart
       }
       
-      if(creditCardTotals < 0) {
-        totalBorrowed = (newMortgages + newAutoLoans + newStudentLoans)  
+      if(creditCardTotals <= 0) {
+        totalBorrowed = 0
       } else {
-        totalBorrowed = (newMortgages + newAutoLoans + newStudentLoans) - creditCardTotals  
+        totalBorrowed = creditCardTotals 
       }
       return totalBorrowed.formatMoney(0, "$")
     },
@@ -887,6 +872,8 @@ export default {
       let bankAccountStart = 0
       let bankAccountEnd = 0
       let totalSavingsUsed = 0
+      let totalDistibutions = 0
+      let totalBankAccount = 0
 
       if(this.investmentAccounts) {
         for(let account of this.investmentAccounts) {
@@ -909,12 +896,22 @@ export default {
           bankAccountEnd = bankAccountEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
         }
       }
+      totalDistibutions = investmentDistributions - collegeDistributions - retirementDistributions
+      totalBankAccount = bankAccountEnd - bankAccountStart
 
-      totalSavingsUsed = (investmentDistributions - collegeDistributions - retirementDistributions) - (bankAccountEnd - bankAccountStart)
-
-      if(totalSavingsUsed < 0) {
-        totalSavingsUsed = totalSavingsUsed * -1
+      if(totalDistibutions < 0) {
+        totalDistibutions = totalDistibutions * -1
+      } else {
+        totalDistibutions = 0
       }
+
+      if(totalBankAccount < 0) {
+        totalBankAccount = totalBankAccount * -1
+      } else {
+        totalBankAccount = 0
+      }
+
+      totalSavingsUsed = totalDistibutions + totalBankAccount
       return totalSavingsUsed.formatMoney(0, "$")
     },
     mapDebtPaid() {
@@ -932,43 +929,37 @@ export default {
       let creditCardTotals = 0
       let totalDebtPaid = 0
 
-      if(this.mortgages) {
-        for(let account of this.mortgages) {
-          mortgagesEnd = mortgagesEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
-          mortgagesStart = mortgagesStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
+      if((this.newMortgages && this.newMortgages > 0) || (this.newStudentLoans && this.newStudentLoans > 0) || (this.newAutoLoans && this.newAutoLoans > 0)) {
+        totalDebtPaid = 0
+      } else {
+        if(this.mortgages) {
+          for(let account of this.mortgages) {
+            mortgagesEnd = mortgagesEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
+            mortgagesStart = mortgagesStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
+          }
         }
-      }
-      if(this.newMortgages) {
-        newMortgages = newMortgages + this.newMortgages
-      }
-      if(this.plan529Accounts) {
-        for(let account of this.plan529Accounts) {
-          studentLoansEnd = studentLoansEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
-          studentLoansStart = studentLoansStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
+        if(this.plan529Accounts) {
+          for(let account of this.plan529Accounts) {
+            studentLoansEnd = studentLoansEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
+            studentLoansStart = studentLoansStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
+          }
         }
-      }
-      if(this.newStudentLoans) {
-        newStudentLoans = newStudentLoans + this.newStudentLoans
-      }
-      if(this.autoLoans) {
-        for(let account of this.autoLoans) {
-          autoLoansEnd = autoLoansEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
-          autoLoansStart = autoLoansStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
+        if(this.autoLoans) {
+          for(let account of this.autoLoans) {
+            autoLoansEnd = autoLoansEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
+            autoLoansStart = autoLoansStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
+          }
         }
-      }
-      if(this.newAutoLoans) {
-        newAutoLoans = newAutoLoans + this.newAutoLoans
-      }
-      if(this.creditCards) {
-        for(let account of this.creditCards) {
-          creditCardsStart = creditCardsStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
-          creditCardsEnd = creditCardsEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
+        if(this.creditCards) {
+          for(let account of this.creditCards) {
+            creditCardsStart = creditCardsStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
+            creditCardsEnd = creditCardsEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
+          }
+          creditCardTotals = creditCardsEnd - creditCardsStart
         }
-        creditCardTotals = creditCardsEnd - creditCardsStart
+        totalDebtPaid = ((mortgagesEnd - mortgagesStart) * -1) + ((studentLoansEnd - studentLoansStart) * -1) + ((autoLoansEnd - autoLoansStart) * -1) + ((creditCardTotals) * -1)
       }
 
-      totalDebtPaid = ((mortgagesEnd - mortgagesStart) * -1) + ((studentLoansEnd - studentLoansStart) * -1) + ((autoLoansEnd - autoLoansStart) * -1) + ((creditCardTotals) * -1)
-      
       return totalDebtPaid.formatMoney(0, "$")
     },
     spending() {
