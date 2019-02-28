@@ -784,7 +784,7 @@ export default {
 .admin__selected-client,
 .sidebar {
   .form-data {
-    height: calc(100vh - 120px);
+    height: 100%;
     overflow: scroll;
 
     .sidebar & {

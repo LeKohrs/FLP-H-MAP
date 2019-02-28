@@ -443,7 +443,7 @@
             <div>
               <p>Members Ages</p>
               <p>
-                <span v-for="(age, key) in birthDates" :key="key">{{ age }} </span>
+                <span class="age" v-for="(age, key) in birthDates" :key="key">{{ age }}, </span>
               </p>
               
             </div>
@@ -1320,7 +1320,7 @@ export default {
       display: flex;
       flex-direction: column;
       flex-wrap: wrap;
-      height: 275px;
+      height: 316px;
 
       .catagory {
         width: auto;
@@ -1350,7 +1350,7 @@ export default {
     }
     &__money-out {
       background-color: $color-blue;
-      width: 33%;
+      width: 34%;
 
       .catagory {
         p {
@@ -1366,6 +1366,7 @@ export default {
     position: absolute;
     padding: 40px;
     width: 80%;
+    height: calc(100% - 78px);
     right: 0;
     top: 0;
     background: $color-white;
@@ -1411,6 +1412,7 @@ export default {
       color: $color-green-dark;
       font-size: 14px;
       font-weight: 700;
+      background-color: $color-white;
       cursor: pointer;
       transition: all .3s ease-out;
 

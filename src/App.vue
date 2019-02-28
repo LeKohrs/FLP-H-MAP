@@ -45,6 +45,7 @@ export default {
 @import '../node_modules/reset-css/sass/reset';
 
 #app {
+  position: relative;
   font-family: 'Lato', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
