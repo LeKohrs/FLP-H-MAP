@@ -10,6 +10,9 @@
             <button @click.prevent="startQuestioniarre()">Continue</button>
         </div>
         <div class="">
+          <div class="review-questions">
+            <p>Please review your answers. Correct any mistakes and then click save.</p>
+          </div>  
           <form @submit.prevent="editQuestions" class="edit-questions__form">
             <div v-if="selectedUser.questions[14].show" class="field client">
               <h3 @click="openSection($event)">{{ selectedUser.questions[14].title }}</h3>
@@ -18,22 +21,22 @@
                   <li v-if="clients[key].name || clients[key].dateOfBirth" v-for="(client, key) in clients" :key="key">
                     <div  class="sub-field">
                       <label for="client-name">Name:</label>
-                      <input type="text" tabindex="-1" name="client-name" v-model="clients[key].name">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="client-name" v-model="clients[key].name">
                     </div>
                     <div class="sub-field">
                       <label for="client-birthday">Date of Birth:</label>
-                      <input  type="text" tabindex="-1" name="client-birthday" v-model="clients[key].dateOfBirth">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="client-birthday" v-model="clients[key].dateOfBirth">
                     </div>
                   </li>
                 </ul>
                 <div class="new-question">
                   <div for="client-name">
                     <label>Name:</label>
-                    <input type="text" tabindex="-1" name="client-name" v-model="anotherClient.name">    
+                    <input @keyup.tab="checkParent" type="text"  name="client-name" v-model="anotherClient.name">    
                   </div>
                   <div for="client-birthday">
                     <label>Date of Birth:</label>
-                    <input placeholder="ex: mm/dd/yyyy" type="text" tabindex="-1" name="client-birthday" v-model="anotherClient.dateOfBirth">              
+                    <input @keyup.tab="checkParent" placeholder="ex: mm/dd/yyyy" type="text"  name="client-birthday" v-model="anotherClient.dateOfBirth">              
                   </div>
                   <p v-if="clientMsg">{{ clientMsg }}</p>
                   <a @click.prevent="addClient">Add Client</a>  
@@ -47,22 +50,22 @@
                   <li v-if="children[key].name || children[key].dateOfBirth" v-for="(child, key) in children" :key="key">
                     <div class="sub-field"> 
                       <label for="child-name">Name:</label>
-                      <input type="text" tabindex="-1" name="child-name" v-model="children[key].name">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="child-name" v-model="children[key].name">
                     </div>
                     <div class="sub-field">
                       <label for="child-birthday">Date of Birth:</label>
-                      <input type="text" tabindex="-1" name="child-birthday" v-model="children[key].dateOfBirth">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="child-birthday" v-model="children[key].dateOfBirth">
                     </div>
                   </li>
                 </ul>
                 <div class="new-question">
                   <div for="child-name">
                     <label>Name:</label>
-                    <input type="text" tabindex="-1" name="child-name" v-model="anotherChild.name">              
+                    <input @keyup.tab="checkParent" type="text"  name="child-name" v-model="anotherChild.name">              
                   </div>
                   <div for="child-birthday">
                     <label>Date of Birth:</label>
-                    <input placeholder="ex: mm/dd/yyyy" type="text" tabindex="-1" name="child-birthday" v-model="anotherChild.dateOfBirth">              
+                    <input @keyup.tab="checkParent" placeholder="ex: mm/dd/yyyy" type="text"  name="child-birthday" v-model="anotherChild.dateOfBirth">              
                   </div>
                   <p v-if="childMsg">{{ childMsg }}</p>
                   <a @click.prevent="addChild">Add Child</a>  
@@ -71,11 +74,11 @@
             </div>
             <div v-if="selectedUser.questions[11].show" class="field total-gross-income">
               <h3 @click="openSection($event)">{{ selectedUser.questions[11].title }}:</h3>
-              <input type="text" tabindex="-1" name="gross-income" v-model="grossIncome">
+              <input @keyup.tab="checkParentSingle" type="text"  name="gross-income" v-model="grossIncome">
             </div>
             <div v-if="selectedUser.questions[18].show" class="field taxes-income-and-fica">
               <h3 @click="openSection($event)">{{ selectedUser.questions[18].title }}:</h3>
-              <input type="text" tabindex="-1" name="taxes" v-model="taxes">
+              <input @keyup.tab="checkParentSingle" type="text"  name="taxes" v-model="taxes">
             </div>
             <div v-if="selectedUser.questions[1].show" class="field bank-account">
               <h3 @click="openSection($event)">{{ selectedUser.questions[1].title }}</h3>
@@ -84,22 +87,22 @@
                   <li v-if="bankAccounts[key].startBalance || bankAccounts[key].endBalance" v-for="(account, key) in bankAccounts" :key="key">
                     <div class="sub-field">
                       <label for="start-balance">Balance on January 1, 2018:</label>
-                      <input  type="text" tabindex="-1" name="start-balance" v-model="bankAccounts[key].startBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="start-balance" v-model="bankAccounts[key].startBalance">
                     </div>
                     <div class="sub-field">
                       <label for="end-balance">Balance on December 31, 2018:</label>
-                      <input type="text" tabindex="-1" name="end-balance" v-model="bankAccounts[key].endBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="end-balance" v-model="bankAccounts[key].endBalance">
                     </div>
                   </li>
                 </ul>
                 <div class="new-question">
                   <div for="start-balance">
                     <label>Balance on January 1, 2018:</label>
-                    <input type="text" tabindex="-1" name="start-balance" v-model="anotherBankAccount.startBalance">              
+                    <input @keyup.tab="checkParent" type="text"  name="start-balance" v-model="anotherBankAccount.startBalance">              
                   </div>
                   <div for="end-balance">
                     <label>Balance on December 31, 2018:</label>
-                    <input type="text" tabindex="-1" name="end-balance" v-model="anotherBankAccount.endBalance">                
+                    <input @keyup.tab="checkParent" type="text"  name="end-balance" v-model="anotherBankAccount.endBalance">                
                   </div>
                   <p v-if="bankAccountMsg">{{ bankAccountMsg }}</p>
                   <a @click.prevent="addBankAccount">Add Bank Account</a>  
@@ -108,7 +111,7 @@
             </div>
             <div v-if="selectedUser.questions[3].show" class="field new-mortgages">
               <h3 @click="openSection($event)">{{ selectedUser.questions[3].title }}:</h3>
-              <input type="text" tabindex="-1" name="new-mortgages" v-model="newMortgages">
+              <input @keyup.tab="checkParentSingle" type="text"  name="new-mortgages" v-model="newMortgages">
             </div>
             <div v-if="selectedUser.questions[4].show" class="field mortgage">
               <h3 @click="openSection($event)">{{ selectedUser.questions[4].title }}</h3>
@@ -117,22 +120,22 @@
                   <li v-if="mortgages[key].startBalance || mortgages[key].endBalance" v-for="(mortgage, key) in mortgages" :key="key">
                     <div class="sub-field">
                       <label for="start-balance">Balance on January 1, 2018:</label>
-                      <input  type="text" tabindex="-1" name="start-balance" v-model="mortgages[key].startBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="start-balance" v-model="mortgages[key].startBalance">
                     </div>
                     <div class="sub-field">
                       <label for="end-balance">Balance on December 31, 2018:</label>
-                      <input  type="text" tabindex="-1" name="end-balance" v-model="mortgages[key].endBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="end-balance" v-model="mortgages[key].endBalance">
                     </div>
                   </li>
                 </ul>
                 <div class="new-question">
                   <div for="start-balance">
                     <label>Balance on January 1, 2018:</label>
-                    <input type="text" tabindex="-1" name="start-balance" v-model="anotherMortgage.startBalance">              
+                    <input @keyup.tab="checkParent" type="text"  name="start-balance" v-model="anotherMortgage.startBalance">              
                   </div>
                   <div for="end-balance">
                     <label>Balance on December 31, 2018:</label>
-                    <input type="text" tabindex="-1" name="end-balance" v-model="anotherMortgage.endBalance">        
+                    <input @keyup.tab="checkParent" type="text"  name="end-balance" v-model="anotherMortgage.endBalance">        
                   </div>
                   <p v-if="mortgageMsg">{{ mortageMsg }}</p>
                   <a @click.prevent="addMortgage">Add Mortgage</a>  
@@ -146,22 +149,22 @@
                   <li v-if="creditCards[key].startBalance || creditCards[key].endBalance" v-for="(creditCard, key) in creditCards" :key="key">
                     <div class="sub-field">
                       <label for="start-balance">Balance on January 1, 2018:</label>
-                      <input type="text" tabindex="-1" name="start-balance" v-model="creditCards[key].startBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="start-balance" v-model="creditCards[key].startBalance">
                     </div>
                     <div class="sub-field">
                       <label for="end-balance">Balance on December 31, 2018:</label>
-                      <input type="text" tabindex="-1" name="end-balance" v-model="creditCards[key].endBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="end-balance" v-model="creditCards[key].endBalance">
                     </div>
                   </li>
                 </ul>
                 <div class="new-question">
                   <div for="start-balance">
                     <label>Balance on January 1, 2018:</label>
-                    <input type="text" tabindex="-1" name="start-balance" v-model="anotherCreditCard.startBalance">              
+                    <input @keyup.tab="checkParent" type="text"  name="start-balance" v-model="anotherCreditCard.startBalance">              
                   </div>
                   <div for="end-balance">
                     <label>Balance on December 31, 2018:</label>
-                    <input type="text" tabindex="-1" name="end-balance" v-model="anotherCreditCard.endBalance">              
+                    <input @keyup.tab="checkParent" type="text"  name="end-balance" v-model="anotherCreditCard.endBalance">              
                   </div>
                   <p v-if="creditCardMsg">{{ creditCardMsg }}</p>
                   <a @click.prevent="addCreditCard">Add Credit Card</a>  
@@ -175,38 +178,38 @@
                   <li v-if="plan529Accounts[key].startBalance || plan529Accounts[key].contributions || plan529Accounts[key].withdrawals || plan529Accounts[key].endBalance" v-for="(account, key) in plan529Accounts" :key="key">
                     <div class="sub-field">
                       <label for="start-balance">Balance on January 1, 2018:</label>
-                      <input type="text" tabindex="-1" name="start-balance" v-model="plan529Accounts[key].startBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="start-balance" v-model="plan529Accounts[key].startBalance">
                     </div>
                     <div class="sub-field">
                       <label for="contributions">Contributions during current year:</label>
-                      <input type="text" tabindex="-1" name="contributions" v-model="plan529Accounts[key].contributions">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="contributions" v-model="plan529Accounts[key].contributions">
                     </div>
                     <div class="sub-field">
                       <label for="withdrawals">Withdrawals during current year:</label>
-                      <input type="text" tabindex="-1" name="withdrawals" v-model="plan529Accounts[key].withdrawals">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="withdrawals" v-model="plan529Accounts[key].withdrawals">
                     </div>
                     <div class="sub-field">
                       <label for="end-balance">Balance on December 31, 2018:</label>
-                      <input type="text" tabindex="-1" name="end-balance" v-model="plan529Accounts[key].endBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="end-balance" v-model="plan529Accounts[key].endBalance">
                     </div>
                   </li>
                 </ul>
                 <div class="new-question">
                   <div for="start-balance">
                     <label>Balance on January 1, 2018:</label>
-                    <input type="text" tabindex="-1" name="start-balance" v-model="another529Plan.startBalance">              
+                    <input @keyup.tab="checkParent" type="text"  name="start-balance" v-model="another529Plan.startBalance">              
                   </div>
                   <div for="contributions">
                     <label>Contributions during current year:</label>
-                    <input type="text" tabindex="-1" name="contributions" v-model="another529Plan.contributions">              
+                    <input @keyup.tab="checkParent" type="text"  name="contributions" v-model="another529Plan.contributions">              
                   </div>
                   <div for="withdrawals">
                     <label>Withdrawals during current year:</label>
-                    <input type="text" tabindex="-1" name="withdrawals" v-model="another529Plan.withdrawals">              
+                    <input @keyup.tab="checkParent" type="text"  name="withdrawals" v-model="another529Plan.withdrawals">              
                   </div>
                   <div for="end-balance">
                     <label>Balance on December 31, 2018:</label>
-                    <input type="text" tabindex="-1" name="end-balance" v-model="another529Plan.endBalance">
+                    <input @keyup.tab="checkParent" type="text"  name="end-balance" v-model="another529Plan.endBalance">
                   </div>
                   <p v-if="plan529AccountMsg">{{ plan529AccountMsg }}</p>
                   <a @click.prevent="add529Account">Add 529 Plan Account</a>  
@@ -220,38 +223,38 @@
                   <li v-if="investmentAccounts[key].startBalance || investmentAccounts[key].contributions || investmentAccounts[key].withdrawals ||investmentAccounts[key].endBalance" v-for="(account, key) in investmentAccounts" :key="key">
                     <div class="sub-field">
                       <label for="start-balance">Balance on January 1, 2018:</label>
-                      <input type="text" tabindex="-1" name="start-balance" v-model="investmentAccounts[key].startBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="start-balance" v-model="investmentAccounts[key].startBalance">
                     </div> 
                     <div class="sub-field">
                       <label for="contributions">Contributions during current year:</label>
-                      <input type="text" tabindex="-1" name="contributions" v-model="investmentAccounts[key].contributions">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="contributions" v-model="investmentAccounts[key].contributions">
                     </div> 
                     <div class="sub-field">
                       <label for="withdrawals">Withdrawals during current year:</label>
-                      <input type="text" tabindex="-1" name="withdrawals" v-model="investmentAccounts[key].withdrawals">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="withdrawals" v-model="investmentAccounts[key].withdrawals">
                     </div> 
                     <div class="sub-field">
                       <label for="end-balance">Balance on December 31, 2018:</label>
-                      <input type="text" tabindex="-1" name="end-balance" v-model="investmentAccounts[key].endBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="end-balance" v-model="investmentAccounts[key].endBalance">
                     </div> 
                   </li>
                 </ul>
                 <div class="new-question">
                   <div for="start-balance">
                     <label>Balance on January 1, 2018:</label>
-                    <input type="text" tabindex="-1" name="start-balance" v-model="anotherInvestmentAccount.startBalance">               
+                    <input @keyup.tab="checkParent" type="text"  name="start-balance" v-model="anotherInvestmentAccount.startBalance">               
                   </div>
                   <div for="contributions">
                     <label>Contributions during current year:</label>
-                    <input type="text" tabindex="-1" name="contributions" v-model="anotherInvestmentAccount.contributions">                
+                    <input @keyup.tab="checkParent" type="text"  name="contributions" v-model="anotherInvestmentAccount.contributions">                
                   </div>
                   <div for="withdrawals">
                     <label>Withdrawals during current year:</label>
-                    <input type="text" tabindex="-1" name="withdrawals" v-model="anotherInvestmentAccount.withdrawals">              
+                    <input @keyup.tab="checkParent" type="text"  name="withdrawals" v-model="anotherInvestmentAccount.withdrawals">              
                   </div>
                   <div for="end-balance">
                     <label>Balance on December 31, 2018:</label>
-                    <input type="text" tabindex="-1" name="end-balance" v-model="anotherInvestmentAccount.endBalance">               
+                    <input @keyup.tab="checkParent" type="text"  name="end-balance" v-model="anotherInvestmentAccount.endBalance">               
                   </div>
                   <p v-if="investmentAccountMsg">{{ investmentAccountMsg }}</p>
                   <a @click.prevent="addInvestmentAccount">Add Investment Account</a> 
@@ -260,7 +263,7 @@
             </div>
             <div v-if="selectedUser.questions[0].show" class="field new-auto-loans">
               <h3 @click="openSection($event)">{{ selectedUser.questions[0].title }}:</h3>
-              <input type="text" tabindex="-1" name="new-auto-loans" v-model="newAutoLoans">
+              <input @keyup.tab="checkParentSingle" type="text"  name="new-auto-loans" v-model="newAutoLoans">
             </div>
             <div v-if="selectedUser.questions[15].show" class="field auto-loan">
               <h3 @click="openSection($event)">{{ selectedUser.questions[15].title }}</h3>
@@ -269,22 +272,22 @@
                   <li v-if="autoLoans[key].startBalance || autoLoans[key].endBalance" v-for="(autoLoan, key) in autoLoans" :key="key">
                     <div class="sub-field">
                       <label for="start-balance">Balance on January 1, 2018:</label>
-                      <input type="text" tabindex="-1" name="start-balance" v-model="autoLoans[key].startBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="start-balance" v-model="autoLoans[key].startBalance">
                     </div>
                     <div class="sub-field">
                       <label for="end-balance">Balance on December 31, 2018:</label>
-                      <input type="text" tabindex="-1" name="end-balance" v-model="autoLoans[key].endBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="end-balance" v-model="autoLoans[key].endBalance">
                     </div>
                   </li>
                 </ul>
                 <div class="new-question">
                   <div for="start-balance">
                     <label>Balance on January 1, 2018:</label>
-                    <input type="text" tabindex="-1" name="start-balance" v-model="anotherAutoLoan.startBalance">              
+                    <input @keyup.tab="checkParent" type="text"  name="start-balance" v-model="anotherAutoLoan.startBalance">              
                   </div>
                   <div for="end-balance">
                     <label>Balance on December 31, 2018:</label>
-                    <input type="text" tabindex="-1" name="end-balance" v-model="anotherAutoLoan.endBalance">              
+                    <input @keyup.tab="checkParent" type="text"  name="end-balance" v-model="anotherAutoLoan.endBalance">              
                   </div>
                   <p v-if="autoLoanMsg">{{ autoLoanMsg }}</p>
                   <a @click.prevent="addAutoLoan">Add Auto Loan</a>  
@@ -293,7 +296,7 @@
             </div>
             <div v-if="selectedUser.questions[6].show" class="field new-student-loans">
               <h3 @click="openSection($event)">{{ selectedUser.questions[6].title }}:</h3>
-              <input type="text" tabindex="-1" name="new-student-loans" v-model="newStudentLoans">
+              <input @keyup.tab="checkParentSingle" type="text"  name="new-student-loans" v-model="newStudentLoans">
             </div>
             <div v-if="selectedUser.questions[16].show" class="field student-loan">
               <h3 @click="openSection($event)">{{ selectedUser.questions[16].title }}</h3>
@@ -302,22 +305,22 @@
                   <li v-if="studentLoans[key].startBalance || studentLoans[key].endBalance" v-for="(studentLoan, key) in studentLoans" :key="key">
                     <div class="sub-field">
                       <label for="start-balance">Balance on January 1, 2018:</label>
-                      <input type="text" tabindex="-1" name="start-balance" v-model="studentLoans[key].startBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="start-balance" v-model="studentLoans[key].startBalance">
                     </div>
                     <div class="sub-field">
                       <label for="end-balance">Balance on December 31, 2018:</label>
-                      <input type="text" tabindex="-1" name="end-balance" v-model="studentLoans[key].endBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="end-balance" v-model="studentLoans[key].endBalance">
                     </div>
                   </li>
                 </ul>
                 <div class="new-question">
                   <div for="start-balance">
                     <label>Balance on January 1, 2018:</label>
-                    <input type="text" tabindex="-1" name="start-balance" v-model="anotherStudentLoan.startBalance">              
+                    <input @keyup.tab="checkParent" type="text"  name="start-balance" v-model="anotherStudentLoan.startBalance">              
                   </div>
                   <div for="end-balance">
                     <label>Balance on December 31, 2018:</label>
-                    <input type="text" tabindex="-1" name="end-balance" v-model="anotherStudentLoan.endBalance">                
+                    <input @keyup.tab="checkParent" type="text"  name="end-balance" v-model="anotherStudentLoan.endBalance">                
                   </div>
                   <p v-if="studentLoanMsg">{{ studentLoanMsg }}</p>
                   <a @click.prevent="addStudentLoan">Add Student Loan</a>  
@@ -331,38 +334,38 @@
                   <li v-if="retirementAccounts[key].startBalance || retirementAccounts[key].contributions || retirementAccounts[key].withdrawals || retirementAccounts[key].endBalance" v-for="(account, key) in retirementAccounts" :key="key">
                     <div class="sub-field">
                       <label for="start-balance">Balance on January 1, 2018:</label>
-                      <input type="text" tabindex="-1" name="start-balance" v-model="retirementAccounts[key].startBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="start-balance" v-model="retirementAccounts[key].startBalance">
                     </div>
                     <div class="sub-field">
                       <label for="contributions">Contributions during current year:</label>
-                      <input type="text" tabindex="-1" name="contributions" v-model="retirementAccounts[key].contributions">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="contributions" v-model="retirementAccounts[key].contributions">
                     </div>
                     <div class="sub-field">
                       <label for="withdrawals">Withdrawals during current year:</label>
-                      <input type="text" tabindex="-1" name="withdrawals" v-model="retirementAccounts[key].withdrawals">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="withdrawals" v-model="retirementAccounts[key].withdrawals">
                     </div>
                     <div class="sub-field">
                       <label for="end-balance">Balance on December 31, 2018:</label>
-                      <input type="text" tabindex="-1" name="end-balance" v-model="retirementAccounts[key].endBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="end-balance" v-model="retirementAccounts[key].endBalance">
                     </div>
                   </li>
                 </ul>
                 <div class="new-question">
                   <div for="start-balance">
                     <label> Balance on January 1, 2018:</label>
-                    <input type="text" tabindex="-1" name="start-balance" v-model="anotherRetirementAccount.startBalance">             
+                    <input @keyup.tab="checkParent" type="text"  name="start-balance" v-model="anotherRetirementAccount.startBalance">             
                   </div>
                   <div for="contributions">
                     <label> Contributions during current year:</label>
-                    <input type="text" tabindex="-1" name="contributions" v-model="anotherRetirementAccount.contributions">              
+                    <input @keyup.tab="checkParent" type="text"  name="contributions" v-model="anotherRetirementAccount.contributions">              
                   </div>
                   <div for="withdrawals">
                     <label> Withdrawals during current year:</label>
-                    <input type="text" tabindex="-1" name="withdrawals" v-model="anotherRetirementAccount.withdrawals">              
+                    <input @keyup.tab="checkParent" type="text"  name="withdrawals" v-model="anotherRetirementAccount.withdrawals">              
                   </div>
                   <div for="end-balance">
                     <label> Balance on December 31, 2018:</label>
-                    <input type="text" tabindex="-1" name="end-balance" v-model="anotherRetirementAccount.endBalance">
+                    <input @keyup.tab="checkParent" type="text"  name="end-balance" v-model="anotherRetirementAccount.endBalance">
                   </div>
                   <p v-if="retirementAccountMsg">{{ retirementAccountMsg }}</p>
                   <a @click.prevent="addRetirementAccount">Add Retirement Account</a>  
@@ -376,38 +379,38 @@
                   <li v-if="hsaAccounts[key].startBalance || hsaAccounts[key].contributions || hsaAccounts[key].withdrawals ||hsaAccounts[key].endBalance" v-for="(account, key) in hsaAccounts" :key="key">
                     <div class="sub-field">
                       <label for="start-balance">Balance on January 1, 2018:</label>
-                      <input type="text" tabindex="-1" name="start-balance" v-model="hsaAccounts[key].startBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="start-balance" v-model="hsaAccounts[key].startBalance">
                     </div>
                     <div class="sub-field">
                       <label for="contributions">Contributions during current year:</label>
-                      <input type="text" tabindex="-1" name="contributions" v-model="hsaAccounts[key].contributions">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="contributions" v-model="hsaAccounts[key].contributions">
                     </div>
                     <div class="sub-field">
                       <label for="withdrawals">Withdrawals during current year:</label>
-                      <input type="text" tabindex="-1" name="withdrawals" v-model="hsaAccounts[key].withdrawals">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="withdrawals" v-model="hsaAccounts[key].withdrawals">
                     </div>
                     <div class="sub-field">
                       <label for="end-balance">Balance on December 31, 2018:</label>
-                      <input type="text" tabindex="-1" name="end-balance" v-model="hsaAccounts[key].endBalance">
+                      <input @keyup.tab="checkAddedParent" type="text"  name="end-balance" v-model="hsaAccounts[key].endBalance">
                     </div>
                   </li>
                 </ul>
                 <div class="new-question">
                   <div>
                     <label for="start-balance">Balance on January 1, 2018:</label>
-                    <input type="text" tabindex="-1" name="start-balance" v-model="anotherHSAAccount.startBalance">
+                    <input @keyup.tab="checkParent" type="text"  name="start-balance" v-model="anotherHSAAccount.startBalance">
                   </div>
                   <div>
                     <label for="contributions">Contributions during current year:</label>
-                    <input type="text" tabindex="-1" name="contributions" v-model="anotherHSAAccount.contributions">
+                    <input @keyup.tab="checkParent" type="text"  name="contributions" v-model="anotherHSAAccount.contributions">
                   </div>
                   <div>
                     <label for="withdrawals">Withdrawals during current year:</label>
-                    <input type="text" tabindex="-1" name="withdrawals" v-model="anotherHSAAccount.withdrawals">
+                    <input @keyup.tab="checkParent" type="text"  name="withdrawals" v-model="anotherHSAAccount.withdrawals">
                   </div>
                   <div>
                     <label for="end-balance">Balance on December 31, 2018:</label>
-                    <input type="text" tabindex="-1" name="end-balance" v-model="anotherHSAAccount.endBalance">              
+                    <input @keyup.tab="checkParent" type="text"  name="end-balance" v-model="anotherHSAAccount.endBalance">              
                   </div>
                   <p v-if="hsaAccountMsg">{{ hsaAccountMsg }}</p>
                   <a @click.prevent="addHSAAccount">Add HSA Account</a>   
@@ -416,15 +419,15 @@
             </div>
             <div v-if="selectedUser.questions[5].show" class="field amount-of-financial-gifts-from-families">
               <h3 @click="openSection($event)">{{ selectedUser.questions[5].title }}:</h3>
-              <input type="text" tabindex="-1" name="financial-gifts" v-model="financialGifts">
+              <input @keyup.tab="checkParentSingle" type="text"  name="financial-gifts" v-model="financialGifts">
             </div>
             <div v-if="selectedUser.questions[7].show" class="field amount-of-child-support-recieved">
               <h3 @click="openSection($event)">{{ selectedUser.questions[7].title }}:</h3>
-              <input type="text" tabindex="-1" name="child-support" v-model="childSupport">
+              <input @keyup.tab="checkParentSingle" type="text"  name="child-support" v-model="childSupport">
             </div>
             <div v-if="selectedUser.questions[9].show" class="field amount-of-alimony-recieved">
               <h3 @click="openSection($event)">{{ selectedUser.questions[9].title }}:</h3>
-              <input type="text" tabindex="-1" name="alimony" v-model="alimony">
+              <input @keyup.tab="checkParentSingle" type="text"  name="alimony" v-model="alimony">
             </div>
           </form>
           <div class="question-nav">
@@ -432,7 +435,6 @@
           </div>
       </div>
         <div class="review-questions">
-            <p>Please review your answers. Correct any mistakes and then click save.</p>
             <button class="update-info" @click.prevent="editClientInfo">Save</button>
         </div>
     </div>
@@ -546,6 +548,29 @@ export default {
     }
   },
   methods: {
+    checkAddedParent(e) {
+      // console.log(e)
+
+      // let parent = e.target.parentNode.parentNode.parentNode.parentNode.parentNode
+      // if(!parent.classList.contains('show')) {
+      //   let resetField = document.querySelector('.field.show input:first-child').focus()
+      // }
+    },
+    checkParent(e) {
+      // console.log(e)
+
+      // let parent = e.target.parentNode.parentNode.parentNode.parentNode
+      // if(!parent.classList.contains('show')) {
+      //   let resetField = document.querySelector('.field.show input:first-child').focus()
+      // }
+    },
+    checkParentSingle(e) {
+      // console.log(e)
+      // let parent = e.target.parentNode
+      // if(!parent.classList.contains('show')) {
+      //   let resetField = document.querySelector('.field.show input:first-child').focus()
+      // }
+    },
     openSection(e) {
       const fields = document.getElementsByClassName('field');
       for(let field of fields) {
@@ -555,26 +580,34 @@ export default {
     },
     addClient() {      
       if(this.anotherClient.name && this.anotherClient.dateOfBirth) {
-        this.selectedUser.questions[14].questions.push(this.anotherClient)
-        this.anotherClient = {
-          name: null,
-          dateOfBirth: null
+        if(this.anotherClient.dateOfBirth.substring(2, 3) == '/' && this.anotherClient.dateOfBirth.substring(5, 6) == '/' && this.anotherClient.dateOfBirth.length === 10) {
+          this.selectedUser.questions[14].questions.push(this.anotherClient)
+          this.anotherClient = {
+            name: null,
+            dateOfBirth: null
+          }
+          this.clientMsg = null
+        } else {
+          this.clientMsg = "Date needs to be in the mm/dd/yyyy format."
         }
-        this.clientFeedBack = null
       } else {
-        this.clientFeedBack = this.msg
+        this.clientMsg = this.msg
       }
     },
     addChild() {
       if(this.anotherChild.name && this.anotherChild.dateOfBirth) {
-        this.selectedUser.questions[12].questions.push(this.anotherChild)        
-        this.anotherChild = {
-          name: null,
-          dateOfBirth: null
+        if(this.anotherChild.dateOfBirth.substring(2, 3) == '/' && this.anotherChild.dateOfBirth.substring(5, 6) == '/' && this.anotherChild.dateOfBirth.length === 10) {
+          this.selectedUser.questions[12].questions.push(this.anotherChild)        
+          this.anotherChild = {
+            name: null,
+            dateOfBirth: null
+          }
+          this.childMsg = null        
+        } else {
+          this.childMsg = "Date needs to be in the mm/dd/yyyy format."
         }
-        this.childFeedBack = null        
       } else {
-        this.childFeedBack = this.msg
+        this.childMsg = this.msg
       }
     },
     addBankAccount() {
@@ -585,7 +618,7 @@ export default {
           endBalance: null
         }
       } else {
-        this.bankAccountFeedBack = this.msg
+        this.bankAccountMsg = this.msg
       }
     },
     addMortgage() {
@@ -596,9 +629,9 @@ export default {
           newMortgage: null,
           endBalance: null
         }
-        this.mortgageFeedBack = null        
+        this.mortgageMsg = null        
       } else {
-        this.mortgageFeedBack = this.msg
+        this.mortgageMsg = this.msg
       }
     },
     addCreditCard() {
@@ -608,9 +641,9 @@ export default {
           startBalance: null,
           endBalance: null
         }
-        this.creditCardFeedBack = null        
+        this.creditCardMsg = null        
       } else {
-        this.creditCardFeedBack = this.msg
+        this.creditCardMsg = this.msg
       }
     },
     add529Account() {
@@ -622,9 +655,9 @@ export default {
           withdrawals: null,
           endBalance: null
         }
-        this.plan529AccountFeedBack = null        
+        this.plan529AccountMsg = null        
       } else {
-        this.plan529AccountFeedBack = this.msg
+        this.plan529AccountMsg = this.msg
       }
     },
     addInvestmentAccount() {
@@ -636,9 +669,9 @@ export default {
           withdrawals: null,
           endBalance: null
         }
-        this.investmentAccountFeedBack = null        
+        this.investmentAccountMsg = null        
       } else {
-        this.investmentAccountFeedBack = this.msg
+        this.investmentAccountMsg = this.msg
       }
     },
     addAutoLoan() {
@@ -649,9 +682,9 @@ export default {
           newAutoLoan: null,
           endBalance: null
         }
-        this.autoLoanFeedBack = null        
+        this.autoLoanMsg = null        
       } else {
-        this.autoLoanFeedBack = this.msg
+        this.autoLoanMsg = this.msg
       }
     },
     addStudentLoan() {
@@ -662,9 +695,9 @@ export default {
           newStudentLoan: null,
           endBalance: null
         }
-        this.studentLoansFeedBack = null        
+        this.studentLoansMsg = null        
       } else {
-        this.studentLoansFeedBack = this.msg
+        this.studentLoansMsg = this.msg
       }
     },
     addRetirementAccount() {
@@ -676,9 +709,9 @@ export default {
           withdrawals: null,
           endBalance: null
         }
-        this.retirementAccountFeedBack = null        
+        this.retirementAccountMsg = null        
       } else {
-        this.retirementAccountFeedBack = this.msg
+        this.retirementAccountMsg = this.msg
       }
     },
     addHSAAccount() {
@@ -690,9 +723,9 @@ export default {
           withdrawals: null,
           endBalance: null
         }
-        this.hsaAccountFeedBack = null        
+        this.hsaAccountMsg = null        
       } else {
-        this.hsaAccountFeedBack = this.msg
+        this.hsaAccountMsg = this.msg
       }
     },
     editClientInfo() {
@@ -758,8 +791,10 @@ export default {
           finalSection.classList.add('show')
           let container = document.getElementsByClassName('edit-questions__form')[0]
           container.classList.remove('show')      
-          let review = document.getElementsByClassName('review-questions')[0]
-          review.classList.remove('show')
+          let review = document.getElementsByClassName('review-questions')
+          for(let r of review) {
+            r.classList.remove('show')
+          }
           let progressBar = document.getElementsByClassName('progress-bar')[0]
           let dots = progressBar.getElementsByClassName('dot')
           let completeDot = progressBar.getElementsByClassName('complete')[0]
@@ -797,17 +832,19 @@ export default {
       let progressBar = document.getElementsByClassName('progress-bar')[0]
       let question = container.getElementsByClassName(this.currentQuestion)[0]
       let indicator = progressBar.getElementsByClassName(this.currentQuestion)[0]
+      let input = question.querySelector('input')
+
       this.clearFields()
       question.classList.add('show')
       indicator.classList.add('alert')
       indicator.classList.add('active')
+      input.focus()
       this.advanceBar()
     },
     advanceBar() {
       let barComplete = document.getElementsByClassName('bar-complete')[0]
       let division = 100 / (this.questionList.length + 1)
       let width = division * this.questionNumber
-      console.log(width)
       barComplete.style.width = width + '%'
     },
     clearFields() {
@@ -871,8 +908,10 @@ export default {
         for (let field of fields) {
           field.classList.add('show')
         }        
-        let review = document.getElementsByClassName('review-questions')[0]
-        review.classList.add('show')
+        let review = document.getElementsByClassName('review-questions')
+        for(let r of review) {
+          r.classList.add('show')
+        }
         let nav = document.getElementsByClassName('question-nav')[0]
         nav.classList.remove('show')
         let progressBar = document.getElementsByClassName('progress-bar')[0]
@@ -886,6 +925,30 @@ export default {
         this.questionNumber++
         this.advanceBar()
       }
+    },
+    isValidDate(dateString) {
+      // First check for the pattern
+      if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
+          return false;
+
+      // Parse the date parts to integers
+      var parts = dateString.split("/");
+      var day = parseInt(parts[1], 10);
+      var month = parseInt(parts[0], 10);
+      var year = parseInt(parts[2], 10);
+
+      // Check the ranges of month and year
+      if(year < 1000 || year > 3000 || month == 0 || month > 12)
+          return false;
+
+      var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+      // Adjust for leap years
+      if(year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+          monthLength[1] = 29;
+
+      // Check the range of the day
+      return day > 0 && day <= monthLength[month - 1];
     }
   },
   watch: {
@@ -1072,6 +1135,8 @@ export default {
             color: $color-green-dark;
             font-size: 13px;
             text-transform: uppercase;
+            background: white;
+            border: 2px solid $color-green-dark;
             cursor: pointer;
             font-weight: bold;
           }
@@ -1166,6 +1231,10 @@ export default {
         opacity: 0;
         visibility: hidden;
         text-align: center;
+
+        &:first-child {
+          margin-top: 50px;
+        }
 
         &.show {
           opacity: 1;
@@ -1314,6 +1383,7 @@ export default {
 //       margin-bottom: 30px;
 //     }
 //   }
+  .new-question a,
   .question-nav--next,
   .update-info {
     margin: 20px 0 40px;

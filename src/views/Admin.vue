@@ -324,6 +324,7 @@ export default {
     }
     &__main {
       width: calc(100% - 200px);
+      height: 100vh;
     }
     &__pick-questions,
     &__create-client {

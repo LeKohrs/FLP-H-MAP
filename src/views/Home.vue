@@ -938,8 +938,8 @@ export default {
             mortgagesStart = mortgagesStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
           }
         }
-        if(this.plan529Accounts) {
-          for(let account of this.plan529Accounts) {
+        if(this.studentLoans) {
+          for(let account of this.studentLoans) {
             studentLoansEnd = studentLoansEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
             studentLoansStart = studentLoansStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
           }
@@ -957,8 +957,11 @@ export default {
           }
           creditCardTotals = creditCardsEnd - creditCardsStart
         }
-        totalDebtPaid = ((mortgagesEnd - mortgagesStart) * -1) + ((studentLoansEnd - studentLoansStart) * -1) + ((autoLoansEnd - autoLoansStart) * -1) + ((creditCardTotals) * -1)
+        totalDebtPaid = ((mortgagesEnd - mortgagesStart)) + ((studentLoansEnd - studentLoansStart)) + ((autoLoansEnd - autoLoansStart)) + ((creditCardTotals))
       }
+      if(totalDebtPaid < 0) [
+        totalDebtPaid = totalDebtPaid * -1
+      ]
 
       return totalDebtPaid.formatMoney(0, "$")
     },
@@ -1237,13 +1240,14 @@ export default {
   $color-grey-light: #999;
   $color-blue-dark: #014584;
   .home {
-    overflow-x: hidden;
+    position: relative;
+    overflow: hidden;
   }
   .login {
     position: absolute;
     padding: 100px;
     left: 50%;
-    top: 50%;
+    top: 33%;
     background-color: $color-white;
     border: 2px solid $color-green-light;
     transform: translate(-50%, -50%);
@@ -1365,6 +1369,7 @@ export default {
   .sidebar {
     position: absolute;
     padding: 40px;
+    padding-right: 0;
     width: 80%;
     height: calc(100% - 78px);
     right: 0;
