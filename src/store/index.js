@@ -2,11 +2,15 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from "firebase";
 import db from "@/firebase/init"
+import ImportModule from './importModule'
 
 Vue.use(Vuex)
 Vue.use(firebase)
 
 export default new Vuex.Store({
+  modules: {
+    imports: ImportModule
+  },
   state: {
     openTray: false,
     questions: [],

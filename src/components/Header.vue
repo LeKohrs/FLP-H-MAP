@@ -6,14 +6,18 @@
     <p class="header__title--sub">Holistic Money Allocation Profile</p>      
     </div>
     <div class="header__buttons">
-
-      <div @click.prevent="toHome" v-if="$route.name === 'admin'" class="button--admin">
+      
+      <DataImporter v-if="$route.name === 'admin'"/>
+      <div @click.prevent="toHome" v-if="$route.name === 'admin'" class="button button--admin">
         <p>Map</p>
       </div>
-      <div @click.prevent="toAdmin" v-if="$store.state.loggedinUser && $store.state.loggedinUser.role === 'admin' && $route.name === 'home'" class="button--admin">
+      <div class="button button--print" v-if="$route.name === 'home'" v-on:click="printMap">
+        <p>Print Map</p>
+      </div>
+      <div @click.prevent="toAdmin" v-if="$store.state.loggedinUser && $store.state.loggedinUser.role === 'admin' && $route.name === 'home'" class="button button--admin">
         <p>Admin</p>
       </div>
-      <div v-if="!$store.state.showLogin" class="logout" @click.prevent="logout">
+      <div v-if="!$store.state.showLogin" class="button button--logout logout" @click.prevent="logout">
         <p>Log out</p>
       </div>
     </div>
@@ -24,9 +28,14 @@
 <script>
 import firebase from 'firebase'
 import db from '@/firebase/init'
+import DataImporter from './DataImporter'
+import printJS from 'print-js'
 
 export default {
   name: 'Header',
+  components: {
+    DataImporter
+  },
   data() {
     return {
 
@@ -47,6 +56,21 @@ export default {
     },
     toHome() {
       this.$router.push({ name: 'home' })
+    },
+    printMap() {
+      const head = document.head.innerHTML;
+      const svg = document.querySelector('.hmap__map').innerHTML;
+      const mywindow = window.open('', 'Print', 'height=600,width=800');
+      mywindow.document.write(`<html><head>${head}`);
+      mywindow.document.write('</head><body >');
+      mywindow.document.write(svg);
+      mywindow.document.write('</body></html>');
+      mywindow.document.close();
+      mywindow.onload= () => { 
+        mywindow.focus();
+        mywindow.print();
+        mywindow.close();
+      };
     }
   },
   created() {
@@ -73,15 +97,7 @@ export default {
 </script>
 
 <style lang='scss'>
-  $color-green-light: #b0c986;
-  $color-green: #7ba636;
-  $color-green-dark: #577937;
-  $color-blue: #b5c7e8;
-  $color-white: #fff;
-  $color-black: #333333;
-  $color-grey: #666;
-  $color-grey-light: #999;
-  $color-blue-dark: #014584;
+  @import "../scss/variables.scss";
 
   .header {
     display: flex;
@@ -119,33 +135,6 @@ export default {
     &__buttons {
       display: flex;
       justify-content: flex-end;
-    }
-    .button--admin,
-    .logout {
-      margin-right: 30px;
-      padding: 10px 20px;
-      border-radius: 5px; 
-      border: 1px solid $color-grey-light;
-      cursor: pointer;      
-      transition: all .3s ease-out;      
-
-      &:hover {
-        border: 1px solid $color-green;
-        
-        p {
-          color: $color-green;
-        }
-      }
-
-      p {
-        text-decoration: none;
-        font-size: 13px;
-        color: $color-grey;
-        transition: all .3s ease-out;
-      }
-    }
-    .button--admin {
-      margin-right: 10px;
     }
   }
 </style>
