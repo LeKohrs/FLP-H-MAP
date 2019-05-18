@@ -1,18 +1,24 @@
 <template>
     <div class="data-importer">
-        <button class="button button--import-data" v-on:click="toggleModal">
+        <button 
+            class="button button--import-data"
+            v-on:click="toggleModal">
             <p>Import</p>
         </button>
-        <section class="hmap-modal hmap-modal--data-importer" v-if="modalOpen">
-            <div class="hmap-modal__header">
-                <h1 class="hmap-modal__title">
+        <section 
+            class="hmap-modal hmap-modal--data-importer" 
+            v-if="modalOpen">
+            <div class="hmap-modal__header hmap-modal--data-importer__header">
+                <h1 class="hmap-modal__title hmap-modal--data-importer__title">
                     Import Clients
                 </h1>
-                <div class="hmap-modal__close button button--close" v-on:click="toggleModal">
+                <div 
+                    class="hmap-modal__close button button--close hmap-modal--data-importer__close" 
+                    v-on:click="toggleModal">
                     <p>X</p>
                 </div>
             </div>
-            <div class="hmap-modal__content">
+            <div class="hmap-modal__content hmap-modal--data-importer__content">
                 <FileInput v-bind:on-file="beginImport"/>
             </div>
         </section>
@@ -72,7 +78,7 @@ export default {
     .data-importer {
         margin-right: $button-spacing;
 
-        .hmap-modal {
+        .hmap-modal--data-importer {
             @include modal(
                 $include-header-border: false,
                 $include-footer-border: false

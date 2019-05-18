@@ -55,17 +55,17 @@
         <section
             class="hmap-modal hmap-modal--import-status"
             v-if="messageInModal != null">
-            <div class="hmap-modal__header">
-                <h1 class="hmap-modal__title">
+            <div class="hmap-modal__header hmap-modal--import-status__header">
+                <h1 class="hmap-modal__title hmap-modal--import-status__title">
                     {{ messageInModal.name }} Import Errors
                 </h1>
                 <div
-                    class="hmap-modal__close button button--close"
+                    class="hmap-modal__close button button--close hmap-modal--import-status__close"
                     v-on:click="toggleMoreInfo(null)">
                     <p>X</p>
                 </div>
             </div>
-            <div class="hmap-modal__content">
+            <div class="hmap-modal__content hmap-modal--import-status__content">
                 <div 
                     class="hmap-modal--import-status__error-message"
                     v-for="(error, idx) in messageInModal.errors"
@@ -282,7 +282,7 @@ export default {
         }
     }
 
-    .hmap-modal {
+    .hmap-modal--import-status {
         @include modal(
             $include-header-border: false,
             $include-footer-border: false

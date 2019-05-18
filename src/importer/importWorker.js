@@ -286,8 +286,6 @@ const mapFullAccounts = fullAccounts => fullAccounts.map(fullAccount => { return
 const importProcessedData = processedData => {
     return processedData.usernames.reduce((p, username) => {
         return p.then((results) => {
-            console.log('username')
-            console.log(username)
             let userData = processedData[username]
             let slug = slugify(username, {
                 replacement: '-',
@@ -303,8 +301,6 @@ const importProcessedData = processedData => {
 
                 return firebase.auth().createUserWithEmailAndPassword(userData.email, userData.password)
                     .then(cred => {
-                        console.log('cred')
-                        console.log(cred)
                         return db.collection('users').doc(slug).set({
                             firstName: userData.firstName,
                             lastName: userData.lastName,
@@ -416,8 +412,6 @@ registerPromiseWorker(message => {
                 .then(vali => vali.flatMap(rawData => processRawData(rawData)))
                 .then(vali => 
                     vali.map(processedData => {
-                        console.log('processedData')
-                        console.log(processedData)
                         return importProcessedData(processedData)
                     }).cata(
                         failure => Promise.resolve([Validation.Fail(failure)]), 
