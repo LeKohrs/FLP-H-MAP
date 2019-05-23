@@ -240,6 +240,11 @@ const processRawData = rawData => {
                         }
                     } else {
                         let username = row[IDX_RAW_DATA_USERNAME]
+                        if (typeof username === 'undefined' || username == null || username == '') {
+                            return Validation.Fail(
+                                `Error.  Row: ${idx + 1 + (hasHeader ? 1 : 0)} has no username defined in column ${IDX_RAW_DATA_USERNAME + 1}.`
+                            )
+                        }
                         acc.currentUsername = username
                         acc.usernames = acc.usernames.concat([username])
                         acc[username] = [row]
