@@ -595,14 +595,14 @@ export default {
       clients: [],
       clientMsg: null,
       anotherBankAccount: {
-        startBalance: null,
-        endBalance: null
+        startBalance: 0,
+        endBalance: 0
       },
       bankAccounts: [],
       bankAccountMsg: null,
       anotherMortgage: {
-        startBalance: null,
-        endBalance: null
+        startBalance: 0,
+        endBalance: 0
       },
       mortgages: [],
       mortgageMsg: null,
@@ -614,17 +614,17 @@ export default {
       newStudentLoans: null,
       newAutoLoans: null,
       anotherCreditCard: {
-        startBalance: null,
-        endBalance: null
+        startBalance: 0,
+        endBalance: 0
       },
       creditCards: [],
       creditCardMsg: null,
       alimony: null,
       another529Plan: {
-        startBalance: null,
-        contributions: null,
-        withdrawals: null,
-        endBalance: null
+        startBalance: 0,
+        contributions: 0,
+        withdrawals: 0,
+        endBalance: 0
       },
       plan529Accounts: [],
       plan529AccountMsg: null,
@@ -635,38 +635,38 @@ export default {
       children: [],
       childMsg: null,
       anotherInvestmentAccount: {
-        startBalance: null,
-        contributions: null,
-        withdrawals: null,
-        endBalance: null
+        startBalance: 0,
+        contributions: 0,
+        withdrawals: 0,
+        endBalance: 0
       },
       investmentAccounts: [],
       investmentAccountMsg: null,
       anotherAutoLoan: {
-        startBalance: null,
-        endBalance: null
+        startBalance: 0,
+        endBalance: 0
       },
       autoLoans: [],
       autoLoanMsg: null,
       anotherStudentLoan: {
-        startBalance: null,
-        endBalance: null
+        startBalance: 0,
+        endBalance: 0
       },
       studentLoans: [],
       studentLoanMsg: null,
       anotherRetirementAccount: {
-        startBalance: null,
-        contributions: null,
-        withdrawals: null,
-        endBalance: null
+        startBalance: 0,
+        contributions: 0,
+        withdrawals: 0,
+        endBalance: 0
       },
       retirementAccounts: [],
       retirementAccountMsg: null,
       anotherHSAAccount: {
-        startBalance: null,
-        contributions: null,
-        withdrawals: null,
-        endBalance: null
+        startBalance: 0,
+        contributions: 0,
+        withdrawals: 0,
+        endBalance: 0
       },
       hsaAccounts: [],
       hsaAccountMsg: null,
