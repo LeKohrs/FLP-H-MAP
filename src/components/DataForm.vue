@@ -418,7 +418,10 @@
           <h3 @click="openSection($event)">{{ selectedUser.questions[9].title }}:</h3>
           <input @keyup.tab="checkParentSingle" type="text"  name="alimony" v-model="alimony">
         </div>
-        <button class="update-info" @click.prevent="editClientInfo">Save</button>
+        <div class="form-buttons">
+          <button class="update-info" @click.prevent="editClientInfo">Save</button>
+          <button class="delete-info" @click.prevent="deleteClient">Delete Client</button>
+        </div>
       </form>
     </div>
   </div>
@@ -776,6 +779,9 @@ export default {
         }
         parent.classList.add('active')
       }
+    },
+    deleteClient() {
+
     }
   },
   watch: {
@@ -818,6 +824,7 @@ export default {
   $color-grey: #666;
   $color-grey-light: #999;
   $color-blue-dark: #014584;
+  $color-red: #c4546d;
 
 .admin__selected-client,
 .sidebar {
@@ -933,6 +940,7 @@ export default {
   .field--alimony input {
     margin-bottom: 30px;
   }
+  .delete-info,
   .update-info {
     margin: 20px 0 40px;
     padding: 10px 30px;
@@ -950,6 +958,18 @@ export default {
     &:hover {
       box-shadow: 2px 2px 5px $color-grey-light;
     }
+  }
+  .form-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px 0 0;
+  }
+  .delete-info {
+    margin-left: 15px;
+    padding: 5px 15px;
+    font-size: 12px;
+    background-color: $color-red;
   }
 }
 </style>

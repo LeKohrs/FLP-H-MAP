@@ -2,14 +2,6 @@
   <div class="admin">
     <section class="admin__sidebar">
       <ClientList />
-      <!-- <div class="clients">
-        <h3>List of clients</h3>
-        <ul class="clients-list">
-          <li v-if="user.role === 'user'" v-for="(user, key) in users" :key="key" class="user">
-            <a @click="selectClient(user.slug)" href="#">{{ user.firstName }} {{ user.lastName }}</a>
-          </li>
-        </ul>
-      </div> -->
       <button @click.prevent="createClient" class="admin__create-new-client">Create New Client</button>
     </section>
     <section class="admin__main">
