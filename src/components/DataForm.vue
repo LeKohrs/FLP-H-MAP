@@ -780,8 +780,12 @@ export default {
         parent.classList.add('active')
       }
     },
-    deleteClient() {
-
+    deleteClient(e) {
+      e.stopPropagation()
+      let id = this.selectedUser.slug
+      db.collection('users').doc(id).delete()
+      this.$store.state.selectedUser = ''
+      // console.log(db.collection('users').doc(id))
     }
   },
   watch: {
