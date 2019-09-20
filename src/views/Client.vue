@@ -2,6 +2,7 @@
   <div class="client">
     <div v-if="selectedUser !== undefined && showClientQuestions" class="client__selected-client">
         <ClientForm v-if="selectedUser" v-bind:selectedUser = "selectedUser" />
+        <button class="delete-client" @click.prevent="deleteAccount">Delete Account</button>
     </div>
   </div>
 </template>
@@ -33,7 +34,24 @@ export default {
     }
   },
   methods: {
-    
+    deleteAccount() {
+      var user = firebase.auth().currentUser;
+
+      user.delete().then(() => {
+        this.$store.state.loggedinUser = null
+        this.$store.state.selectedUser = null
+        localStorage.setItem('user', '')
+        this.$store.state.showLogin = true        
+        this.$router.push({ name: 'home' })
+        // User deleted.
+      }).catch(function(error) {
+        // An error happened.
+        console.log(error)
+      });
+    },
+    logout() {
+      
+    }
   },
   mounted() {
     if(!this.$store.state.loggedinUser) {
@@ -67,6 +85,7 @@ export default {
   $color-grey: #666;
   $color-grey-light: #999;
   $color-blue-dark: #014584;
+  $color-red: #c4546d;
 
   .client__intro {
     button {
@@ -86,6 +105,33 @@ export default {
       &:hover {
         box-shadow: 2px 2px 5px $color-grey-light;
       }
+    }
+  }
+  .delete-client {
+    position: fixed;
+    // margin: 20px 0 40px 33px;
+    padding: 5px 15px;
+    max-width: 20px;
+    bottom: 33px;
+    left: 33px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: none;
+    background-color: rgba($color-grey-light, .3); 
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: rgba($color-grey-light, 0);
+    cursor: pointer;
+    transition: .3s ease-out;
+    overflow: hidden;
+    white-space: nowrap;
+
+    &:hover {
+      max-width: 500px;
+      box-shadow: 2px 2px 5px $color-grey-light;
+      background-color: $color-red; 
+      color: $color-white;
     }
   }
 </style>

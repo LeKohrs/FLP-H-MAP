@@ -783,9 +783,17 @@ export default {
     deleteClient(e) {
       e.stopPropagation()
       let id = this.selectedUser.slug
+      let uid = this.selectedUser.user_id
       db.collection('users').doc(id).delete()
-      this.$store.state.selectedUser = ''
-      // console.log(db.collection('users').doc(id))
+      .then(() => {
+          this.$store.state.selectedUser = null
+          console.log('User Successfully deleted user');
+        })
+        .catch(function(error) {
+          console.log('Error deleting user:', error);
+        });
+      this.$store.state.selectedUser = undefined
+      console.log(this.$store.state.selectedUser)
     }
   },
   watch: {
