@@ -270,7 +270,7 @@
         <text transform="matrix(1 0 0 1 55.2465 273.4498)"><tspan x="0" y="0" class="st50 st20 st21">S</tspan><tspan x="6.4" y="0" class="st50 st20 st21">A</tspan><tspan x="14" y="0" class="st50 st20 st21">VED 14%</tspan></text>
         <text transform="matrix(1 0 0 1 28.5223 292.4459)" class="st50 st20 st21">DEBT REDUCED  20%</text>
         <text transform="matrix(1 0 0 1 55.8822 311.441)" class="st50 st20 st21">SPENT 51%</text>
-        <text transform="matrix(1 0 0 1 41.0941 25.7876)" class="st51 st23 st52">2018</text>
+        <text transform="matrix(1 0 0 1 41.0941 25.7876)" class="st51 st23 st52">{{ year }}</text>
         <text transform="matrix(1 0 0 1 121.1351 72.7476)"><tspan x="0" y="0" class="st19 st20 st21">G</tspan><tspan x="8.7" y="0" class="st19 st20 st21">R</tspan><tspan x="16.2" y="0" class="st19 st20 st21">OSS INCOME</tspan></text>
         <text transform="matrix(1 0 0 1 210.6791 72.7476)" class="st19 st23 st21"> </text>
         <text transform="matrix(1 0 0 1 210.7152 72.7476)" class="st19 st23 st21"> </text>
@@ -573,8 +573,8 @@ export default {
   },
   data() {
     return {
-      // openTray: false,
-      // selectedUser: this.$store.state.selectedUser,
+      customYear: this.$store.state.year,
+      currentYear: new Date().getFullYear(),
       loggedinUser: this.$store.state.loggedinUser,
       email: null,
       password: null,
@@ -788,6 +788,13 @@ export default {
     })
   },
   computed: {
+    year() {
+      if(this.$store.state.year) {
+        return this.$store.state.year
+      } else {
+        return new Date().getFullYear()
+      }
+    },
     openTray() {
       return this.$store.state.openTray
     },
@@ -842,6 +849,7 @@ export default {
         }
       }      
       totalSavings = (investmentSavings + collegeSavings + retirementSavings) + (bankAccountEnd - bankAccountStart)
+
       return totalSavings.formatMoney(0, "$")
     },
     mapMoneyBorrowed() {
@@ -929,13 +937,17 @@ export default {
       let creditCardTotals = 0
       let totalDebtPaid = 0
 
-      if((this.newMortgages && this.newMortgages > 0) || (this.newStudentLoans && this.newStudentLoans > 0) || (this.newAutoLoans && this.newAutoLoans > 0)) {
-        totalDebtPaid = 0
-      } else {
+      // if((this.newMortgages && this.newMortgages > 0) || (this.newStudentLoans && this.newStudentLoans > 0) || (this.newAutoLoans && this.newAutoLoans > 0)) {
+      //   totalDebtPaid = 0
+      //   console.log(this)
+      // } else {
         if(this.mortgages) {
+          console.log(this.mortgages)
           for(let account of this.mortgages) {
             mortgagesEnd = mortgagesEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
             mortgagesStart = mortgagesStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
+            console.log(mortgagesEnd)
+            console.log(mortgagesStart)
           }
         }
         if(this.studentLoans) {
@@ -957,8 +969,12 @@ export default {
           }
           creditCardTotals = creditCardsEnd - creditCardsStart
         }
+        // console.log(mortgagesEnd - mortgagesStart)
+        // console.log(studentLoansEnd - studentLoansStart)
+        // console.log(autoLoansEnd - autoLoansStart)
+        // console.log(creditCardTotals)
         totalDebtPaid = ((mortgagesEnd - mortgagesStart)) + ((studentLoansEnd - studentLoansStart)) + ((autoLoansEnd - autoLoansStart)) + ((creditCardTotals))
-      }
+      // }
       if(totalDebtPaid < 0) [
         totalDebtPaid = totalDebtPaid * -1
       ]
