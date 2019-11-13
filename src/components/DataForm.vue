@@ -422,6 +422,10 @@
           <h3 @click="openSection($event)">{{ selectedUser.questions[9].title }}:</h3>
           <input @keyup.tab="checkParentSingle" type="text"  name="alimony" v-model="alimony">
         </div>
+        <div class="ignore-newDebt">
+          <input id="ignore-newDebt" type="checkbox" name="ignore-newDebt" v-model="ignoreNewDebt" @click="setIgnoreDebt">
+          <label for="ignore-newDebt">Ignore New Debt</label>
+        </div>
         <div class="form-buttons">
           <button class="update-info" @click.prevent="editClientInfo">Save</button>
           <button class="delete-info" @click.prevent="deleteClient">Delete Client</button>
@@ -441,6 +445,7 @@ export default {
   data() {
     return {
       customYear: null,
+      igNewDebt: false,
       msg: 'You must enter a value in all fields',
       firstName: null,
       lastName: null,
@@ -530,6 +535,14 @@ export default {
     }
   },
   methods: {
+    setIgnoreDebt() {
+      if(this.$store.state.ignoreNewDebt = false) {
+        this.$store.state.ignoreNewDebt = true
+      } else {
+        this.$store.state.ignoreNewDebt = false
+      }
+      console.log('click')
+    },
     openSection(e) {
       const fields = document.getElementsByClassName('field');
       for(let field of fields) {
@@ -808,6 +821,9 @@ export default {
         return new Date().getFullYear()
       }
     },
+    ignoreNewDebt() {
+      return this.$store.state.ignoreNewDebt
+    }
   },
   watch: {
     selectedUser() {
@@ -831,9 +847,12 @@ export default {
         this.newStudentLoans = this.selectedUser.questions[6].answer
         this.newMortgages = this.selectedUser.questions[3].answer
     },
+    ignoreNewDebt() {
+      this.$store.state.ignoreNewDebt = this.igNewDebt
+    },
     customYear() {
       this.$store.state.year = this.customYear
-    }
+    },
   },
   created() {
     

@@ -12,6 +12,7 @@ export default new Vuex.Store({
     imports: ImportModule
   },
   state: {
+    ignoreNewDebt: false,
     year: null,
     openTray: false,
     questions: [],

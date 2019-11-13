@@ -795,6 +795,9 @@ export default {
         return new Date().getFullYear()
       }
     },
+    ignoreNewDebt() {
+      return this.$store.state.ignoreNewDebt
+    },
     openTray() {
       return this.$store.state.openTray
     },
@@ -925,29 +928,38 @@ export default {
     mapDebtPaid() {
       let mortgagesEnd = 0
       let mortgagesStart = 0
-      let newMortgages = 0
+      let newMortgages
+      if(this.newMortgages) {
+        newMortgages = Number(this.newMortgages.replace(/[^0-9 ]/g, ""))
+      } else {
+        newMortgages = 0
+      }
       let studentLoansEnd = 0
       let studentLoansStart = 0
-      let newStudentLoans = 0
+      let newStudentLoans
+      if(this.newStudentLoans) {
+        newStudentLoans = Number(this.newStudentLoans.replace(/[^0-9 ]/g, ""))
+      } else {
+        newStudentLoans = 0
+      }
+      
       let autoLoansEnd = 0
       let autoLoansStart = 0
-      let newAutoLoans = 0
+      let newAutoLoans
+      if(this.newAutoLoans) {
+        newAutoLoans = Number(this.newAutoLoans.replace(/[^0-9 ]/g, ""))
+      } else {
+        newAutoLoans = 0
+      }
       let creditCardsEnd = 0
       let creditCardsStart = 0
       let creditCardTotals = 0
       let totalDebtPaid = 0
 
-      // if((this.newMortgages && this.newMortgages > 0) || (this.newStudentLoans && this.newStudentLoans > 0) || (this.newAutoLoans && this.newAutoLoans > 0)) {
-      //   totalDebtPaid = 0
-      //   console.log(this)
-      // } else {
         if(this.mortgages) {
-          console.log(this.mortgages)
           for(let account of this.mortgages) {
             mortgagesEnd = mortgagesEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
             mortgagesStart = mortgagesStart + Number(account.startBalance.replace(/[^0-9 ]/g, ""))
-            console.log(mortgagesEnd)
-            console.log(mortgagesStart)
           }
         }
         if(this.studentLoans) {
@@ -969,15 +981,16 @@ export default {
           }
           creditCardTotals = creditCardsEnd - creditCardsStart
         }
-        // console.log(mortgagesEnd - mortgagesStart)
-        // console.log(studentLoansEnd - studentLoansStart)
-        // console.log(autoLoansEnd - autoLoansStart)
-        // console.log(creditCardTotals)
-        totalDebtPaid = ((mortgagesEnd - mortgagesStart)) + ((studentLoansEnd - studentLoansStart)) + ((autoLoansEnd - autoLoansStart)) + ((creditCardTotals))
+        if (this.ignoreNewDebt) {
+          totalDebtPaid = ((mortgagesEnd - mortgagesStart)) + ((studentLoansEnd - studentLoansStart)) + ((autoLoansEnd - autoLoansStart)) + ((creditCardTotals))
+        } else {
+          totalDebtPaid = ((mortgagesEnd - mortgagesStart)) + ((studentLoansEnd - studentLoansStart)) + ((autoLoansEnd - autoLoansStart)) + ((creditCardTotals)) + newAutoLoans + newStudentLoans + newMortgages
+        }
+        
       // }
-      if(totalDebtPaid < 0) [
+      if(totalDebtPaid < 0) {
         totalDebtPaid = totalDebtPaid * -1
-      ]
+      }
 
       return totalDebtPaid.formatMoney(0, "$")
     },
