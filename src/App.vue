@@ -1,19 +1,22 @@
 <template>
   <div id="app">
     <Header />
+    <ImportStatus />
     <router-view/>
   </div>
 </template>
 
 <script>
 import Header from '@/components/Header.vue'
+import ImportStatus from '@/components/ImportStatus.vue'
 import 'reset-css'
 import db from '@/firebase/init'
 
 
 export default {
   components: {
-    Header
+    Header,
+    ImportStatus
   },
   created() {
     // db.collection('questions').get()
@@ -43,6 +46,8 @@ export default {
 
 <style lang="scss">
 @import '../node_modules/reset-css/sass/reset';
+@import "scss/variables.scss";
+@import "scss/partials/button.scss";
 
 #app {
   position: relative;

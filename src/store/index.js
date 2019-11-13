@@ -2,12 +2,18 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from "firebase";
 import db from "@/firebase/init"
+import ImportModule from './importModule'
 
 Vue.use(Vuex)
 Vue.use(firebase)
 
 export default new Vuex.Store({
+  modules: {
+    imports: ImportModule
+  },
   state: {
+    ignoreNewDebt: false,
+    year: null,
     openTray: false,
     questions: [],
     users: [],
@@ -41,6 +47,9 @@ export default new Vuex.Store({
           return otherUser.user_id != data.doc.data().user_id;
         });
       }
+    },
+    updateIgnoreNewDebt(state, message) {
+      state.ignoreNewDebt = message
     },
     updateSelectedUser(state, data) {
       state.selectedUser = data.doc.data()

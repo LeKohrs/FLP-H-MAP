@@ -1,0 +1,64 @@
+@import "../variables.scss";
+
+@mixin modal(
+    $color-neutral: white,
+    $color-neutral-accent: $color-grey-light,
+    $color-neutral-tertiary: $color-grey,
+    $include-header: true,
+    $include-header-border: true,
+    $include-footer: true,
+    $include-footer-border: true
+) {
+    position: fixed;
+    z-index: 1000;
+    background: $color-neutral;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 0 1rem;
+
+    top: 20%;
+    min-width: 900px;
+    max-width: 900px;
+    left: calc((100vw - 900px) / 2);
+
+    @if $include-header {
+        .hmap-modal__header {
+            padding: 1rem 0;
+            @if $include-header-border {
+                border-bottom: 1px solid $color-neutral-tertiary;
+            }
+
+            .hmap-modal__title {
+                font-weight: 700;
+            }
+        }
+    }
+
+    .hmap-modal__content {
+        padding: 1rem 5rem;
+    }
+
+    @if $include-footer {
+        @if $include-footer-border {
+            .hmap-modal__content {
+                border-bottom: 1px solid $color-neutral-tertiary;
+            }
+        }
+        .hmap-modal__footer {
+            padding: 1rem 0;
+        }
+    }
+}
+
+@mixin modalBackdrop(
+    $position: fixed
+) {
+    position: $position;
+    min-height: 100%;
+    min-width: 100%;
+    background: rgba(0,0,0,0.75);
+    top: 0;
+    left: 0;
+    z-index: 900;
+}

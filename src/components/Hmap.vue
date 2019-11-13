@@ -252,7 +252,7 @@
         <text transform="matrix(1 0 0 1 55.2465 273.4498)"><tspan x="0" y="0" class="st50 st20 st21">S</tspan><tspan x="6.4" y="0" class="st50 st20 st21">A</tspan><tspan x="14" y="0" class="st50 st20 st21">VED 14%</tspan></text>
         <text transform="matrix(1 0 0 1 28.5223 292.4459)" class="st50 st20 st21">DEBT REDUCED  20%</text>
         <text transform="matrix(1 0 0 1 55.8822 311.441)" class="st50 st20 st21">SPENT 51%</text>
-        <text transform="matrix(1 0 0 1 41.0941 25.7876)" class="st51 st23 st52">2018</text>
+        <text transform="matrix(1 0 0 1 41.0941 25.7876)" class="st51 st23 st52">{{ year }}</text>
         <text transform="matrix(1 0 0 1 121.1351 72.7476)"><tspan x="0" y="0" class="st19 st20 st21">G</tspan><tspan x="8.7" y="0" class="st19 st20 st21">R</tspan><tspan x="16.2" y="0" class="st19 st20 st21">OSS INCOME</tspan></text>
         <text transform="matrix(1 0 0 1 210.6791 72.7476)" class="st19 st23 st21"> </text>
         <text transform="matrix(1 0 0 1 210.7152 72.7476)" class="st19 st23 st21"> </text>
@@ -420,7 +420,24 @@
 <script>
 export default {
   name: 'Hmap',
+  data() {
+    return {
+      // customYear: this.$store.state.year,
+      currentYear: new Date().getFullYear()
+    }
+  },
   computed: {
+    customYear() {
+      return this.$store.state.year
+    },
+    year() {
+      console.log(customYear)
+      if(customYear) {
+        return customYear
+      } else {
+        return new Date().getFullYear()
+      }
+    },
     selectedUser() {
       return this.$store.state.selectedUser
     },

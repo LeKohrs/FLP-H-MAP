@@ -270,7 +270,7 @@
         <text transform="matrix(1 0 0 1 55.2465 273.4498)"><tspan x="0" y="0" class="st50 st20 st21">S</tspan><tspan x="6.4" y="0" class="st50 st20 st21">A</tspan><tspan x="14" y="0" class="st50 st20 st21">VED 14%</tspan></text>
         <text transform="matrix(1 0 0 1 28.5223 292.4459)" class="st50 st20 st21">DEBT REDUCED  20%</text>
         <text transform="matrix(1 0 0 1 55.8822 311.441)" class="st50 st20 st21">SPENT 51%</text>
-        <text transform="matrix(1 0 0 1 41.0941 25.7876)" class="st51 st23 st52">2018</text>
+        <text transform="matrix(1 0 0 1 41.0941 25.7876)" class="st51 st23 st52">{{ year }}</text>
         <text transform="matrix(1 0 0 1 121.1351 72.7476)"><tspan x="0" y="0" class="st19 st20 st21">G</tspan><tspan x="8.7" y="0" class="st19 st20 st21">R</tspan><tspan x="16.2" y="0" class="st19 st20 st21">OSS INCOME</tspan></text>
         <text transform="matrix(1 0 0 1 210.6791 72.7476)" class="st19 st23 st21"> </text>
         <text transform="matrix(1 0 0 1 210.7152 72.7476)" class="st19 st23 st21"> </text>
@@ -432,6 +432,8 @@
         </g>
         </svg>
       </div>
+      <label for="ignoreNewDebt">Ignore New Debt</label>
+      <input id="ignoreNewDebt" type="checkbox" v-model="ignoreNewDebt">
       <div class="hmap__details">
         <div class="hmap__money-in">
           <h2>Details:</h2>
@@ -573,8 +575,9 @@ export default {
   },
   data() {
     return {
-      // openTray: false,
-      // selectedUser: this.$store.state.selectedUser,
+      ignoreNewDebt: '',
+      customYear: this.$store.state.year,
+      currentYear: new Date().getFullYear(),
       loggedinUser: this.$store.state.loggedinUser,
       email: null,
       password: null,
@@ -595,14 +598,14 @@ export default {
       clients: [],
       clientMsg: null,
       anotherBankAccount: {
-        startBalance: null,
-        endBalance: null
+        startBalance: 0,
+        endBalance: 0
       },
       bankAccounts: [],
       bankAccountMsg: null,
       anotherMortgage: {
-        startBalance: null,
-        endBalance: null
+        startBalance: 0,
+        endBalance: 0
       },
       mortgages: [],
       mortgageMsg: null,
@@ -614,17 +617,17 @@ export default {
       newStudentLoans: null,
       newAutoLoans: null,
       anotherCreditCard: {
-        startBalance: null,
-        endBalance: null
+        startBalance: 0,
+        endBalance: 0
       },
       creditCards: [],
       creditCardMsg: null,
       alimony: null,
       another529Plan: {
-        startBalance: null,
-        contributions: null,
-        withdrawals: null,
-        endBalance: null
+        startBalance: 0,
+        contributions: 0,
+        withdrawals: 0,
+        endBalance: 0
       },
       plan529Accounts: [],
       plan529AccountMsg: null,
@@ -635,38 +638,38 @@ export default {
       children: [],
       childMsg: null,
       anotherInvestmentAccount: {
-        startBalance: null,
-        contributions: null,
-        withdrawals: null,
-        endBalance: null
+        startBalance: 0,
+        contributions: 0,
+        withdrawals: 0,
+        endBalance: 0
       },
       investmentAccounts: [],
       investmentAccountMsg: null,
       anotherAutoLoan: {
-        startBalance: null,
-        endBalance: null
+        startBalance: 0,
+        endBalance: 0
       },
       autoLoans: [],
       autoLoanMsg: null,
       anotherStudentLoan: {
-        startBalance: null,
-        endBalance: null
+        startBalance: 0,
+        endBalance: 0
       },
       studentLoans: [],
       studentLoanMsg: null,
       anotherRetirementAccount: {
-        startBalance: null,
-        contributions: null,
-        withdrawals: null,
-        endBalance: null
+        startBalance: 0,
+        contributions: 0,
+        withdrawals: 0,
+        endBalance: 0
       },
       retirementAccounts: [],
       retirementAccountMsg: null,
       anotherHSAAccount: {
-        startBalance: null,
-        contributions: null,
-        withdrawals: null,
-        endBalance: null
+        startBalance: 0,
+        contributions: 0,
+        withdrawals: 0,
+        endBalance: 0
       },
       hsaAccounts: [],
       hsaAccountMsg: null,
@@ -788,6 +791,16 @@ export default {
     })
   },
   computed: {
+    year() {
+      if(this.$store.state.year) {
+        return this.$store.state.year
+      } else {
+        return new Date().getFullYear()
+      }
+    },
+    ignoreNewDebt() {
+      return this.$store.state.ignoreNewDebt
+    },
     openTray() {
       return this.$store.state.openTray
     },
@@ -842,6 +855,7 @@ export default {
         }
       }      
       totalSavings = (investmentSavings + collegeSavings + retirementSavings) + (bankAccountEnd - bankAccountStart)
+
       return totalSavings.formatMoney(0, "$")
     },
     mapMoneyBorrowed() {
@@ -917,21 +931,34 @@ export default {
     mapDebtPaid() {
       let mortgagesEnd = 0
       let mortgagesStart = 0
-      let newMortgages = 0
+      let newMortgages
+      if(this.newMortgages) {
+        newMortgages = Number(this.newMortgages.replace(/[^0-9 ]/g, ""))
+      } else {
+        newMortgages = 0
+      }
       let studentLoansEnd = 0
       let studentLoansStart = 0
-      let newStudentLoans = 0
+      let newStudentLoans
+      if(this.newStudentLoans) {
+        newStudentLoans = Number(this.newStudentLoans.replace(/[^0-9 ]/g, ""))
+      } else {
+        newStudentLoans = 0
+      }
+      
       let autoLoansEnd = 0
       let autoLoansStart = 0
-      let newAutoLoans = 0
+      let newAutoLoans
+      if(this.newAutoLoans) {
+        newAutoLoans = Number(this.newAutoLoans.replace(/[^0-9 ]/g, ""))
+      } else {
+        newAutoLoans = 0
+      }
       let creditCardsEnd = 0
       let creditCardsStart = 0
       let creditCardTotals = 0
       let totalDebtPaid = 0
 
-      if((this.newMortgages && this.newMortgages > 0) || (this.newStudentLoans && this.newStudentLoans > 0) || (this.newAutoLoans && this.newAutoLoans > 0)) {
-        totalDebtPaid = 0
-      } else {
         if(this.mortgages) {
           for(let account of this.mortgages) {
             mortgagesEnd = mortgagesEnd + Number(account.endBalance.replace(/[^0-9 ]/g, ""))
@@ -957,11 +984,16 @@ export default {
           }
           creditCardTotals = creditCardsEnd - creditCardsStart
         }
-        totalDebtPaid = ((mortgagesEnd - mortgagesStart)) + ((studentLoansEnd - studentLoansStart)) + ((autoLoansEnd - autoLoansStart)) + ((creditCardTotals))
-      }
-      if(totalDebtPaid < 0) [
+        if (this.ignoreNewDebt) {
+          totalDebtPaid = ((mortgagesEnd - mortgagesStart)) + ((studentLoansEnd - studentLoansStart)) + ((autoLoansEnd - autoLoansStart)) + ((creditCardTotals))
+        } else {
+          totalDebtPaid = ((mortgagesEnd - mortgagesStart)) + ((studentLoansEnd - studentLoansStart)) + ((autoLoansEnd - autoLoansStart)) + ((creditCardTotals)) + (newAutoLoans + newStudentLoans + newMortgages)
+        }
+        
+      // }
+      if(totalDebtPaid < 0) {
         totalDebtPaid = totalDebtPaid * -1
-      ]
+      }
 
       return totalDebtPaid.formatMoney(0, "$")
     },
