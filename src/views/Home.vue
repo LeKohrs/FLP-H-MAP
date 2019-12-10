@@ -432,7 +432,7 @@
         </g>
         </svg>
       </div>
-      <label for="ignoreNewDebt">Ignore New Debt</label>
+      <label for="ignoreNewDebt">Ignore New Loans</label>
       <input id="ignoreNewDebt" type="checkbox" v-model="ignoreNewDebt">
       <div class="hmap__details">
         <div class="hmap__money-in">
@@ -536,13 +536,19 @@
               <p>Dec. 31 <span>{{ creditCardTotals.endBalance }}</span></p>
             </div>
           </div>
-          <div class="catagory hmap__auto-laons">
+          <div class="catagory hmap__auto-loans">
             <h3>Auto Loans</h3>
             <div>
               <p>Jan. 1 <span>{{ autoLoanTotals.startBalance }}</span></p>
             </div>
             <div>
               <p>Dec. 31 <span>{{ autoLoanTotals.endBalance }}</span></p>
+            </div>
+          </div>
+          <div class="catagory hmap__new-loans">
+            <h3>New Loan Amount</h3>
+            <div>
+              <p>Total <span>{{ newLoans }}</span></p>
             </div>
           </div>
         </div>
@@ -817,6 +823,7 @@ export default {
       if(this.taxes) {
         taxes = Number(this.taxes.replace(/[^0-9 ]/g, ""))
       }
+      taxes = taxes * -1
       return taxes.formatMoney(0, "$")
     },
     mapAvailableIncome() {
@@ -1231,6 +1238,29 @@ export default {
       autoLoans.startBalance = startBalance.formatMoney(0, "$")
       autoLoans.endBalance = endBalance.formatMoney(0, "$")  
       return autoLoans
+    },
+    newLoans() {
+      let newMortgages
+      if(this.newMortgages) {
+        newMortgages = Number(this.newMortgages.replace(/[^0-9 ]/g, ""))
+      } else {
+        newMortgages = 0
+      }
+      let newStudentLoans
+      if(this.newStudentLoans) {
+        newStudentLoans = Number(this.newStudentLoans.replace(/[^0-9 ]/g, ""))
+      } else {
+        newStudentLoans = 0
+      }
+      let newAutoLoans
+      if(this.newAutoLoans) {
+        newAutoLoans = Number(this.newAutoLoans.replace(/[^0-9 ]/g, ""))
+      } else {
+        newAutoLoans = 0
+      }
+
+      let newLoans = (newMortgages + newStudentLoans + newAutoLoans).formatMoney(0, "$")  
+      return newLoans
     },
     ...mapState(['selectedUser'])
   },
